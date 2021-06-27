@@ -1,0 +1,23 @@
+{
+	"DASHBOARD": "Dashboard",
+	"CUSTOMERS": "Customers",
+	"PARTNERS": "Partners",
+	"LOGIN": "Login",
+	"REGISTRATION": "Registraton",
+	"PASSWORD": "Password",
+	"LOGIN_FAILED": "Email or password not found",
+	"EMAIL": "email",
+	"FIRST_NAME": "First name",
+	"LAST_NAME": "Last name",
+	"CONFIRM_PASSWORD": "Confirm password",
+	"REGISTRATION_REDIRECT": "Registration",
+	"REGISTRATION_SUCCESS": "Registration success",
+	"REGISTRATION_SUCCESS_CONTENT": "Registration new account success, check your email address to active this account.",
+	"SERVER_ERROR": "Internal server error",
+	"SERVER_ERROR_CONTENT": "Sorry, Internal server error. Please comeback after 5 minute.",
+	"REGISTRATION_FAILED": "Registration failed",
+	"REGISTRATION_FAILED_CONTENT": "There was an error in the registration process, please check the registration information and try again.",
+	"PLACEHOLDER_SEARCG_STORE": "Search store",
+	"STORES": "Stores",
+	"SEARCH": "Search"
+}

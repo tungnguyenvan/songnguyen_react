@@ -1,0 +1,16 @@
+import BaseModel from "@app/framework/core/BaseModel";
+import __Schema from "@app/app/schema/__Schema";
+
+const NAME_SPACE = "__Model";
+
+/**
+ * __ model
+ * @author tung.nguyenvan
+ */
+class __Model extends BaseModel {
+	constructor() {
+		super(__Schema);
+	}
+}
+
+export default __Model;

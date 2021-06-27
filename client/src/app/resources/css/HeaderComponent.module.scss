@@ -1,0 +1,66 @@
+@import "framework/resources/css/base.scss";
+
+.app__header {
+	top: 0px;
+	z-index: 2;
+	width: 100%;
+	display: flex;
+	position: fixed;
+	padding-top: 8px;
+	border: $border-default;
+	height: $header-bar-height;
+	background-color: $bg-color;
+	flex-direction: column;
+	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+
+	& .app__header__content {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+
+		& .app__header__flex__left,
+		.app__header__flex__center,
+		.app__header__flex__right {
+			display: flex;
+			flex-grow: 1;
+		}
+
+		& .app__header__flex__left {
+			margin-left: 24px;
+		}
+
+		& .app__header__flex__center {
+			justify-content: center;
+			flex-grow: 8;
+		}
+
+		& .app__header__flex__right {
+			justify-content: flex-end;
+			margin-right: 24px;
+		}
+
+		& .app__header__hamburger__button {
+			width: 32px;
+			height: 32px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 50%;
+			padding: 8px;
+			transition: $transition-default;
+			cursor: pointer;
+
+			&:hover {
+				background-color: $base-bg-color-hover;
+			}
+
+			&:active {
+				background-color: $base-bg-color-active;
+			}
+		}
+	}
+
+	& .app__header__process {
+		width: 100%;
+	}
+}

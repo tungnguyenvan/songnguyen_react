@@ -1,0 +1,16 @@
+import BaseController from "@app/framework/core/BaseController";
+import __Repository from "@app/app/repositories/__Repository";
+
+const NAME_SPACE = "__Controller";
+
+/**
+ * __ Controller
+ * @author tung.nguyenvan
+ */
+class __Controller extends BaseController {
+	constructor() {
+		super(new __Repository());
+	}
+}
+
+export default __Controller;

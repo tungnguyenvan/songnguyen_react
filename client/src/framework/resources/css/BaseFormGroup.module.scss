@@ -1,0 +1,14 @@
+.base__form__group {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding-left: 15%;
+	padding-right: 15%;
+}
+
+@media screen and (max-width: 1007px) {
+	.base__form__group {
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+}

@@ -1,0 +1,14 @@
+import IBaseDocument from "@app/framework/interfaces/IBaseDocument";
+
+/**
+ * __ document
+ * @author tung.nguyenvan
+ */
+interface I__Document extends IBaseDocument {
+	/**
+	 * __ name
+	 */
+	name: string;
+}
+
+export default I__Document;

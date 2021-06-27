@@ -1,0 +1,12 @@
+[
+	{
+		"name": "English",
+		"constant": "english",
+		"flag": "🇺🇸"
+	},
+	{
+		"name": "Tiếng Việt",
+		"constant": "vietnamese",
+		"flag": "🇻🇳"
+	}
+]
