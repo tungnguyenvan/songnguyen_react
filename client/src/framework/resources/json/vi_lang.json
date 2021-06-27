@@ -1,0 +1,23 @@
+{
+	"DASHBOARD": "Dashboard",
+	"CUSTOMERS": "Khách hàng",
+	"PARTNERS": "Đối tác",
+	"LOGIN": "Đăng nhập",
+	"REGISTRATION": "Đăng ký",
+	"PASSWORD": "Mật khẩu",
+	"LOGIN_FAILED": "Email hoặc mật khẩu không đúng",
+	"EMAIL": "email",
+	"FIRST_NAME": "Họ",
+	"LAST_NAME": "Tên",
+	"CONFIRM_PASSWORD": "Nhập lại mật khẩu",
+	"REGISTRATION_REDIRECT": "Đăng ký",
+	"REGISTRATION_SUCCESS": "Đăng ký thành công",
+	"REGISTRATION_SUCCESS_CONTENT": "Đăng ký tài khoản thành công, kiểm tra địa chỉ email để kích hoạt tài khoản này.",
+	"SERVER_ERROR": "Lỗi máy chủ",
+	"SERVER_ERROR_CONTENT": "Rất xin lỗi quý khách, máy chủ đang xảy ra lỗi. Hãy trở lại sau 5 phút.",
+	"REGISTRATION_FAILED": "Đăng ký không thành công",
+	"REGISTRATION_FAILED_CONTENT": "Quá trình đăng ký đã xảy ra lỗi, kiểm tra lại thông tin đăng ký và thử lại.",
+	"PLACEHOLDER_SEARCG_STORE": "Tìm cửa hàng",
+	"STORES": "Cửa hàng",
+	"SEARCH": "Tìm kiếm"
+}

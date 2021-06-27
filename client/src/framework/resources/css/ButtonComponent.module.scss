@@ -1,0 +1,25 @@
+@import "./Base.scss";
+
+.framewok__button__container {
+	min-width: 64px;
+	min-height: 32px;
+	display: flex;
+	flex-grow: 1;
+	margin: 8px;
+	cursor: pointer;
+	padding: 8px 16px;
+	justify-content: center;
+	align-items: center;
+	border-radius: $border-radius;
+	color: $primary-color;
+	background-color: #eeeeee;
+
+	&:hover {
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+	}
+
+	&.primary {
+		color: white;
+		background-color: $primary-color;
+	}
+}

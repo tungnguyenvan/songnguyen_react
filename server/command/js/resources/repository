@@ -1,0 +1,16 @@
+import BaseRepository from "@app/framework/core/BaseRepository";
+import __Model from "@app/app/models/__Model";
+
+const NAME_SPACE = "__Repository";
+
+/**
+ * __ repository
+ * @author tung.nguyenvan
+ */
+class __Repository extends BaseRepository {
+	constructor() {
+		super(new __Model());
+	}
+}
+
+export default __Repository;

@@ -1,0 +1,19 @@
+@import "./Base.scss";
+
+.base__page {
+	margin-top: calc(#{$header-bar-height} * 1.3);
+	max-width: 960px;
+	padding-left: 32px;
+	padding-right: 36px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 36px;
+	padding-bottom: 72px;
+	background-color: $bg-color;
+
+	& .page__title {
+		text-align: start;
+		margin-top: 0px;
+		margin-bottom: 36px;
+	}
+}

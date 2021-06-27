@@ -1,0 +1,180 @@
+@import "framework/resources/css/base.scss";
+
+.store__select__component__container {
+	$background-color: #eeeeee;
+	$background-color-hover: #e2e8e6;
+
+	height: 64px;
+	display: flex;
+	cursor: pointer;
+	min-width: 240px; // TODO: Remove this line after done
+	padding-left: 8px;
+	padding-right: 8px;
+	align-items: center;
+	background-color: $background-color;
+	border-radius: $border-radius;
+	border: $border-default;
+	border-width: 2px;
+
+	&:hover {
+		background-color: $background-color-hover;
+	}
+
+	&.active {
+		border-color: $primary-color;
+
+		& .store__select__component__select__box {
+			display: flex;
+			// border-color: $primary-color;
+		}
+	}
+
+	& .store__select__component__selected {
+		display: flex;
+		align-items: center;
+		width: 100%;
+	}
+
+	& .store__avatar {
+		width: 52px;
+		height: 52px;
+		border-radius: 50%;
+		border: $border-default;
+	}
+
+	& .store__info {
+		display: flex;
+		flex-direction: column;
+		margin-left: 8px;
+		width: 100%;
+		margin-right: 8px;
+
+		& .store__info__title {
+			margin-top: 0px;
+			margin-bottom: 0px;
+			text-align: left;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+			width: 100%;
+			cursor: pointer;
+		}
+
+		& .store__info__address {
+			text-align: left;
+			font-size: 12px;
+			color: $placeholder-color;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+			width: 100%; // some width
+			cursor: pointer;
+		}
+	}
+
+	& .store__select__component__select__box {
+		width: 320px;
+		background-color: $bg-color;
+		position: absolute;
+		top: calc(#{$header-bar-height} + 8px);
+		z-index: 2;
+		right: 24px;
+		padding: 8px 16px;
+		display: none;
+		flex-direction: column;
+		overflow-y: auto;
+		border-radius: $border-radius;
+		border: $border-default;
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+
+		&.active {
+			display: flex;
+		}
+
+		& .store__select__search__bar {
+			display: flex;
+			margin-bottom: 8px;
+
+			& .store__select__input__search {
+				width: 100%;
+				min-height: 32px;
+				border-radius: $border-radius;
+				padding: 4px 8px;
+				border: none;
+				background-color: #eeeeee;
+			}
+		}
+
+		& .store__select__create__button {
+			display: flex;
+			width: 100%;
+			justify-content: center;
+			align-items: center;
+			transition: $transition-default;
+			border-radius: $border-radius;
+			padding-top: 8px;
+			padding-bottom: 8px;
+
+			&:hover {
+				background-color: $background-color-hover;
+			}
+
+			&:active {
+				background-color: $base-bg-color-hover;
+			}
+
+			& svg {
+				width: 24px;
+				height: 24px;
+			}
+		}
+
+		& .store__select__box__item {
+			height: 64px;
+			display: flex;
+			cursor: pointer;
+			width: calc(100% - 8px);
+			padding: 8px;
+			margin-bottom: 8px;
+			align-items: center;
+			background-color: $bg-color;
+			border-radius: $border-radius;
+
+			&:hover {
+				background-color: $base-bg-color-hover;
+			}
+
+			&:active {
+				background-color: $base-bg-color-active;
+			}
+
+			& .store__info__title {
+				width: calc(100% - 12px);
+			}
+
+			& .store__info__address {
+				width: calc(100% - 12px);
+			}
+		}
+	}
+}
+
+@media screen and (max-width: $screen-medium) {
+	.store__select__component__container {
+		min-width: auto;
+
+		& .store__info {
+			display: none;
+		}
+
+		& .store__select__component__select__box {
+			right: 12px;
+
+			& .store__select__box__item {
+				& .store__info {
+					display: flex;
+				}
+			}
+		}
+	}
+}

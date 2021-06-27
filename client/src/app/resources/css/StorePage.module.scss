@@ -1,0 +1,113 @@
+@import "framework/resources/css/base.scss";
+
+.store__page__container {
+    
+    & .store__page__search__bar {
+        display: block;
+    }
+
+    & .store__page__list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        & .store__item {
+            width: 40%;
+            margin: 16px;
+            border: $border-default;
+            border-radius: $border-radius;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: $transition-default;
+
+            &:hover {
+                border-color: $primary-color;
+            }
+
+            & .store__item__information {
+                padding: 8px;
+                display: flex;
+                width: 100%;
+                max-height: 136px;
+                align-items: center;
+
+                & .store__item__information__avatar {
+                    width: 120px;
+                    height: 120px;
+                    object-fit: cover;
+                    border-radius: 16px;
+                }
+
+                & .store__item__information__text {
+                    display: flex;
+                    justify-content: flex-start;
+                    flex-direction: column;
+                    margin-left: 8px;
+                    width: 100%;
+
+                    & h2, & span {
+                        text-align: start;
+                    }
+
+                    & span {
+                        color: rgba(0, 0, 0, 0.54);
+                    }
+
+                    & h2 {
+                        margin: 0px;
+                    }
+                }
+            }
+
+            & .store__item__chart {
+                height: 138px;
+
+                & canvas {
+                    height: 136px !important;
+                }
+            }
+
+            & .store__item__action {
+                height: 100%;
+                min-height: 48px;
+                display: flex;
+                color: white;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: -2px;
+                margin-left: -2px;
+                margin-right: -2px;
+                background-color: $primary-color;
+                border-bottom-left-radius: $border-radius;
+                border-bottom-right-radius: $border-radius;
+
+                & span {
+                    margin-left: 8px;
+                }
+
+                &:hover {
+                    filter: brightness(1.2);
+                }
+
+                &:active {
+                    filter: brightness(1);
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $screen-medium) {
+    .store__page__container {
+        & .store__page__list {
+            flex-wrap: nowrap;
+            flex-direction: column;
+            align-items: center;
+
+            & .store__item {
+                width: 95%;
+            }
+        }
+    }
+}

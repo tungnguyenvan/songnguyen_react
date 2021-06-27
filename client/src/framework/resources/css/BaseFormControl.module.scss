@@ -1,0 +1,85 @@
+@import "./Base.scss";
+
+.base__form__control {
+	// variable
+	$min-heigh: 64px;
+	$font-weight: 450;
+	$background-color: #f5f5f5;
+	$background-color-hover: #eeeeee;
+
+	// properties
+	margin: 8px;
+	flex-grow: 1;
+	display: flex;
+	align-items: center;
+	min-height: $min-heigh;
+	border: $border-default;
+	border-color: transparent;
+	border-radius: $border-radius;
+	padding-left: $padding-default;
+	transition: $transition-default;
+	padding-right: $padding-default;
+	background-color: $background-color;
+
+	// actions
+	&:hover {
+		background-color: $background-color-hover;
+	}
+
+	// relative
+	& input {
+		width: 100%;
+		border: none;
+		outline: none;
+		font-size: 1em;
+		color: $text-color;
+		background-color: transparent;
+	}
+
+	// label
+	& .label {
+		font-size: 13px;
+		position: absolute;
+		color: $placeholder-color;
+		transition: $transition-default;
+	}
+
+	&.focus .label {
+		color: $primary-color;
+	}
+
+	& .label.not__blank {
+		// margin-top: -16px;
+		transform: translate(0px, -18px);
+	}
+
+	&.focus {
+		border-color: $primary-color;
+	}
+
+	// error message
+	& .error__message {
+		opacity: 0;
+		font-size: 13px;
+		position: absolute;
+		color: $text-color-error;
+		transition: $transition-default;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		max-width: 198px;
+	}
+
+	&.error {
+		border-color: $primary-error-color;
+	}
+
+	&.error .label {
+		color: $text-color-error;
+	}
+
+	&.error .error__message {
+		transform: translate(0px, 18px);
+		opacity: 1;
+	}
+}
