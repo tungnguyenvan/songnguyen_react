@@ -5,7 +5,7 @@ import NavigationProvider from "framework/contexts/nav/NavigationProvider";
 import AppUrlProvider from "framework/contexts/url/AppUrlProvider";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import DashboardPage from "./app/pages/DashboardPage";
-import CustomersPage from "./app/pages/CustomersPage";
+import CustomersPage from "./app/pages/customer/CustomersPage";
 import PartnersPage from "./app/pages/PartnersPage";
 import LoginPage from "./app/pages/LoginPage";
 import Style from "./App.module.scss";

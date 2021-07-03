@@ -19,5 +19,12 @@
 	"REGISTRATION_FAILED_CONTENT": "Quá trình đăng ký đã xảy ra lỗi, kiểm tra lại thông tin đăng ký và thử lại.",
 	"PLACEHOLDER_SEARCG_STORE": "Tìm cửa hàng",
 	"STORES": "Cửa hàng",
-	"SEARCH": "Tìm kiếm"
+	"SEARCH": "Tìm kiếm",
+	"NAME": "Tên",
+	"ADDRESS": "Địa chỉ",
+	"TAX_CODE": "Mã số thuế",
+	"PHONE_NUMBER": "Số điện thoại",
+	"CONTACT_NAME": "Tên liên lạc",
+	"EMPLOYEE": "Nhân viên",
+	"ACTION": "Hành động"
 }

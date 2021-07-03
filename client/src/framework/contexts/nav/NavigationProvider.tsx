@@ -13,7 +13,7 @@ import { ReactComponent as People } from "framework/resources/image/people.svg";
 import { ReactComponent as Award } from "framework/resources/image/award.svg";
 import { ReactComponent as PersonChecked } from "framework/resources/image/person-check.svg";
 import { ReactComponent as App } from "framework/resources/image/app.svg";
-import RouteConstant from "../../constants/RouteConstant";
+import RouteConstant from "framework/constants/RouteConstant";
 import UserLoginContext from "../user/UserLoginContext";
 
 interface INavigationProviderProps {
@@ -107,6 +107,11 @@ class NavigationProvider
 											icon={<Award />}
 											title="Example"
 											redirectTo={RouteConstant.EXAMPLE}
+										/>
+										<NavigationItemComponent
+											icon={<Award />}
+											title="Example"
+											redirectTo={RouteConstant.REGISTRATION}
 										/>
 									</NavigationComponent>
 								)

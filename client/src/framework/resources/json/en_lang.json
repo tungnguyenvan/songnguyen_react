@@ -19,5 +19,12 @@
 	"REGISTRATION_FAILED_CONTENT": "There was an error in the registration process, please check the registration information and try again.",
 	"PLACEHOLDER_SEARCG_STORE": "Search store",
 	"STORES": "Stores",
-	"SEARCH": "Search"
+	"SEARCH": "Search",
+	"NAME": "Name",
+	"ADDRESS": "Address",
+	"TAX_CODE": "Tax code",
+	"PHONE_NUMBER": "Phone number",
+	"CONTACT_NAME": "Contact name",
+	"EMPLOYEE": "Employee",
+	"ACTION": "Action"
 }
