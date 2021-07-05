@@ -1,6 +1,6 @@
 @import "./Base.scss";
-@import "./ButtonComponent.module.scss";
-@import "./BaseFormGroup.module.scss";
+// @import "./ButtonComponent.module.scss";
+// @import "./BaseFormGroup.module.scss";
 
 .table__component__container {
     display: flex;
@@ -38,6 +38,7 @@
                 color: rgba(0, 0, 0, 0.87);
                 padding-right: 16px;
                 padding-left: 16px;
+                border: 1px solid #e3e6f0;
                 border-bottom: 2px solid #dee2e6;
             }
     
@@ -52,6 +53,7 @@
                 & td {
                     height: 56px;
                     width: auto;
+                    max-width: 310px;
                     padding-left: 16px;
                     padding-right: 16px;
                     text-decoration: inherit;
@@ -63,8 +65,9 @@
                     // border-bottom: 1px solid #dee2e6;
                     border: 1px solid #e3e6f0;
 
-                    & .action__button {
-
+                    & .action {
+                        display: flex;
+                        flex-direction: row;
                     }
                 }
     

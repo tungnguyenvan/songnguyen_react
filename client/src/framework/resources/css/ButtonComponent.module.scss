@@ -22,4 +22,22 @@
 		color: white;
 		background-color: $primary-color;
 	}
+
+	&.warning {
+		background-color: #fdd835;
+	}
+
+	&.danger {
+		color: white;
+		background-color: #dd2c00;
+	}
+
+	&.table__cell {
+		min-width: 32px;
+		min-height: 32px;
+		width: 32px;
+		height: 32px;
+		flex-grow: unset;
+		padding: unset;
+	}
 }

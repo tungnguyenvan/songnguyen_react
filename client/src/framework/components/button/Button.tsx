@@ -8,6 +8,7 @@ import Style from "framework/resources/css/ButtonComponent.module.scss";
 interface IButtonProps {
 	children?: any;
 	type: ButtonTypeConstant;
+	isForTableCell?: Boolean;
 	onClick?: () => void;
 }
 
@@ -26,6 +27,9 @@ class Button extends React.Component<IButtonProps, IButtonState> {
 	render() {
 		const containerStyle = ClassName(Style.framewok__button__container, {
 			[Style.primary]: this.props.type === ButtonTypeConstant.PRIMARY,
+			[Style.warning]: this.props.type === ButtonTypeConstant.WARNING,
+			[Style.danger]: this.props.type === ButtonTypeConstant.DANGER,
+			[Style.table__cell]: this.props.isForTableCell
 		});
 
 		return (
