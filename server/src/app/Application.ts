@@ -15,6 +15,7 @@ import AppConfig from "@app/framework/system/AppConfig";
 import ProductTypeRouter from "./routers/ProductTypeRouter";
 import WarehouseRouter from "./routers/WarehouseRouter";
 import AddressRouter from "./routers/AddressRouter";
+import CustomerRouter from "./routers/CustomerRouter";
 
 const NAME_SPACE = "APPLICATION";
 // initialize application
@@ -33,10 +34,7 @@ application.use(limit);
 application.use((req: any, res: any, next: any) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
-    );
+    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
     res.setHeader("Access-Control-Allow-Headers", "*");
     if (req.method === "OPTIONS") {
         res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
@@ -60,12 +58,13 @@ Mongoose.connect(AppConfig.DB_URL, { useNewUrlParser: true }, (error: any): void
 application.use(BodyParser.urlencoded({ extended: true }));
 application.use(BodyParser.json());
 
-application.use("/tag", new TagRouter().getRouter());
+// application.use("/tag", new TagRouter().getRouter());
 application.use("/file", new FileRouter().getRouter());
 application.use("/user", new UserRouter().getRouter());
-application.use("/store", new StoreRouter().getRouter());
-application.use("/product_type", new ProductTypeRouter().getRouter());
-application.use("/warehouse", new WarehouseRouter().getRouter());
-application.use("/address", new AddressRouter().getRouter());
+// application.use("/store", new StoreRouter().getRouter());
+// application.use("/product_type", new ProductTypeRouter().getRouter());
+// application.use("/warehouse", new WarehouseRouter().getRouter());
+// application.use("/address", new AddressRouter().getRouter());
+application.use("/customer", new CustomerRouter().getRouter());
 
 export default application;

@@ -6,9 +6,9 @@ import ProductTypeModel from "@app/app/models/ProductTypeModel";
  * @author tung.nguyenvan
  */
 class ProductTypeRepository extends BaseRepository {
-	constructor() {
-		super(new ProductTypeModel());
-	}
+    constructor() {
+        super(new ProductTypeModel());
+    }
 }
 
 export default ProductTypeRepository;

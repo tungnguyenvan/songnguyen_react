@@ -1,7 +1,9 @@
 enum RequestPathConstant {
-  USER = "user/",
+    USER = "user/",
 
-  STORE = "store/",
+    STORE = "store/",
+
+    CUSTOMER = "customer/",
 }
 
 export default RequestPathConstant;

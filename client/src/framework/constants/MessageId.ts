@@ -41,6 +41,20 @@ enum MessageId {
     STORES = "STORES",
 
     SEARCH = "SEARCH",
+
+    NAME = "NAME",
+
+    ADDRESS = "ADDRESS",
+
+    TAX_CODE = "TAX_CODE",
+
+    PHONE_NUMBER = "PHONE_NUMBER",
+
+    CONTACT_NAME = "CONTACT_NAME",
+
+    EMPLOYEE = "EMPLOYEE",
+
+    ACTION = "ACTION",
 }
 
 export default MessageId;
