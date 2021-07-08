@@ -1,7 +1,11 @@
 enum ButtonTypeConstant {
-	FLAT,
+    FLAT,
 
-	PRIMARY,
+    PRIMARY,
+
+    WARNING,
+
+    DANGER,
 }
 
 export default ButtonTypeConstant;

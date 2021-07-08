@@ -37,10 +37,10 @@ class TableComponent extends React.Component<TableComponentProps> {
                                     {element.content.map(e => {return <td key={element.id + e} >{e}</td>})}
                                     {element.action && 
                                         <td>
-                                            <FrameworkComponents.FormGroup>
-                                                <FrameworkComponents.Button type={ButtonTypeConstant.PRIMARY}>&#x270E;</FrameworkComponents.Button>
-                                                <FrameworkComponents.Button type={ButtonTypeConstant.PRIMARY}>&#x2715;</FrameworkComponents.Button>
-                                            </FrameworkComponents.FormGroup>
+                                            <div className={Style.action}>
+                                                { element.action.edit && <FrameworkComponents.Button type={ButtonTypeConstant.WARNING} isForTableCell={true} onClick={() => {element.action!.edit!.func(element.id)}}>&#x270E;</FrameworkComponents.Button>}
+                                                { element.action.delete && <FrameworkComponents.Button type={ButtonTypeConstant.DANGER} isForTableCell={true} onClick={() => {element.action!.delete?.func(element.id)}}>&#x2715;</FrameworkComponents.Button>}
+                                            </div>
                                         </td>
                                     }
                                 </tr>)

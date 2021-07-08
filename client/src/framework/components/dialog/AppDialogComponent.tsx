@@ -31,9 +31,14 @@ class AppDialogComponent extends React.Component<AppDialogComponentProps> {
 						>
 							Cancel
 						</FrameworkComponents.Button>
-						<FrameworkComponents.Button type={ButtonTypeConstant.PRIMARY}>
-							Primary action
-						</FrameworkComponents.Button>
+						{this.props.dialogModel?.action && <FrameworkComponents.Button
+							type={ButtonTypeConstant.PRIMARY}
+							onClick={() => {
+								if (this.props.dialogModel?.action) this.props.dialogModel?.action()
+								this.props.onCloseDialog(this.props.dialogModel)
+							}}>
+								Primary action
+						</FrameworkComponents.Button>}
 					</div>
 				</div>
 			</div>

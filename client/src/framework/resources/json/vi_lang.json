@@ -26,5 +26,19 @@
 	"PHONE_NUMBER": "Số điện thoại",
 	"CONTACT_NAME": "Tên liên lạc",
 	"EMPLOYEE": "Nhân viên",
-	"ACTION": "Hành động"
+	"ACTION": "Hành động",
+	"CUSTOMERS_DETAIL": "Chi tiết khách hàng",
+	"NOT_FOUND": "Không tồn tại",
+	"CUSTOMER_NOT_FOUND": "Thông tin khách hàng không tồn tại, vui lòng thử lại sau",
+	"CUSTOMER_NAME": "Tên khách hàng",
+	"UPDATE": "Cập nhật",
+	"DELETE": "Xoá",
+	"CONFIRM_DELETE": "Xác nhận xoá",
+	"CONFIRM_DELETE_DETAIL": "Bạn muốn xoá dữ liệu này? sau khi xoá sẽ không lấy lại được thông tin của dữ liệu này.",
+	"CONFIRM_UPDATE": "Xác nhận cập nhật",
+	"CONFIRM_UPDATE_DETAIL": "Bạn muốn cập nhật dữ liệu này?",
+	"CANNOT_DELETE": "Không xoá được",
+	"CANNOT_DELETE_DETAIL": "Quá trình xoá xảy ra vấn đề, hãy thử lại sau.",
+	"DELETE_SUCCESS": "Xoá thành công",
+	"DELETE_SUCCESS_DETAIL": "Đã xoá thông tin thành công."
 }
