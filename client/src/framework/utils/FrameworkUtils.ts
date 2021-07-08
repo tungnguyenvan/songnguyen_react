@@ -1,6 +1,7 @@
 import React from "react";
 import EventConstant from "framework/constants/EventConstant";
 import IUserModel from "framework/documents/models/IUserModel";
+import { matchPath } from "react-router";
 
 /**
  * Class util for framework
@@ -100,7 +101,19 @@ class FrameworkUtils {
     }
 
     public static userName(user: IUserModel) {
-        return user.firstName + " " + user.lastName;
+        if (user) {
+            return user.firstName + " " + user.lastName;
+        }
+
+        return "";
+    }
+
+    public static matchPath(url: string, route: string) {
+        return matchPath(url, {
+            path: route,
+            exact: true,
+            strict: false,
+        });
     }
 }
 

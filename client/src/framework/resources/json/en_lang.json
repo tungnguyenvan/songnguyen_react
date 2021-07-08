@@ -26,5 +26,19 @@
 	"PHONE_NUMBER": "Phone number",
 	"CONTACT_NAME": "Contact name",
 	"EMPLOYEE": "Employee",
-	"ACTION": "Action"
+	"ACTION": "Action",
+	"CUSTOMERS_DETAIL": "Customer detail",
+	"NOT_FOUND": "Not Found",
+	"CUSTOMER_NOT_FOUND": "Customer not found, please try again late",
+	"CUSTOMER_NAME": "Customer name",
+	"UPDATE": "Update",
+	"DELETE": "Delete",
+	"CONFIRM_DELETE": "Confirm delete",
+	"CONFIRM_DELETE_DETAIL": "Do you want delete this record? After delete you can't find this record.",
+	"CONFIRM_UPDATE": "Confirm update",
+	"CONFIRM_UPDATE_DETAIL": "Do you want update the data for this?",
+	"CANNOT_DELETE": "Cannot delete",
+	"CANNOT_DELETE_DETAIL": "Delete process have a problem, please try again late.",
+	"DELETE_SUCCESS": "Delete success",
+	"DELETE_SUCCESS_DETAIL": "Delete success"
 }

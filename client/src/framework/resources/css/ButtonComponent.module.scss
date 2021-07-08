@@ -40,4 +40,8 @@
 		flex-grow: unset;
 		padding: unset;
 	}
+
+	&.disable {
+		filter: brightness(0.75);
+	}
 }

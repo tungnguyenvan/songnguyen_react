@@ -5,6 +5,8 @@ import BaseFormControl from "framework/components/base/BaseFormControl";
 interface IInputTextProps {
 	placeHolder: string;
 	type?: string;
+	value?: string;
+	readOnly?: boolean
 }
 
 interface IInputTextState {}
@@ -15,6 +17,18 @@ class InputText extends React.Component<IInputTextProps, IInputTextState> {
 	constructor(props: IInputTextProps) {
 		super(props);
 		this.inputTextController = new InputTextController(this);
+	}
+
+	componentDidMount() {
+		if (this.props.value) {
+			this.inputTextController.onInputFocus()
+		}
+	}
+
+	componentDidUpdate() {
+		if (this.props.value) {
+			this.inputTextController.onInputFocus()
+		}
 	}
 
 	getValue(): String | Number {
@@ -38,6 +52,8 @@ class InputText extends React.Component<IInputTextProps, IInputTextState> {
 					type={this.props.type}
 					onBlur={this.inputTextController.onInputBlur}
 					onFocus={this.inputTextController.onInputFocus}
+					defaultValue={this.props.value}
+					readOnly={this.props.readOnly}
 				/>
 			</BaseFormControl>
 		);
