@@ -2,6 +2,7 @@ import React from "react";
 import EventConstant from "framework/constants/EventConstant";
 import IUserModel from "framework/documents/models/IUserModel";
 import { matchPath } from "react-router";
+import IFromInputElement from "framework/components/IFormInputElement";
 
 /**
  * Class util for framework
@@ -114,6 +115,36 @@ class FrameworkUtils {
             exact: true,
             strict: false,
         });
+    }
+
+    public static readProp(obj: any, key: string) {
+        if (!obj.hasOwnProperty(key)) return undefined;
+        return obj[key];
+    }
+
+    public static validateFrom(formRefInterface: any): boolean {
+        let isValid = true;
+
+        // check validate
+        for (const key in formRefInterface) {
+            const input = FrameworkUtils.readProp(formRefInterface, key) as React.RefObject<IFromInputElement>;
+            if (input && !input.current?.isValid()) {
+                isValid = false;
+            }
+        }
+
+        return isValid;
+    }
+
+    public static formHasChanged(formRefInterface: any): boolean {
+        let hasChanged = false;
+        for (const key in formRefInterface) {
+            const element = FrameworkUtils.readProp(formRefInterface, key) as React.RefObject<IFromInputElement>;
+            if (element && element.current?.isChanged()) {
+                hasChanged = true;
+            }
+        }
+        return hasChanged;
     }
 }
 

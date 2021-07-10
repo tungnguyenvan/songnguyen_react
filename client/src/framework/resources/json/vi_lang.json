@@ -40,5 +40,16 @@
 	"CANNOT_DELETE": "Không xoá được",
 	"CANNOT_DELETE_DETAIL": "Quá trình xoá xảy ra vấn đề, hãy thử lại sau.",
 	"DELETE_SUCCESS": "Xoá thành công",
-	"DELETE_SUCCESS_DETAIL": "Đã xoá thông tin thành công."
+	"DELETE_SUCCESS_DETAIL": "Đã xoá thông tin thành công.",
+	"VALIDATE_REQUIRE": "Đây là yêu cầu bắt buộc",
+	"VALIDATE_ONLY_NUMBER": "Chỉ nhận dữ liệu dạng số",
+	"VALIDATE_TAX_CODE": "Chỉ nhận dữ liệu 10 - 13 chữ số",
+	"VALIDATE_EMAIL": "Không đúng định dạng email",
+	"VALIDATE_PHONE_NUMBER": "Số điện thoại cần 10 chữ số",
+	"CANNOT_UPDATE": "Không cập nhật được",
+	"CANNOT_UPDATE_DETAIL": "Quá trình cập nhật đã xảy ra lỗi, thử lại sau",
+	"UPDATE_SUCCESS": "Cập nhật thành công",
+	"UPDATE_SUCCESS_DETAIL": "Quá trình cập nhật thành công.",
+	"FORM_NOT_CHANGE": "Dữ liệu không thay đổi",
+	"FORM_NOT_CHANGE_DETAIL": "Cần thay đổi dữ liệu khác với dữ liệu trên cơ sở dữ liệu"
 }

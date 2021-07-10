@@ -38,7 +38,18 @@
 	"CONFIRM_UPDATE": "Confirm update",
 	"CONFIRM_UPDATE_DETAIL": "Do you want update the data for this?",
 	"CANNOT_DELETE": "Cannot delete",
-	"CANNOT_DELETE_DETAIL": "Delete process have a problem, please try again late.",
+	"CANNOT_DELETE_DETAIL": "Delete process have a problem, please try again later.",
 	"DELETE_SUCCESS": "Delete success",
-	"DELETE_SUCCESS_DETAIL": "Delete success"
+	"DELETE_SUCCESS_DETAIL": "Delete success",
+	"VALIDATE_REQUIRE": "This is require",
+	"VALIDATE_ONLY_NUMBER": "Only access number format",
+	"VALIDATE_TAX_CODE": "Only access 10 - 13 number character",
+	"VALIDATE_EMAIL": "Not matching email format",
+	"VALIDATE_PHONE_NUMBER": "Phone number need 10 number character",
+	"CANNOT_UPDATE": "Cannot update",
+	"CANNOT_UPDATE_DETAIL": "Update process have a wrong, please try again later",
+	"UPDATE_SUCCESS": "Update success",
+	"UPDATE_SUCCESS_DETAIL": "Update process do successfully",
+	"FORM_NOT_CHANGE": "Data not changed",
+	"FORM_NOT_CHANGE_DETAIL": "You need change information difference with information on database"
 }

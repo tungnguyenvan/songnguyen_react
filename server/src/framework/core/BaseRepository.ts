@@ -8,56 +8,60 @@ import Logging from "../utils/Logging";
 const NAME_SPACE = "BaseRepository";
 
 export default class BaseRepository implements IBaseRepository {
-	protected model: BaseModel;
+    protected model: BaseModel;
 
-	constructor(model: BaseModel) {
-		Logging.debug(NAME_SPACE, `${NAME_SPACE}#constructor START`);
-		this.model = model;
-		Logging.debug(NAME_SPACE, `${NAME_SPACE}#constructor END`);
-	}
+    constructor(model: BaseModel) {
+        Logging.debug(NAME_SPACE, `${NAME_SPACE}#constructor START`);
+        this.model = model;
+        Logging.debug(NAME_SPACE, `${NAME_SPACE}#constructor END`);
+    }
 
-	all(): Promise<Mongoose.Document> {
-		try {
-			Logging.debug(NAME_SPACE, `${NAME_SPACE}#all START`);
-			return this.populate(this.model.all());
-		} finally {
-			Logging.debug(NAME_SPACE, `${NAME_SPACE}#all END`);
-		}
-	}
+    all(): Promise<Mongoose.Document> {
+        try {
+            Logging.debug(NAME_SPACE, `${NAME_SPACE}#all START`);
+            return this.populate(this.model.all());
+        } finally {
+            Logging.debug(NAME_SPACE, `${NAME_SPACE}#all END`);
+        }
+    }
 
-	get(request: Express.Request): Promise<Mongoose.Document> {
-		Logging.debug(NAME_SPACE, `${NAME_SPACE}#get START`);
-		try {
-			return this.populate(this.model.get(Mongoose.Types.ObjectId(request.params.id)));
-		} finally {
-			Logging.debug(NAME_SPACE, `${NAME_SPACE}#get END`);
-		}
-	}
+    get(request: Express.Request): Promise<Mongoose.Document> {
+        Logging.debug(NAME_SPACE, `${NAME_SPACE}#get START`);
+        try {
+            return this.populate(this.model.get(Mongoose.Types.ObjectId(request.params.id)));
+        } finally {
+            Logging.debug(NAME_SPACE, `${NAME_SPACE}#get END`);
+        }
+    }
 
-	save(request: Express.Request): Promise<Mongoose.Document> {
-		Logging.debug(NAME_SPACE, `${NAME_SPACE}#save START`);
-		try {
-			return this.model.save(request.body as IBaseDocument);
-		} finally {
-			Logging.debug(NAME_SPACE, `${NAME_SPACE}#save END`);
-		}
-	}
+    save(request: Express.Request): Promise<Mongoose.Document> {
+        Logging.debug(NAME_SPACE, `${NAME_SPACE}#save START`);
+        try {
+            return this.model.save(request.body as IBaseDocument);
+        } finally {
+            Logging.debug(NAME_SPACE, `${NAME_SPACE}#save END`);
+        }
+    }
 
-	updateOne(request: Express.Request): Promise<Mongoose.Document> {
-		Logging.debug(NAME_SPACE, `${NAME_SPACE}#updateOne START`);
-		try {
-			return this.populate(
-				this.model.updateOne(
-					Mongoose.Types.ObjectId(request.params.id),
-					request.body as IBaseDocument
-				)
-			);
-		} finally {
-			Logging.debug(NAME_SPACE, `${NAME_SPACE}#updateOne END`);
-		}
-	}
+    delete(request: Express.Request): Promise<Mongoose.Document> {
+        Logging.debug(NAME_SPACE, `${NAME_SPACE}#delete START`);
+        try {
+            return this.model.delete(Mongoose.Types.ObjectId(request.params.id));
+        } finally {
+            Logging.debug(NAME_SPACE, `${NAME_SPACE}#delete END`);
+        }
+    }
 
-	populate(object: any): any {
-		return object;
-	}
+    updateOne(request: Express.Request): Promise<Mongoose.Document> {
+        Logging.debug(NAME_SPACE, `${NAME_SPACE}#updateOne START`);
+        try {
+            return this.populate(this.model.updateOne(Mongoose.Types.ObjectId(request.params.id), request.body as IBaseDocument));
+        } finally {
+            Logging.debug(NAME_SPACE, `${NAME_SPACE}#updateOne END`);
+        }
+    }
+
+    populate(object: any): any {
+        return object;
+    }
 }
