@@ -15,10 +15,10 @@ import IUserLoginContext from "framework/contexts/user/IUserLoginContext"
 import { UserRole } from "framework/constants/UserEnumConstant"
 import IUpdateDeleteResponseModel from "framework/documents/response/IUpdateDeleteResponseModel"
 import IAppUrlContext from "framework/contexts/url/IAppUrlContext"
-import InputText from "framework/components/input/InputText"
 import Rule from "framework/documents/models/Rule"
 import RuleConstant from "framework/constants/RuleConstant"
 import AppConstant from "framework/constants/AppConstant"
+import { ICustomerFormRef, ICustomerFormRule } from "./ICustomerFormDefinition"
 
 interface CustomersDetailPageProps {
     languageContext: ILanguageContext;
@@ -33,24 +33,6 @@ interface CustomersPageState {
 
 interface PageParams {
     id: string
-}
-
-interface ICustomerFormRef {
-    name: React.RefObject<InputText>;
-    address: React.RefObject<InputText>;
-    tax_code: React.RefObject<InputText>;
-    email: React.RefObject<InputText>;
-    phone_numner: React.RefObject<InputText>;
-    contact_name: React.RefObject<InputText>;
-}
-
-interface ICustomerFormRule {
-    name: Rule[],
-    address: Rule[],
-    tax_code: Rule[],
-    email: Rule[],
-    phone_number: Rule[],
-    contact_name: Rule[],
 }
 
 class CustomersDetailPage extends React.Component<CustomersDetailPageProps, CustomersPageState> {
@@ -320,7 +302,6 @@ class CustomersDetailPage extends React.Component<CustomersDetailPageProps, Cust
                             {this.props.languageContext.current.getMessageString(MessageId.UPDATE)}
                     </FrameworkComponents.Button>
                 </FrameworkComponents.FormGroup>
-
             </FrameworkComponents.BaseForm>
         </FrameworkComponents.BasePage>)
     }

@@ -27,6 +27,10 @@ class InputText extends React.Component<IInputTextProps, IInputTextState> implem
 		return this.props.value !== this.getValue()
 	}
 
+	clear(): void {
+		this.inputTextController.clear()
+	}
+
 	componentDidMount() {
 		if (this.props.value) {
 			this.inputTextController.onInputFocus()

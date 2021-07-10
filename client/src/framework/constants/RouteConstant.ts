@@ -9,6 +9,8 @@ enum RouteConstant {
 
     CUSTOMER_DETAIL = "/customers/:id",
 
+    CUSTOMER_CREATE = "/customer/new",
+
     PARTNERS = "/partners",
 
     EXAMPLE = "/example",

@@ -12,7 +12,7 @@
 	"CONFIRM_PASSWORD": "Nhập lại mật khẩu",
 	"REGISTRATION_REDIRECT": "Đăng ký",
 	"REGISTRATION_SUCCESS": "Đăng ký thành công",
-	"REGISTRATION_SUCCESS_CONTENT": "Đăng ký tài khoản thành công, kiểm tra địa chỉ email để kích hoạt tài khoản này.",
+	"REGISTRATION_SUCCESS_CONTENT": "Đăng ký hành công",
 	"SERVER_ERROR": "Lỗi máy chủ",
 	"SERVER_ERROR_CONTENT": "Rất xin lỗi quý khách, máy chủ đang xảy ra lỗi. Hãy trở lại sau 5 phút.",
 	"REGISTRATION_FAILED": "Đăng ký không thành công",
@@ -51,5 +51,9 @@
 	"UPDATE_SUCCESS": "Cập nhật thành công",
 	"UPDATE_SUCCESS_DETAIL": "Quá trình cập nhật thành công.",
 	"FORM_NOT_CHANGE": "Dữ liệu không thay đổi",
-	"FORM_NOT_CHANGE_DETAIL": "Cần thay đổi dữ liệu khác với dữ liệu trên cơ sở dữ liệu"
+	"FORM_NOT_CHANGE_DETAIL": "Cần thay đổi dữ liệu khác với dữ liệu trên cơ sở dữ liệu",
+	"CUSTOMER_CREATE": "Tạo khách hàng mới",
+	"CANCEL": "Huỷ",
+	"CONFIRM_REGISTRATION": "Xác nhận đăng ký",
+	"CONFIRM_REGISTRATION_CONTENT": "Bạn muốn đăng ký dữ liệu này?"
 }
