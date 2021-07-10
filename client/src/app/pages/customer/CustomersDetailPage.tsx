@@ -16,6 +16,9 @@ import { UserRole } from "framework/constants/UserEnumConstant"
 import IUpdateDeleteResponseModel from "framework/documents/response/IUpdateDeleteResponseModel"
 import IAppUrlContext from "framework/contexts/url/IAppUrlContext"
 import InputText from "framework/components/input/InputText"
+import Rule from "framework/documents/models/Rule"
+import RuleConstant from "framework/constants/RuleConstant"
+import AppConstant from "framework/constants/AppConstant"
 
 interface CustomersDetailPageProps {
     languageContext: ILanguageContext;
@@ -41,9 +44,19 @@ interface ICustomerFormRef {
     contact_name: React.RefObject<InputText>;
 }
 
+interface ICustomerFormRule {
+    name: Rule[],
+    address: Rule[],
+    tax_code: Rule[],
+    email: Rule[],
+    phone_number: Rule[],
+    contact_name: Rule[],
+}
+
 class CustomersDetailPage extends React.Component<CustomersDetailPageProps, CustomersPageState> {
     private customerApiService: CustomerApiService;
     private customerFormRef: ICustomerFormRef;
+    private customerFormRule: ICustomerFormRule;
 
     constructor(props: CustomersDetailPageProps) {
         super(props)
@@ -57,12 +70,34 @@ class CustomersDetailPage extends React.Component<CustomersDetailPageProps, Cust
             contact_name: React.createRef()
         }
 
+        this.customerFormRule = {
+            name: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE)],
+
+            address: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE)],
+            
+            tax_code: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE),
+                new Rule(RuleConstant.REGEXP, MessageId.VALIDATE_ONLY_NUMBER, new RegExp(/^[0-9]*$/gm)),
+                new Rule(RuleConstant.MIN, MessageId.VALIDATE_TAX_CODE, 10),
+                new Rule(RuleConstant.MAX, MessageId.VALIDATE_TAX_CODE, 13)],
+
+            email: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE),
+                new Rule(RuleConstant.REGEXP, MessageId.VALIDATE_EMAIL, AppConstant.EMAIL_REGEXP)],
+
+            phone_number: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE),
+                new Rule(RuleConstant.REGEXP, MessageId.VALIDATE_ONLY_NUMBER, new RegExp(/^[0-9]*$/gm)),
+                new Rule(RuleConstant.MIN, MessageId.VALIDATE_PHONE_NUMBER, 10),
+                new Rule(RuleConstant.MAX, MessageId.VALIDATE_PHONE_NUMBER, 10)],
+
+            contact_name: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE)]
+        }
+
         this.customerApiService = new CustomerApiService();
 
         this.state = {
             customer: {} as ICustomerModel
         }
 
+        this.formValidate = this.formValidate.bind(this)
         this.onBtnDeleteCicked = this.onBtnDeleteCicked.bind(this)
         this.backToCustomerPage = this.backToCustomerPage.bind(this)
         this.onBtnUpdateClicked = this.onBtnUpdateClicked.bind(this)
@@ -127,6 +162,14 @@ class CustomersDetailPage extends React.Component<CustomersDetailPageProps, Cust
                 })
     }
 
+    formValidate(): boolean {
+        return FrameworkUtils.validateFrom(this.customerFormRef)
+    }
+
+    dataHasChanged() {
+        return FrameworkUtils.formHasChanged(this.customerFormRef)
+    }
+
     backToCustomerPage() {
         this.props.appUrlContext.redirectTo(RouteConstant.CUSTOMER)
     }
@@ -158,7 +201,47 @@ class CustomersDetailPage extends React.Component<CustomersDetailPageProps, Cust
     }
 
     onBtnUpdateClicked() {
-        // this.customerApiService.update(this.state.customer._id, {})
+        if (!this.dataHasChanged()) {
+            this.props.appDialogContext.addDialog({
+                title: this.props.languageContext.current.getMessageString(MessageId.FORM_NOT_CHANGE),
+                content: this.props.languageContext.current.getMessageString(MessageId.FORM_NOT_CHANGE_DETAIL)
+            })
+        }
+
+        if (this.formValidate() && this.dataHasChanged()) {
+            const customer: ICustomerModel = {
+                name: (this.customerFormRef.name.current?.getValue() as string),
+                address: (this.customerFormRef.address.current?.getValue() as string),
+                tax: (this.customerFormRef.tax_code.current?.getValue() as string),
+                email: (this.customerFormRef.email.current?.getValue() as string),
+                phone_number: (this.customerFormRef.phone_numner.current?.getValue() as string),
+                contact_name: (this.customerFormRef.contact_name.current?.getValue() as string)
+            } as ICustomerModel;
+
+            this.customerApiService.update(this.state.customer._id, customer)
+                .then(response => {
+                    if (response.status === HttpRequestStatusCode.OK) {
+                        this.setState({
+                            customer: response.data.data as ICustomerModel
+                        })
+                        this.props.appDialogContext.addDialog({
+                            title: this.props.languageContext.current.getMessageString(MessageId.UPDATE_SUCCESS),
+                            content: this.props.languageContext.current.getMessageString(MessageId.UPDATE_SUCCESS_DETAIL)
+                        })
+                    } else {
+                        this.props.appDialogContext.addDialog({
+                            title: this.props.languageContext.current.getMessageString(MessageId.CANNOT_UPDATE),
+                            content: this.props.languageContext.current.getMessageString(MessageId.CANNOT_UPDATE_DETAIL)
+                        })
+                    }
+                })
+                .catch(error => {
+                    this.props.appDialogContext.addDialog({
+                        title: this.props.languageContext.current.getMessageString(MessageId.CANNOT_UPDATE),
+                        content: this.props.languageContext.current.getMessageString(MessageId.CANNOT_UPDATE_DETAIL)
+                    })
+                })
+        }
     }
 
     render() {
@@ -169,6 +252,7 @@ class CustomersDetailPage extends React.Component<CustomersDetailPageProps, Cust
                     <FrameworkComponents.InputText
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.CUSTOMER_NAME)}
                         value={this.state.customer.name}
+                        validate={this.customerFormRule.name}
                         ref={this.customerFormRef.name} />
                 </FrameworkComponents.FormGroup>
 
@@ -176,6 +260,7 @@ class CustomersDetailPage extends React.Component<CustomersDetailPageProps, Cust
                     <FrameworkComponents.InputText
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.ADDRESS)}
                         value={this.state.customer.address}
+                        validate={this.customerFormRule.address}
                         ref={this.customerFormRef.address} />
                 </FrameworkComponents.FormGroup>
 
@@ -183,22 +268,26 @@ class CustomersDetailPage extends React.Component<CustomersDetailPageProps, Cust
                     <FrameworkComponents.InputText
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.TAX_CODE)}
                         value={this.state.customer.tax}
+                        validate={this.customerFormRule.tax_code}
                         ref={this.customerFormRef.tax_code} />
                     <FrameworkComponents.InputText
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.EMAIL)}
                         value={this.state.customer.email}
-                        ref={this.customerFormRef.email} />
+                        ref={this.customerFormRef.email}
+                        validate={this.customerFormRule.email} />
                 </FrameworkComponents.FormGroup>
 
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.InputText
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.PHONE_NUMBER)}
                         value={this.state.customer.phone_number}
+                        validate={this.customerFormRule.phone_number}
                         ref={this.customerFormRef.phone_numner} />
                     
                     <FrameworkComponents.InputText
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.CONTACT_NAME)}
                         value={this.state.customer.contact_name}
+                        validate={this.customerFormRule.contact_name}
                         ref={this.customerFormRef.contact_name} />
                 </FrameworkComponents.FormGroup>
 

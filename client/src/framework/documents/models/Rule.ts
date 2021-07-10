@@ -1,20 +1,15 @@
-import RuleConstant from "@app/framework/constants/RuleConstant";
+import MessageId from "framework/constants/MessageId";
+import RuleConstant from "framework/constants/RuleConstant";
 
 class Rule {
-    private field: string;
     private ruleConstant: RuleConstant;
     private ruleValue: string | number | RegExp | undefined;
-    private messageError: string;
+    private messageError: MessageId;
 
-    constructor(field: string, ruleConstant: RuleConstant, messageError: string, ruleValue?: string | number | RegExp) {
-        this.field = field;
+    constructor(ruleConstant: RuleConstant, messageError: MessageId, ruleValue?: string | number | RegExp) {
         this.ruleValue = ruleValue;
         this.ruleConstant = ruleConstant;
         this.messageError = messageError;
-    }
-
-    getField(): string {
-        return this.field;
     }
 
     getRuleConstant(): RuleConstant {
@@ -25,7 +20,7 @@ class Rule {
         return this.ruleValue;
     }
 
-    getMessageError(): string {
+    getMessageError(): MessageId {
         return this.messageError;
     }
 }

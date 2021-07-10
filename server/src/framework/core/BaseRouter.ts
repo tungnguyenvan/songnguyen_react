@@ -8,64 +8,60 @@ import AppResponse from "../system/AppResponse";
 const NAME_SPACE = "BaseRouter";
 
 abstract class BaseRouter implements IBaseRouter {
-	protected controller: BaseController;
-	protected router: Express.Router = Express.Router();
-	protected baseRouterMiddleware: IBaseRouterMiddleware;
+    protected controller: BaseController;
+    protected router: Express.Router = Express.Router();
+    protected baseRouterMiddleware: IBaseRouterMiddleware;
 
-	constructor(controller: BaseController, baseMiddleware: IBaseRouterMiddleware = {}) {
-		Logging.debug(NAME_SPACE, "BaseRouter#constructor START");
-		this.controller = controller;
-		this.baseRouterMiddleware = baseMiddleware;
+    constructor(controller: BaseController, baseMiddleware: IBaseRouterMiddleware = {}) {
+        Logging.debug(NAME_SPACE, "BaseRouter#constructor START");
+        this.controller = controller;
+        this.baseRouterMiddleware = baseMiddleware;
 
-		this.initializeMiddleware();
+        this.initializeMiddleware();
 
-		// base config
-		this.initializeRouter();
+        // base config
+        this.initializeRouter();
 
-		// binding
-		this.routeNotFound = this.routeNotFound.bind(this);
+        // binding
+        this.routeNotFound = this.routeNotFound.bind(this);
 
-		Logging.debug(NAME_SPACE, "BaseRouter#constructor END");
-	}
+        Logging.debug(NAME_SPACE, "BaseRouter#constructor END");
+    }
 
-	getRouter(): Express.Router {
-		return this.router;
-	}
+    getRouter(): Express.Router {
+        return this.router;
+    }
 
-	protected initializeMiddleware(): void {
-		this.baseRouterMiddleware = {
-			all: [],
-			save: [],
-			get: [],
-			updateOne: [],
-		} as IBaseRouterMiddleware;
-	}
+    protected initializeMiddleware(): void {
+        this.baseRouterMiddleware = {
+            all: [],
+            save: [],
+            get: [],
+            updateOne: [],
+            delete: [],
+        } as IBaseRouterMiddleware;
+    }
 
-	initializeRouter() {
-		// router get all records
-		this.router.get("/", this.baseRouterMiddleware.all, this.controller.all);
+    initializeRouter() {
+        // router get all records
+        this.router.get("/", this.baseRouterMiddleware.all, this.controller.all);
 
-		// router create new records
-		this.router.post(
-			"/",
-			[...this.baseRouterMiddleware.save, this.controller.addUserInformationToBody],
-			this.controller.save
-		);
+        // router create new records
+        this.router.post("/", [...this.baseRouterMiddleware.save, this.controller.addUserInformationToBody], this.controller.save);
 
-		// router get one record by id
-		this.router.get("/:id", this.baseRouterMiddleware.get, this.controller.get);
+        // router get one record by id
+        this.router.get("/:id", this.baseRouterMiddleware.get, this.controller.get);
 
-		// router update one record by id
-		this.router.put(
-			"/:id",
-			[...this.baseRouterMiddleware.updateOne, this.controller.addUserInformationToBody],
-			this.controller.updateOne
-		);
-	}
+        // router update one record by id
+        this.router.put("/:id", [...this.baseRouterMiddleware.updateOne, this.controller.addUserInformationToBody], this.controller.updateOne);
 
-	routeNotFound(request: Express.Request, response: Express.Response) {
-		return new AppResponse().notFound(request, response);
-	}
+        // router delete record by id
+        this.router.delete("/:id", [...this.baseRouterMiddleware.delete, this.controller.addUserInformationToBody], this.controller.delete);
+    }
+
+    routeNotFound(request: Express.Request, response: Express.Response) {
+        return new AppResponse().notFound(request, response);
+    }
 }
 
 export default BaseRouter;
