@@ -12,7 +12,7 @@
 	"CONFIRM_PASSWORD": "Confirm password",
 	"REGISTRATION_REDIRECT": "Registration",
 	"REGISTRATION_SUCCESS": "Registration success",
-	"REGISTRATION_SUCCESS_CONTENT": "Registration new account success, check your email address to active this account.",
+	"REGISTRATION_SUCCESS_CONTENT": "Registration success.",
 	"SERVER_ERROR": "Internal server error",
 	"SERVER_ERROR_CONTENT": "Sorry, Internal server error. Please comeback after 5 minute.",
 	"REGISTRATION_FAILED": "Registration failed",
@@ -51,5 +51,9 @@
 	"UPDATE_SUCCESS": "Update success",
 	"UPDATE_SUCCESS_DETAIL": "Update process do successfully",
 	"FORM_NOT_CHANGE": "Data not changed",
-	"FORM_NOT_CHANGE_DETAIL": "You need change information difference with information on database"
+	"FORM_NOT_CHANGE_DETAIL": "You need change information difference with information on database",
+	"CUSTOMER_CREATE": "Create new customer",
+	"CANCEL": "Cancel",
+	"CONFIRM_REGISTRATION": "Confirm registration",
+	"CONFIRM_REGISTRATION_CONTENT": "Do you want registration this information?"
 }

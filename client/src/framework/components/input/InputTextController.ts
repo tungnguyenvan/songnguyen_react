@@ -26,6 +26,11 @@ class InputTextController {
         this.baseFormRef.current.setErrorMessage(errorMessage);
     }
 
+    clear() {
+        this.inputRef.current.value = "";
+        this.onInputBlur();
+    }
+
     onChange() {
         this.setErrorMessage("");
     }

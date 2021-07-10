@@ -146,6 +146,13 @@ class FrameworkUtils {
         }
         return hasChanged;
     }
+
+    public static formClear(formRefInterface: any) {
+        for (const key in formRefInterface) {
+            const element = FrameworkUtils.readProp(formRefInterface, key) as React.RefObject<IFromInputElement>;
+            if (element) element.current?.clear();
+        }
+    }
 }
 
 export default FrameworkUtils;

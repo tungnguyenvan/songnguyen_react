@@ -25,9 +25,11 @@ class AppDialogProvider
 	}
 
 	addDialog(dialogModel: IDialogModel): void {
-		this.setState({
-			dialogModelList: [...this.state.dialogModelList, dialogModel],
-		});
+		setTimeout(() => {
+			this.setState({
+				dialogModelList: [...this.state.dialogModelList, dialogModel],
+			});
+		}, 200);
 	}
 
 	onCloseDialog(dialogModel?: IDialogModel) {

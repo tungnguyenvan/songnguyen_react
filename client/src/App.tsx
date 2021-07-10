@@ -25,6 +25,7 @@ import StoreProvider from "app/context/store/StoreProvider";
 import StoresPage from "app/pages/store/StoresPage";
 import AppConstant from "framework/constants/AppConstant";
 import CustomersDetailPage from "app/pages/customer/CustomersDetailPage";
+import CustomerCreate from "app/pages/customer/CustomerCreate";
 
 class App extends React.Component {
     private appLoadingContext!: IAppLoadingContext;
@@ -95,6 +96,11 @@ class App extends React.Component {
                                                         exact
                                                         path={RouteConstant.CUSTOMER}
                                                         children={<CustomersPage />}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path={RouteConstant.CUSTOMER_CREATE}
+                                                        children={<CustomerCreate />}
                                                     />
                                                     <Route
                                                         exact
