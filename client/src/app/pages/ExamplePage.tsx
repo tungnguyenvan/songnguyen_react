@@ -17,6 +17,9 @@ class ExamplePage extends React.Component {
 						<FrameworkComponents.InputText type="password" placeHolder="This is place holder" />
 					</FrameworkComponents.FormGroup>
 					<FrameworkComponents.FormGroup>
+						<FrameworkComponents.SelectBox placeHolder="select this" options={[{id: '1', title: 'jsjsjsj'}, {id: '2', title: 'asasasaas'}]}/>
+					</FrameworkComponents.FormGroup>
+					<FrameworkComponents.FormGroup>
 						<AppDialogContext.Consumer>
 							{(context) => (
 								<FrameworkComponents.Button
