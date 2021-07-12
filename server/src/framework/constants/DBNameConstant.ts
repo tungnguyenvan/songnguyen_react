@@ -37,6 +37,7 @@ enum DBNameConstant {
     ADDRESS = "address",
 
     CUSTOMER = "customers",
+    PRODUCT_NAME = "product_names",
 }
 
 export default DBNameConstant;

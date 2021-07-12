@@ -1,0 +1,16 @@
+@import "framework/resources/css/base.scss";
+
+.select__box__component {
+    width: 100%;
+    height: 100%;
+    background-color: unset;
+    border: unset;
+    -webkit-appearance: unset;
+    -moz-appearance: unset;
+    appearance: unset;
+    -ms-appearance: unset;
+
+    &:focus {
+        outline: none;
+    }
+}
