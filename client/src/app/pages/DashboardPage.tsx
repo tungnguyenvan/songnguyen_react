@@ -3,7 +3,7 @@ import FrameworkComponents from "framework/components/FrameworkComponents";
 
 class DashboardPage extends React.Component {
 	render() {
-		return <FrameworkComponents.BasePage title="Dashboard"></FrameworkComponents.BasePage>;
+		return <FrameworkComponents.BasePage {...{title: "Dashboard"}}></FrameworkComponents.BasePage>;
 	}
 }
 

@@ -16,6 +16,7 @@ import ProductTypeRouter from "./routers/ProductTypeRouter";
 import WarehouseRouter from "./routers/WarehouseRouter";
 import AddressRouter from "./routers/AddressRouter";
 import CustomerRouter from "./routers/CustomerRouter";
+import ProductNameRouter from "./routers/ProductNameRouter";
 
 const NAME_SPACE = "APPLICATION";
 // initialize application
@@ -34,7 +35,10 @@ application.use(limit);
 application.use((req: any, res: any, next: any) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
+    );
     res.setHeader("Access-Control-Allow-Headers", "*");
     if (req.method === "OPTIONS") {
         res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
@@ -62,7 +66,8 @@ application.use(BodyParser.json());
 application.use("/file", new FileRouter().getRouter());
 application.use("/user", new UserRouter().getRouter());
 // application.use("/store", new StoreRouter().getRouter());
-// application.use("/product_type", new ProductTypeRouter().getRouter());
+application.use("/product_type", new ProductTypeRouter().getRouter());
+application.use("/product_name", new ProductNameRouter().getRouter());
 // application.use("/warehouse", new WarehouseRouter().getRouter());
 // application.use("/address", new AddressRouter().getRouter());
 application.use("/customer", new CustomerRouter().getRouter());

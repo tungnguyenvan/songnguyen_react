@@ -9,9 +9,9 @@ const document = {
         type: String,
     },
 
-    type: {
+    product_type: {
         require: true,
-        type: Mongoose.Types.ObjectId,
+        type: [Mongoose.Types.ObjectId],
         ref: DBNameConstant.PRODUCT_TYPE,
     },
 

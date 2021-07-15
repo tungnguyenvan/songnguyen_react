@@ -13,6 +13,7 @@ import { ReactComponent as People } from "framework/resources/image/people.svg";
 import { ReactComponent as Award } from "framework/resources/image/award.svg";
 import { ReactComponent as PersonChecked } from "framework/resources/image/person-check.svg";
 import { ReactComponent as App } from "framework/resources/image/app.svg";
+import { ReactComponent as Gear } from "framework/resources/image/gear.svg";
 import RouteConstant from "framework/constants/RouteConstant";
 import UserLoginContext from "../user/UserLoginContext";
 
@@ -102,6 +103,11 @@ class NavigationProvider
 											icon={<PersonChecked />}
 											title={context.current.getMessageString(MessageId.PARTNERS)}
 											redirectTo={RouteConstant.PARTNERS}
+										/>
+										<NavigationItemComponent
+											icon={<Gear />}
+											title={context.current.getMessageString(MessageId.SETTING)}
+											redirectTo={RouteConstant.SETTING}
 										/>
 										<NavigationItemComponent
 											icon={<Award />}

@@ -3,6 +3,7 @@ import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
 import FrameworkUtils from "framework/utils/FrameworkUtils";
 import AppUrlContext from "./AppUrlContext";
 import IAppUrlContext from "./IAppUrlContext";
+import RouteConstant from "framework/constants/RouteConstant";
 
 interface IAppUrlProviderProps extends RouteComponentProps<any> {
 	children?: any;
@@ -10,6 +11,7 @@ interface IAppUrlProviderProps extends RouteComponentProps<any> {
 
 interface IAppUrlProviderState {
 	urlRedirectTo: string;
+	history: string[]
 }
 
 class AppUrlProvider
@@ -21,17 +23,51 @@ class AppUrlProvider
 
 		this.state = {
 			urlRedirectTo: "",
+			history: []
 		};
+
+		this.back = this.back.bind(this)
+		this.redirectTo = this.redirectTo.bind(this)
+		this.isCurrentUrl = this.isCurrentUrl.bind(this)
 	}
 
 	redirectTo(url: string): void {
+		const history = this.state.history
+
+		if (this.state.urlRedirectTo !== RouteConstant.LOGIN) {
+			if (this.state.urlRedirectTo === "") {
+				history.push("/")
+			} else {
+				history.push(this.state.urlRedirectTo)
+			}
+		}
+
 		this.setState({
 			urlRedirectTo: url,
+			history: history
 		});
 	}
 
 	isCurrentUrl(url: string): boolean {
 		return this.props.location.pathname === url;
+	}
+
+	back(): void {
+		const history = this.state.history
+		if (history.length > 0) {
+			console.log(history)
+			let url: string | undefined = history.pop()
+			if (!url) url = ''
+			console.log(url)
+			this.setState({
+				urlRedirectTo: url,
+				history: history
+			})
+		}
+	}
+
+	canBack(): boolean {
+		return this.state.history.length > 0
 	}
 
 	render() {

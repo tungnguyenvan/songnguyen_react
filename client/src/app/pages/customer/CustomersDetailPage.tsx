@@ -228,7 +228,7 @@ class CustomersDetailPage extends React.Component<CustomersDetailPageProps, Cust
 
     render() {
         return (
-        <FrameworkComponents.BasePage title={this.props.languageContext.current.getMessageString(MessageId.CUSTOMERS_DETAIL)}>
+        <FrameworkComponents.BasePage {...{title: this.props.languageContext.current.getMessageString(MessageId.CUSTOMERS_DETAIL)}}>
             <FrameworkComponents.BaseForm>
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.InputText

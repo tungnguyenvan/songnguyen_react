@@ -9,7 +9,7 @@ class PartnersPage extends React.Component {
 			<LanguageContext.Consumer>
 				{(context) => (
 					<FrameworkComponents.BasePage
-						title={context.current.getMessageString(MessageId.PARTNERS)}
+						{...{title: context.current.getMessageString(MessageId.PARTNERS)}}
 					></FrameworkComponents.BasePage>
 				)}
 			</LanguageContext.Consumer>

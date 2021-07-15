@@ -11,9 +11,32 @@
 	padding-bottom: 72px;
 	background-color: $bg-color;
 
-	& .page__title {
-		text-align: start;
-		margin-top: 0px;
+	& .base__page__header {
+		display: flex;
+		align-items: center;
 		margin-bottom: 36px;
+
+		& .back__button {
+			width: 32px;
+			height: 32px;
+			padding: 8px;
+			border-radius: 50%;
+			margin-right: 8px;
+			cursor: pointer;
+			
+			&:hover {
+				background-color: $base-bg-color-hover;
+			}
+
+			&:active {
+				background-color: $base-bg-color-active;
+			}
+		}
+
+		& .page__title {
+			text-align: start;
+			margin-top: 0px;
+			margin-bottom: 0px;
+		}
 	}
 }

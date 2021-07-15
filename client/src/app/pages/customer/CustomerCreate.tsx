@@ -108,7 +108,8 @@ class CustomerCreate extends React.Component<CustomerCreateProps> {
 
     render() {
         return (
-        <FrameworkComponents.BasePage title={this.props.languageContext.current.getMessageString(MessageId.CUSTOMER_CREATE)}>
+        <FrameworkComponents.BasePage {
+            ...{title: this.props.languageContext.current.getMessageString(MessageId.CUSTOMER_CREATE)}}>
             <FrameworkComponents.BaseForm>
             <FrameworkComponents.FormGroup>
                     <FrameworkComponents.InputText
