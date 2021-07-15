@@ -4,13 +4,14 @@
 	top: 0px;
 	width: 88px;
 	z-index: 1;
-	height: 100%;
+	height: calc(100% - 78px);
 	display: flex;
 	position: fixed;
 	background-color: $bg-color;
 	margin-top: $header-bar-height;
 	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 	transition: $transition-default;
+	overflow-y: auto;
 
 	&.navigation__component__show {
 		width: 240px;

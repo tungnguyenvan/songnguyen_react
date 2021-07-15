@@ -3,6 +3,7 @@ import EventConstant from "framework/constants/EventConstant";
 import IUserModel from "framework/documents/models/IUserModel";
 import { matchPath } from "react-router";
 import IFromInputElement from "framework/components/IFormInputElement";
+import IProductTypeModel from "app/documents/IProductTypeModel";
 
 /**
  * Class util for framework
@@ -152,6 +153,30 @@ class FrameworkUtils {
             const element = FrameworkUtils.readProp(formRefInterface, key) as React.RefObject<IFromInputElement>;
             if (element) element.current?.clear();
         }
+    }
+
+    public static generateDate(dateStamp: number): string {
+        return new Date(dateStamp).toDateString();
+    }
+
+    public static generateUniqueKey(): string {
+        return (Date.now() + "_" + Math.random()).toString();
+    }
+
+    public static generateProductType(types: IProductTypeModel[]): string {
+        let type = "";
+
+        if (types) {
+            types.forEach((element, index) => {
+                if (index === 0) {
+                    type += element.name;
+                } else {
+                    type += "," + element.name;
+                }
+            });
+        }
+
+        return type;
     }
 }
 

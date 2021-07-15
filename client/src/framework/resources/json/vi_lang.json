@@ -55,5 +55,9 @@
 	"CUSTOMER_CREATE": "Tạo khách hàng mới",
 	"CANCEL": "Huỷ",
 	"CONFIRM_REGISTRATION": "Xác nhận đăng ký",
-	"CONFIRM_REGISTRATION_CONTENT": "Bạn muốn đăng ký dữ liệu này?"
+	"CONFIRM_REGISTRATION_CONTENT": "Bạn muốn đăng ký dữ liệu này?",
+	"SETTING": "Cài đặt",
+	"PRODUCT_TYPE": "Loại sản phẩm",
+	"CREATED_TIME": "Thời gian tạo",
+	"PRODUCT_NAME": "Tên sản phẩm"
 }

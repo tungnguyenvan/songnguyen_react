@@ -55,5 +55,9 @@
 	"CUSTOMER_CREATE": "Create new customer",
 	"CANCEL": "Cancel",
 	"CONFIRM_REGISTRATION": "Confirm registration",
-	"CONFIRM_REGISTRATION_CONTENT": "Do you want registration this information?"
+	"CONFIRM_REGISTRATION_CONTENT": "Do you want registration this information?",
+	"SETTING": "Setting",
+	"PRODUCT_TYPE": "Product type",
+	"CREATED_TIME": "Created time",
+	"PRODUCT_NAME": "Product name"
 }

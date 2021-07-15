@@ -1,5 +1,6 @@
 import BaseRepository from "@app/framework/core/BaseRepository";
 import CustomerModel from "@app/app/models/CustomerModel";
+import AppUtil from "@app/framework/utils/AppUtil";
 
 const NAME_SPACE = "CustomerRepository";
 
@@ -13,12 +14,7 @@ class CustomerRepository extends BaseRepository {
     }
 
     populate(object: any) {
-        return object
-            .populate({
-                path: "createdBy",
-                select: "-__v",
-            })
-            .select("-__v");
+        return AppUtil.populateUpdatedBy(AppUtil.populateCreatedBy(object)).select("-__v");
     }
 }
 

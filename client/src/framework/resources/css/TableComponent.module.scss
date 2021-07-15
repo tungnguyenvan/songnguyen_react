@@ -9,6 +9,18 @@
     border-radius: $border-radius;
     border: 1px solid rgba(0, 0, 0, 0.12);
     padding-bottom: 16px;
+    margin-bottom: 32px;
+
+    & .table__common__button {
+        width: 24px;
+        height: 24px;
+        padding: 8px;
+        border-radius: 50%;
+        background-color: $base-bg-color-hover;
+        cursor: pointer;
+        position: absolute;
+        float: right;
+    }
 
     & .table__component__table {
         display: flex;

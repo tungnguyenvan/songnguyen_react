@@ -7,10 +7,10 @@ const NAME_SPACE = "FILE_MODEL";
  * File model
  * @author tung.nguyenvan
  */
-class FileModel extends BaseModel {
-	constructor() {
-		super(ProductTypeSchema);
-	}
+class ProductTypeModel extends BaseModel {
+    constructor() {
+        super(ProductTypeSchema);
+    }
 }
 
-export default FileModel;
+export default ProductTypeModel;

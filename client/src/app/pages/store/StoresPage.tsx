@@ -12,7 +12,7 @@ interface StoresPageProps {
 
 class StoresPage extends React.Component<StoresPageProps> {
     render() {
-        return <FrameworkComponents.BasePage title={this.props.languageContext.current.getMessageString(MessageId.STORES)}>
+        return <FrameworkComponents.BasePage {...{title: this.props.languageContext.current.getMessageString(MessageId.STORES)}}>
             <div className={Style.store__page__container}>
                 <div className={Style.store__page__search__bar}>
                     <FrameworkComponents.FormGroup>

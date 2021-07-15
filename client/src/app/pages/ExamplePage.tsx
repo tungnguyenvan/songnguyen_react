@@ -6,7 +6,7 @@ import ButtonTypeConstant from "../../framework/constants/ButtonTypeConstant";
 class ExamplePage extends React.Component {
 	render() {
 		return (
-			<FrameworkComponents.BasePage title="Example page">
+			<FrameworkComponents.BasePage {...{title: "Example page"}}>
 				<FrameworkComponents.BaseForm title="Example form">
 					<FrameworkComponents.FormGroup>
 						<FrameworkComponents.InputText placeHolder="This is place holder" />

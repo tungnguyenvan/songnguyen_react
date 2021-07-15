@@ -83,7 +83,7 @@ class CustomersPage extends React.Component<CustomersPageProvider, CustomersPage
 
 	render() {
 		return (
-				<FrameworkComponents.BasePage title={this.props.languageContext.current.getMessageString(MessageId.CUSTOMERS)}>
+				<FrameworkComponents.BasePage {...{title: this.props.languageContext.current.getMessageString(MessageId.CUSTOMERS)}}>
 					<FrameworkComponents.FormGroup>
 						<FrameworkComponents.Button type={ButtonTypeConstant.PRIMARY} onClick={() => {
 							this.props.appUrlContext.redirectTo(RouteConstant.CUSTOMER_CREATE)
