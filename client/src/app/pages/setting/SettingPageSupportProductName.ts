@@ -3,6 +3,7 @@ import IProductNameModel from "app/documents/IProductNameModel";
 import BaseApiService from "framework/api/BaseApiService";
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode";
 import MessageId from "framework/constants/MessageId";
+import RouteConstant from "framework/constants/RouteConstant";
 import IAppDialogContext from "framework/contexts/dialog/IAppDialogContext";
 import ILanguageContext from "framework/contexts/lang/ILanguageContext";
 import IAppUrlContext from "framework/contexts/url/IAppUrlContext";
@@ -39,7 +40,9 @@ class SettingPageSupportProductName implements ISettingPageSupport<IProductNameM
         });
     }
 
-    edit(id: string): void {}
+    edit(id: string): void {
+        this.appUrlContext.redirectTo(RouteConstant.PRODUCT_NAME + "/" + id);
+    }
 
     delete(id: string): void {
         this.apiService.delete(id).then((response) => {

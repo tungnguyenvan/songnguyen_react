@@ -27,6 +27,8 @@ import AppConstant from "framework/constants/AppConstant";
 import CustomersDetailPage from "app/pages/customer/CustomersDetailPage";
 import CustomerCreate from "app/pages/customer/CustomerCreate";
 import SettingPage from "app/pages/setting/SettingPage";
+import ProductNameCreate from "app/pages/product_name/ProductNameCreate";
+import ProductNameDetail from "app/pages/product_name/ProductNameDetail";
 
 class App extends React.Component {
     private appLoadingContext!: IAppLoadingContext;
@@ -117,6 +119,16 @@ class App extends React.Component {
                                                         exact
                                                         path={RouteConstant.PARTNERS}
                                                         children={<PartnersPage />}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path={RouteConstant.PRODUCT_NAME_CREATE}
+                                                        children={<ProductNameCreate/>}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path={RouteConstant.PRODUCT_NAME_DETAIL}
+                                                        children={<ProductNameDetail />}
                                                     />
                                                     <Route
                                                         exact

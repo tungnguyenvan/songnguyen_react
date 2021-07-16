@@ -59,5 +59,6 @@
 	"SETTING": "Setting",
 	"PRODUCT_TYPE": "Product type",
 	"CREATED_TIME": "Created time",
-	"PRODUCT_NAME": "Product name"
+	"PRODUCT_NAME": "Product name",
+	"PRODUCT_NAME_DETAIL": "Product name detail"
 }

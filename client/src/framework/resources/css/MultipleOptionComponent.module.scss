@@ -1,0 +1,58 @@
+@import "./Base.scss";
+
+.multiple__option__component {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+
+    & .multiple__option__title {
+        display: flex;
+    }
+
+    & .multiple__options {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 8px;
+
+        & .option__in__multiple__option {
+            margin: 4px 8px;
+            display: flex;
+            width: 40%;
+            height: 64px;
+            align-items: center;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: $border-radius;
+            border: $border-default;
+            transition: $transition-default;
+
+            &:hover {
+                background-color: $base-bg-color-hover;
+            }
+
+            & .option_icon {
+                margin-right: 8px;
+                color: rgba(0, 0, 0, 0.12);
+            }
+
+            & .option__detail {
+                display: flex;
+                flex-direction: column;
+                text-align: start;
+
+                & .option__detail__explain {
+                    font-size: 11px;
+                    color: $placeholder-color;
+                }
+            }
+
+
+            &.selected {
+                border-color: $primary-color;
+                & .option_icon {
+                    color: $primary-color;
+                }
+            }
+        }
+    }
+}
