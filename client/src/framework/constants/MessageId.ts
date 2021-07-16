@@ -61,6 +61,7 @@ enum MessageId {
     PRODUCT_TYPE = "PRODUCT_TYPE",
     CREATED_TIME = "CREATED_TIME",
     PRODUCT_NAME = "PRODUCT_NAME",
+    PRODUCT_NAME_DETAIL = "PRODUCT_NAME_DETAIL",
 }
 
 export default MessageId;
