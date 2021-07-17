@@ -56,7 +56,7 @@ abstract class BaseController implements IBaseController {
     all(request: Express.Request, response: Express.Response): void {
         try {
             this.repository
-                .all()
+                .all(request)
                 .then((responseData) => {
                     Logging.debug(NAME_SPACE, `${NAME_SPACE}#all`, responseData);
                     this.appResponse.ok(request, response, responseData);

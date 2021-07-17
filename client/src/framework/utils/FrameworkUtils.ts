@@ -171,7 +171,7 @@ class FrameworkUtils {
                 if (index === 0) {
                     type += element.name;
                 } else {
-                    type += "," + element.name;
+                    type += ", " + element.name;
                 }
             });
         }

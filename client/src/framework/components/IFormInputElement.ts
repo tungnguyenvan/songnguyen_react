@@ -1,7 +1,7 @@
 interface IFromInputElement {
     isValid(): boolean;
     setErrorMessage(errorMessage: string): void;
-    getValue(): String | Number;
+    getValue(): any;
     isChanged(): boolean;
     clear(): void;
 }

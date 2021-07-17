@@ -60,5 +60,6 @@
 	"PRODUCT_TYPE": "Loại sản phẩm",
 	"CREATED_TIME": "Thời gian tạo",
 	"PRODUCT_NAME": "Tên sản phẩm",
-	"PRODUCT_NAME_DETAIL": "Chi tiết tên sản phẩm"
+	"PRODUCT_NAME_DETAIL": "Chi tiết tên sản phẩm",
+	"PRODUCT_NAME_CREATE": "Tạo mới tên sản phẩm"
 }
