@@ -8,19 +8,30 @@ import FrameworkUtils from "framework/utils/FrameworkUtils"
 interface SelectBoxComponentProps {
     placeHolder: string;
     options: ISelectOptionModel[];
-    selectedId?: string | ""
+    selectedId?: string
+    required?: boolean
+    errorMessage?: string
 }
 
-class SelectBoxComponent extends React.Component<SelectBoxComponentProps> implements IFromInputElement {
+interface SelectBoxComponentState {
+    selectedId?: string
+}
+
+class SelectBoxComponent extends React.Component<SelectBoxComponentProps, SelectBoxComponentState> implements IFromInputElement {
     private rootRef: React.RefObject<any>
     private baseFormControl: React.RefObject<BaseFormControl>
 
     constructor(props: any) {
         super(props)
 
+        this.state = {
+            selectedId: this.props.selectedId
+        }
+
         this.rootRef = React.createRef();
         this.baseFormControl = React.createRef();
 
+        this.onChange = this.onChange.bind(this)
         this.clear = this.clear.bind(this)
         this.isValid = this.isValid.bind(this)
         this.getValue = this.getValue.bind(this)
@@ -36,12 +47,34 @@ class SelectBoxComponent extends React.Component<SelectBoxComponentProps> implem
         }
     }
 
+    componentDidUpdate(prevProps: SelectBoxComponentProps) {
+        this.baseFormControl.current?.onFocus()
+        this.baseFormControl.current?.onBlur()
+        if (this.state.selectedId !== this.props.selectedId && prevProps.selectedId !== this.props.selectedId) {
+            this.setState({
+                selectedId: this.props.selectedId
+            }, () => {
+                this.baseFormControl.current?.onFocus()
+                this.baseFormControl.current?.onBlur()
+            })
+        }
+    }
+
     isValid(): boolean {
+        if (!this.props.required) return true
+
+        if (this.getValue()) {
+            return true
+        }
+
+        if (this.props.errorMessage) {
+            this.setErrorMessage(this.props.errorMessage)
+        }
         return false
     }
 
     setErrorMessage(errorMessage: string): void {
-        
+        this.baseFormControl.current?.setErrorMessage(errorMessage)
     }
 
     getValue(): String | Number {
@@ -59,6 +92,12 @@ class SelectBoxComponent extends React.Component<SelectBoxComponentProps> implem
     onFocusCallback() {
         this.rootRef.current.click()
     }
+
+    onChange() {
+        this.setState({
+            selectedId: this.getValue().toString()
+        })
+    }
     
     render() {
         return <BaseFormControl
@@ -72,11 +111,12 @@ class SelectBoxComponent extends React.Component<SelectBoxComponentProps> implem
                 onFocus={this.baseFormControl.current?.onFocus}
                 onBlur={this.baseFormControl.current?.onBlur}
                 onChange={() => {
+                    this.onChange()
                     this.baseFormControl.current?.onFocus()
                 }}
                 onSelect={this.baseFormControl.current?.onFocus}
-                defaultValue={this.props.selectedId}>
-                <option></option>
+                value={this.state.selectedId}>
+                <option value=''></option>
                 {
                     this.props.options.map(element => {
                         return <option value={element.id} key={element.id}>{element.title}</option>

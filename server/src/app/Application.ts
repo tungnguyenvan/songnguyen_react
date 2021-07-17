@@ -72,6 +72,6 @@ application.use("/product_name", new ProductNameRouter().getRouter());
 // application.use("/warehouse", new WarehouseRouter().getRouter());
 // application.use("/address", new AddressRouter().getRouter());
 application.use("/customer", new CustomerRouter().getRouter());
-application.use("thickness", new ThicknessRouter().getRouter());
+application.use("/thickness", new ThicknessRouter().getRouter());
 
 export default application;

@@ -61,5 +61,9 @@
 	"CREATED_TIME": "Created time",
 	"PRODUCT_NAME": "Product name",
 	"PRODUCT_NAME_DETAIL": "Product name detail",
-	"PRODUCT_NAME_CREATE": "Create new product name"
+	"PRODUCT_NAME_CREATE": "Create new product name",
+	"THICKNESS": "Thickness",
+	"M2_PRICE": "Price/square meters",
+	"THICKNESS_DETAIL": "Thickness detail",
+	"THICKNESS_CREATE": "Create new thickness"
 }

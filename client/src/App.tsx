@@ -29,6 +29,8 @@ import CustomerCreate from "app/pages/customer/CustomerCreate";
 import SettingPage from "app/pages/setting/SettingPage";
 import ProductNameCreate from "app/pages/product_name/ProductNameCreate";
 import ProductNameDetail from "app/pages/product_name/ProductNameDetail";
+import ThicknessCreate from "app/pages/thickness/ThicknessCreate";
+import ThicknessDetail from "app/pages/thickness/ThicknessDetail";
 
 class App extends React.Component {
     private appLoadingContext!: IAppLoadingContext;
@@ -109,6 +111,16 @@ class App extends React.Component {
                                                         exact
                                                         path={RouteConstant.CUSTOMER_DETAIL}
                                                         children={<CustomersDetailPage />}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path={RouteConstant.THICKNESS_CREATE}
+                                                        children={<ThicknessCreate />}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path={RouteConstant.THICKNESS_DETAIL}
+                                                        children={<ThicknessDetail />}
                                                     />
                                                     <Route
                                                         exact

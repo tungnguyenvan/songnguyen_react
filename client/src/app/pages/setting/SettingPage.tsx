@@ -1,5 +1,6 @@
 import IProductNameModel from "app/documents/IProductNameModel";
 import IProductTypeModel from "app/documents/IProductTypeModel";
+import IThicknessModel from "app/documents/IThicknessModel";
 import FrameworkComponents from "framework/components/FrameworkComponents";
 import MessageId from "framework/constants/MessageId";
 import RouteConstant from "framework/constants/RouteConstant";
@@ -10,6 +11,7 @@ import IAppUrlContext from "framework/contexts/url/IAppUrlContext";
 import React from "react";
 import SettingPageSupportProductName from "./SettingPageSupportProductName";
 import SettingPageSupportProductType from "./SettingPageSupportProductType";
+import SettingPageSupportThickness from "./SettingPageSupportThickness";
 
 interface SettingPageProps {
     languageContext: ILanguageContext;
@@ -20,29 +22,41 @@ interface SettingPageProps {
 interface SettingPageState {
     productTypes: IProductTypeModel[]
     productNames: IProductNameModel[]
+    thicknesses: IThicknessModel[]
 }
 
 class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
     private settingPageSupportProductType: SettingPageSupportProductType
     private settingPageSupportProductName: SettingPageSupportProductName
+    private settingPageSupportThickness: SettingPageSupportThickness
 
     constructor(props: SettingPageProps) {
         super(props)
 
         this.state = {
             productTypes: [],
-            productNames: []
+            productNames: [],
+            thicknesses: []
         }
 
         this.productTypeRequestCallback = this.productTypeRequestCallback.bind(this)
         this.productNameRequestCallback = this.productNameRequestCallback.bind(this)
+        this.thicknessRequestCallback = this.thicknessRequestCallback.bind(this)
         this.settingPageSupportProductType = new SettingPageSupportProductType(this.props.appUrlContext, this.props.appDialogContext, this.props.languageContext, this.productTypeRequestCallback)
         this.settingPageSupportProductName = new SettingPageSupportProductName(this.props.appUrlContext, this.props.appDialogContext, this.props.languageContext, this.productNameRequestCallback)
+        this.settingPageSupportThickness = new SettingPageSupportThickness(this.props.appUrlContext, this.props.appDialogContext, this.props.languageContext, this.thicknessRequestCallback)
     }
 
     componentDidMount() {
         this.settingPageSupportProductType.all()
         this.settingPageSupportProductName.all()
+        this.settingPageSupportThickness.all()
+    }
+
+    thicknessRequestCallback(thicknesses: IThicknessModel[]) {
+        this.setState({
+            thicknesses: thicknesses
+        })
     }
 
     productTypeRequestCallback(productTypes: IProductTypeModel[]) {
@@ -74,6 +88,15 @@ class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
                     content: this.settingPageSupportProductName.renderTableContent(this.state.productNames),
                     commonButton: () => {
                         this.props.appUrlContext.redirectTo(RouteConstant.PRODUCT_NAME_CREATE)
+                    }
+                }} />
+
+                <FrameworkComponents.Table {...{
+                    title: this.props.languageContext.current.getMessageString(MessageId.THICKNESS),
+                    header: this.settingPageSupportThickness.renderHeader(),
+                    content: this.settingPageSupportThickness.renderTableContent(this.state.thicknesses),
+                    commonButton: () => {
+                        this.props.appUrlContext.redirectTo(RouteConstant.THICKNESS_CREATE)
                     }
                 }} />
         </FrameworkComponents.BasePage>
