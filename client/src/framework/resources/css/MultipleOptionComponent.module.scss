@@ -9,6 +9,11 @@
         display: flex;
     }
 
+    & .multiple__option__error {
+        color: $text-color-error;
+        visibility: hidden;
+    }
+
     & .multiple__options {
         display: flex;
         flex-wrap: wrap;
@@ -17,7 +22,8 @@
         & .option__in__multiple__option {
             margin: 4px 8px;
             display: flex;
-            width: 40%;
+            flex-grow: 1;
+            min-width: 43%;
             height: 64px;
             align-items: center;
             padding: 8px;
@@ -53,6 +59,16 @@
                     color: $primary-color;
                 }
             }
+        }
+    }
+
+    &.error {
+        & .multiple__option__error {
+            visibility: visible;
+        }
+
+        & .option__in__multiple__option {
+            border-color: $text-color-error;
         }
     }
 }

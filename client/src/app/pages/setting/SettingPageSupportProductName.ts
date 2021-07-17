@@ -1,5 +1,6 @@
 import ProductNameApiService from "app/api/ProductNameApiService";
 import IProductNameModel from "app/documents/IProductNameModel";
+import IProductTypeModel from "app/documents/IProductTypeModel";
 import BaseApiService from "framework/api/BaseApiService";
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode";
 import MessageId from "framework/constants/MessageId";
@@ -64,7 +65,7 @@ class SettingPageSupportProductName implements ISettingPageSupport<IProductNameM
                 id: element._id,
                 content: [
                     element.name,
-                    FrameworkUtils.generateProductType(element.product_type),
+                    FrameworkUtils.generateProductType(element.product_type as IProductTypeModel[]),
                     FrameworkUtils.userName(element.createdBy),
                     FrameworkUtils.generateDate(element.createdAt),
                 ],

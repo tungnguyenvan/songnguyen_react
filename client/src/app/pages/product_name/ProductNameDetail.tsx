@@ -3,18 +3,26 @@ import ProductTypeApiService from "app/api/ProductTypeApiService"
 import IProductNameModel from "app/documents/IProductNameModel"
 import IProductTypeModel from "app/documents/IProductTypeModel"
 import FrameworkComponents from "framework/components/FrameworkComponents"
+import IFromInputElement from "framework/components/IFormInputElement"
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant"
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
 import MessageId from "framework/constants/MessageId"
 import RouteConstant from "framework/constants/RouteConstant"
+import RuleConstant from "framework/constants/RuleConstant"
 import WithFramework from "framework/constants/WithFramework"
+import IAppDialogContext from "framework/contexts/dialog/IAppDialogContext"
 import ILanguageContext from "framework/contexts/lang/ILanguageContext"
+import IAppUrlContext from "framework/contexts/url/IAppUrlContext"
+import Rule from "framework/documents/models/Rule"
 import IMultipleOptionModel from "framework/documents/ui/IMultipleOptionItemModel"
 import FrameworkUtils from "framework/utils/FrameworkUtils"
 import React from "react"
+import { ProductNameFormRef, ProductNameFormValidate } from "./ProductNameFormDefinition"
 
 interface ProductNameDetailProps {
     languageContext: ILanguageContext;
+    appDialogContext: IAppDialogContext;
+    appUrlContext: IAppUrlContext;
 }
 
 interface ProductNameDetailState {
@@ -29,9 +37,20 @@ interface PageParams {
 class ProductNameDetail extends React.Component<ProductNameDetailProps, ProductNameDetailState> {
     private productNameApiService: ProductNameApiService;
     private productTypeApiService: ProductTypeApiService;
+    private productNameFormRef: ProductNameFormRef;
+    private productNameFormValidate: ProductNameFormValidate;
 
     constructor(props: ProductNameDetailProps) {
         super(props)
+
+        this.productNameFormRef = {
+            inputName: React.createRef<IFromInputElement>(),
+            productTypeOption: React.createRef<IFromInputElement>()
+        }
+
+        this.productNameFormValidate = {
+            inputName: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE)]
+        }
 
         this.state = {
             productName: {} as IProductNameModel,
@@ -100,7 +119,7 @@ class ProductNameDetail extends React.Component<ProductNameDetailProps, ProductN
         let isConstraint = false;
 
         if (this.state.productName && this.state.productName.product_type) {
-            this.state.productName.product_type.forEach(element => {
+            (this.state.productName.product_type as IProductTypeModel[]).forEach(element => {
                 if (element._id === productTypeId) isConstraint = true
             })
         }
@@ -109,11 +128,53 @@ class ProductNameDetail extends React.Component<ProductNameDetailProps, ProductN
     }
 
     onUpdateProductName() {
+        if (FrameworkUtils.validateFrom(this.productNameFormRef) && FrameworkUtils.formHasChanged(this.productNameFormRef)) {
+            // get product type
+            const productTypesSelected: string[] = []
+            const multipleOptions: IMultipleOptionModel[] = this.productNameFormRef.productTypeOption.current.getValue() as IMultipleOptionModel[]
+            multipleOptions.forEach(element => {
+                if (element.isSelected) {
+                    productTypesSelected.push(element.id)
+                }
+            })
 
+            const productNameObj: IProductNameModel = {
+                name: this.productNameFormRef.inputName.current.getValue(),
+                product_type: productTypesSelected
+            } as IProductNameModel
+
+            this.productNameApiService.update(this.state.productName._id, productNameObj)
+                .then(response => {
+                    if (response.status === HttpRequestStatusCode.OK) {
+                        this.props.appDialogContext.addDialog({
+                            title: this.props.languageContext.current.getMessageString(MessageId.UPDATE_SUCCESS),
+                            content: this.props.languageContext.current.getMessageString(MessageId.UPDATE_SUCCESS_DETAIL)
+                        })
+
+                        this.requestDetail(this.state.productName._id)
+                    }
+                })
+        }
+
+        if (!FrameworkUtils.formHasChanged(this.productNameFormRef)) {
+            this.props.appDialogContext.addDialog({
+                title: this.props.languageContext.current.getMessageString(MessageId.FORM_NOT_CHANGE),
+                content: this.props.languageContext.current.getMessageString(MessageId.FORM_NOT_CHANGE_DETAIL)
+            })
+        }
     }
 
     onDeleteProductName() {
-
+        this.productNameApiService.delete(this.state.productName._id)
+            .then(response => {
+                if (response.status === HttpRequestStatusCode.OK) {
+                    this.props.appDialogContext.addDialog({
+                        title: this.props.languageContext.current.getMessageString(MessageId.DELETE_SUCCESS),
+                        content: this.props.languageContext.current.getMessageString(MessageId.DELETE_SUCCESS_DETAIL)
+                    })
+                    this.props.appUrlContext.back()
+                }
+            })
     }
 
     render() {
@@ -124,11 +185,19 @@ class ProductNameDetail extends React.Component<ProductNameDetailProps, ProductN
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.InputText
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.PRODUCT_NAME)}
-                        value={this.state.productName.name} />
+                        value={this.state.productName.name}
+                        ref={this.productNameFormRef.inputName}
+                        validate={this.productNameFormValidate.inputName} />
                 </FrameworkComponents.FormGroup>
 
                 <FrameworkComponents.FormGroup>
-                    <FrameworkComponents.MultipleOption options={this.generateMultipleOptionItem()} title={this.props.languageContext.current.getMessageString(MessageId.PRODUCT_TYPE)} />
+                    <FrameworkComponents.MultipleOption
+                        ref={this.productNameFormRef.productTypeOption}
+                        options={this.generateMultipleOptionItem()}
+                        defaultValue={this.generateMultipleOptionItem()}
+                        title={this.props.languageContext.current.getMessageString(MessageId.PRODUCT_TYPE)}
+                        required={true}
+                        errorMessageRequired={this.props.languageContext.current.getMessageString(MessageId.VALIDATE_REQUIRE)} />
                 </FrameworkComponents.FormGroup>
 
                 <FrameworkComponents.FormGroup>
@@ -157,5 +226,7 @@ class ProductNameDetail extends React.Component<ProductNameDetailProps, ProductN
 }
 
 export default WithFramework.withLanguage(
-    ProductNameDetail
+    WithFramework.withAppDialog(
+        WithFramework.withAppUrl(ProductNameDetail)
+    )
 )

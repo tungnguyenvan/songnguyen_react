@@ -16,9 +16,8 @@ export default class BaseRepository implements IBaseRepository {
         Logging.debug(NAME_SPACE, `${NAME_SPACE}#constructor END`);
     }
 
-    all(): Promise<Mongoose.Document> {
+    all(request: Express.Request): Promise<Mongoose.Document> {
         try {
-            Logging.debug(NAME_SPACE, `${NAME_SPACE}#all START`);
             return this.populate(this.model.all());
         } finally {
             Logging.debug(NAME_SPACE, `${NAME_SPACE}#all END`);
