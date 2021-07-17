@@ -61,5 +61,9 @@
 	"CREATED_TIME": "Thời gian tạo",
 	"PRODUCT_NAME": "Tên sản phẩm",
 	"PRODUCT_NAME_DETAIL": "Chi tiết tên sản phẩm",
-	"PRODUCT_NAME_CREATE": "Tạo mới tên sản phẩm"
+	"PRODUCT_NAME_CREATE": "Tạo mới tên sản phẩm",
+	"THICKNESS": "Độ dày",
+	"M2_PRICE": "Giá/mét vuông",
+	"THICKNESS_DETAIL": "Chi tiết độ dày",
+	"THICKNESS_CREATE": "Tạo mới độ dày"
 }

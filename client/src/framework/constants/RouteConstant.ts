@@ -9,11 +9,17 @@ enum RouteConstant {
     EXAMPLE = "/example",
     STORES = "/stores",
     SETTING = "/setting",
+
     PRODUCT_TYPE = "/product_types",
     PRODUCT_TYPE_CREATE = "/product_type/new",
+
     PRODUCT_NAME = "/product_names",
     PRODUCT_NAME_CREATE = "/product_name/new",
     PRODUCT_NAME_DETAIL = "/product_names/:id",
+
+    THICKNESS = "/thicknesses",
+    THICKNESS_DETAIL = "/thicknesses/:id",
+    THICKNESS_CREATE = "/thickness/new",
 }
 
 export default RouteConstant;

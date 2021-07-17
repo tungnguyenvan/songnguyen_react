@@ -4,6 +4,7 @@ enum RequestPathConstant {
     CUSTOMER = "customer/",
     PRODUCT_TYPE = "product_type/",
     PRODUCT_NAME = "product_name/",
+    THICKNESS = "thickness/",
 }
 
 export default RequestPathConstant;
