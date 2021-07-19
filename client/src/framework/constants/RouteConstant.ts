@@ -20,6 +20,10 @@ enum RouteConstant {
     THICKNESS = "/thicknesses",
     THICKNESS_DETAIL = "/thicknesses/:id",
     THICKNESS_CREATE = "/thickness/new",
+
+    SYSTEM_STANDARD = "/system_standards",
+    SYSTEM_STANDARD_DETAIL = "/system_standards/:id",
+    SYSTEM_STANDARD_CREATE = "/system_standard/new",
 }
 
 export default RouteConstant;

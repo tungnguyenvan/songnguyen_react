@@ -31,6 +31,8 @@ import ProductNameCreate from "app/pages/product_name/ProductNameCreate";
 import ProductNameDetail from "app/pages/product_name/ProductNameDetail";
 import ThicknessCreate from "app/pages/thickness/ThicknessCreate";
 import ThicknessDetail from "app/pages/thickness/ThicknessDetail";
+import SystemStandardDetail from "app/pages/system_standard/SystemStandardDetail";
+import SystemStandardCreate from "app/pages/system_standard/SystemStandardCreate";
 
 class App extends React.Component {
     private appLoadingContext!: IAppLoadingContext;
@@ -141,6 +143,16 @@ class App extends React.Component {
                                                         exact
                                                         path={RouteConstant.PRODUCT_NAME_DETAIL}
                                                         children={<ProductNameDetail />}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path={RouteConstant.SYSTEM_STANDARD_DETAIL}
+                                                        children={<SystemStandardDetail />}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path={RouteConstant.SYSTEM_STANDARD_CREATE}
+                                                        children={<SystemStandardCreate />}
                                                     />
                                                     <Route
                                                         exact

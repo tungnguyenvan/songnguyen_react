@@ -18,6 +18,7 @@ import AddressRouter from "./routers/AddressRouter";
 import CustomerRouter from "./routers/CustomerRouter";
 import ProductNameRouter from "./routers/ProductNameRouter";
 import ThicknessRouter from "./routers/ThicknessRouter";
+import SystemStandardRouter from "./routers/SystemStandardRouter";
 
 const NAME_SPACE = "APPLICATION";
 // initialize application
@@ -73,5 +74,6 @@ application.use("/product_name", new ProductNameRouter().getRouter());
 // application.use("/address", new AddressRouter().getRouter());
 application.use("/customer", new CustomerRouter().getRouter());
 application.use("/thickness", new ThicknessRouter().getRouter());
+application.use("/system_standard", new SystemStandardRouter().getRouter());
 
 export default application;
