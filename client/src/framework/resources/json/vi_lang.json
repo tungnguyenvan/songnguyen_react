@@ -65,5 +65,8 @@
 	"THICKNESS": "Độ dày",
 	"M2_PRICE": "Giá/mét vuông",
 	"THICKNESS_DETAIL": "Chi tiết độ dày",
-	"THICKNESS_CREATE": "Tạo mới độ dày"
+	"THICKNESS_CREATE": "Tạo mới độ dày",
+	"SYSTEM_STANDARD": "Hệ tiêu chuẩn",
+	"SYSTEM_STANDARD_DETAIL": "Chi tiết hệ tiêu chuẩn",
+	"SYSTEM_STANDARD_CREATE": "Tạo mới hệ tiêu chuẩn"
 }

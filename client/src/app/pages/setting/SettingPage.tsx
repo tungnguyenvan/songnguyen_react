@@ -1,5 +1,6 @@
 import IProductNameModel from "app/documents/IProductNameModel";
 import IProductTypeModel from "app/documents/IProductTypeModel";
+import ISystemStandardModel from "app/documents/ISystemStandardModel";
 import IThicknessModel from "app/documents/IThicknessModel";
 import FrameworkComponents from "framework/components/FrameworkComponents";
 import MessageId from "framework/constants/MessageId";
@@ -11,6 +12,7 @@ import IAppUrlContext from "framework/contexts/url/IAppUrlContext";
 import React from "react";
 import SettingPageSupportProductName from "./SettingPageSupportProductName";
 import SettingPageSupportProductType from "./SettingPageSupportProductType";
+import SettingPageSupportSystemStandard from "./SettingPageSupportSystemStandard";
 import SettingPageSupportThickness from "./SettingPageSupportThickness";
 
 interface SettingPageProps {
@@ -23,12 +25,14 @@ interface SettingPageState {
     productTypes: IProductTypeModel[]
     productNames: IProductNameModel[]
     thicknesses: IThicknessModel[]
+    systemStandards: ISystemStandardModel[]
 }
 
 class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
     private settingPageSupportProductType: SettingPageSupportProductType
     private settingPageSupportProductName: SettingPageSupportProductName
     private settingPageSupportThickness: SettingPageSupportThickness
+    private settingPageSupportSystemStandard: SettingPageSupportSystemStandard
 
     constructor(props: SettingPageProps) {
         super(props)
@@ -36,21 +40,26 @@ class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
         this.state = {
             productTypes: [],
             productNames: [],
-            thicknesses: []
+            thicknesses: [],
+            systemStandards: []
         }
 
         this.productTypeRequestCallback = this.productTypeRequestCallback.bind(this)
         this.productNameRequestCallback = this.productNameRequestCallback.bind(this)
         this.thicknessRequestCallback = this.thicknessRequestCallback.bind(this)
+        this.SystemStandardRequestCallback = this.SystemStandardRequestCallback.bind(this)
+        
         this.settingPageSupportProductType = new SettingPageSupportProductType(this.props.appUrlContext, this.props.appDialogContext, this.props.languageContext, this.productTypeRequestCallback)
         this.settingPageSupportProductName = new SettingPageSupportProductName(this.props.appUrlContext, this.props.appDialogContext, this.props.languageContext, this.productNameRequestCallback)
         this.settingPageSupportThickness = new SettingPageSupportThickness(this.props.appUrlContext, this.props.appDialogContext, this.props.languageContext, this.thicknessRequestCallback)
+        this.settingPageSupportSystemStandard = new SettingPageSupportSystemStandard(this.props.appUrlContext, this.props.appDialogContext, this.props.languageContext, this.SystemStandardRequestCallback)
     }
 
     componentDidMount() {
         this.settingPageSupportProductType.all()
         this.settingPageSupportProductName.all()
         this.settingPageSupportThickness.all()
+        this.settingPageSupportSystemStandard.all()
     }
 
     thicknessRequestCallback(thicknesses: IThicknessModel[]) {
@@ -68,6 +77,12 @@ class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
     productNameRequestCallback(productNames: IProductNameModel[]) {
         this.setState({
             productNames: productNames
+        })
+    }
+
+    SystemStandardRequestCallback(systemStandards: ISystemStandardModel[]) {
+        this.setState({
+            systemStandards: systemStandards
         })
     }
 
@@ -97,6 +112,15 @@ class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
                     content: this.settingPageSupportThickness.renderTableContent(this.state.thicknesses),
                     commonButton: () => {
                         this.props.appUrlContext.redirectTo(RouteConstant.THICKNESS_CREATE)
+                    }
+                }} />
+
+                <FrameworkComponents.Table {...{
+                    title: this.props.languageContext.current.getMessageString(MessageId.SYSTEM_STANDARD),
+                    header: this.settingPageSupportSystemStandard.renderHeader(),
+                    content: this.settingPageSupportSystemStandard.renderTableContent(this.state.systemStandards),
+                    commonButton: () => {
+                        this.props.appUrlContext.redirectTo(RouteConstant.SYSTEM_STANDARD_CREATE)
                     }
                 }} />
         </FrameworkComponents.BasePage>

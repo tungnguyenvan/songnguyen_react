@@ -65,5 +65,8 @@
 	"THICKNESS": "Thickness",
 	"M2_PRICE": "Price/square meters",
 	"THICKNESS_DETAIL": "Thickness detail",
-	"THICKNESS_CREATE": "Create new thickness"
+	"THICKNESS_CREATE": "Create new thickness",
+	"SYSTEM_STANDARD": "System standard",
+	"SYSTEM_STANDARD_DETAIL": "System standard detail",
+	"SYSTEM_STANDARD_CREATE": "Create new system standard"
 }
