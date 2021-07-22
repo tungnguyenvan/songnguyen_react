@@ -1,5 +1,6 @@
 import IProductNameModel from "app/documents/IProductNameModel";
 import IProductTypeModel from "app/documents/IProductTypeModel";
+import IStandardModel from "app/documents/IStandardModel";
 import ISystemStandardModel from "app/documents/ISystemStandardModel";
 import IThicknessModel from "app/documents/IThicknessModel";
 import FrameworkComponents from "framework/components/FrameworkComponents";
@@ -12,6 +13,7 @@ import IAppUrlContext from "framework/contexts/url/IAppUrlContext";
 import React from "react";
 import SettingPageSupportProductName from "./SettingPageSupportProductName";
 import SettingPageSupportProductType from "./SettingPageSupportProductType";
+import SettingPageSupportStandard from "./SettingPageSupportStandard";
 import SettingPageSupportSystemStandard from "./SettingPageSupportSystemStandard";
 import SettingPageSupportThickness from "./SettingPageSupportThickness";
 
@@ -26,6 +28,7 @@ interface SettingPageState {
     productNames: IProductNameModel[]
     thicknesses: IThicknessModel[]
     systemStandards: ISystemStandardModel[]
+    standards: IStandardModel[]
 }
 
 class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
@@ -33,6 +36,7 @@ class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
     private settingPageSupportProductName: SettingPageSupportProductName
     private settingPageSupportThickness: SettingPageSupportThickness
     private settingPageSupportSystemStandard: SettingPageSupportSystemStandard
+    private settingPageSupportStandard: SettingPageSupportStandard
 
     constructor(props: SettingPageProps) {
         super(props)
@@ -41,18 +45,21 @@ class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
             productTypes: [],
             productNames: [],
             thicknesses: [],
-            systemStandards: []
+            systemStandards: [],
+            standards: []
         }
 
         this.productTypeRequestCallback = this.productTypeRequestCallback.bind(this)
         this.productNameRequestCallback = this.productNameRequestCallback.bind(this)
         this.thicknessRequestCallback = this.thicknessRequestCallback.bind(this)
+        this.standardsRequestCallback = this.standardsRequestCallback.bind(this)
         this.SystemStandardRequestCallback = this.SystemStandardRequestCallback.bind(this)
         
         this.settingPageSupportProductType = new SettingPageSupportProductType(this.props.appUrlContext, this.props.appDialogContext, this.props.languageContext, this.productTypeRequestCallback)
         this.settingPageSupportProductName = new SettingPageSupportProductName(this.props.appUrlContext, this.props.appDialogContext, this.props.languageContext, this.productNameRequestCallback)
         this.settingPageSupportThickness = new SettingPageSupportThickness(this.props.appUrlContext, this.props.appDialogContext, this.props.languageContext, this.thicknessRequestCallback)
         this.settingPageSupportSystemStandard = new SettingPageSupportSystemStandard(this.props.appUrlContext, this.props.appDialogContext, this.props.languageContext, this.SystemStandardRequestCallback)
+        this.settingPageSupportStandard = new SettingPageSupportStandard(this.props.appUrlContext, this.props.appDialogContext, this.props.languageContext, this.standardsRequestCallback)
     }
 
     componentDidMount() {
@@ -60,6 +67,7 @@ class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
         this.settingPageSupportProductName.all()
         this.settingPageSupportThickness.all()
         this.settingPageSupportSystemStandard.all()
+        this.settingPageSupportStandard.all()
     }
 
     thicknessRequestCallback(thicknesses: IThicknessModel[]) {
@@ -83,6 +91,12 @@ class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
     SystemStandardRequestCallback(systemStandards: ISystemStandardModel[]) {
         this.setState({
             systemStandards: systemStandards
+        })
+    }
+
+    standardsRequestCallback(models: IStandardModel[]) {
+        this.setState({
+            standards: models
         })
     }
 
@@ -121,6 +135,15 @@ class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
                     content: this.settingPageSupportSystemStandard.renderTableContent(this.state.systemStandards),
                     commonButton: () => {
                         this.props.appUrlContext.redirectTo(RouteConstant.SYSTEM_STANDARD_CREATE)
+                    }
+                }} />
+
+                <FrameworkComponents.Table {...{
+                    title: this.props.languageContext.current.getMessageString(MessageId.STANDARD),
+                    header: this.settingPageSupportStandard.renderHeader(),
+                    content: this.settingPageSupportStandard.renderTableContent(this.state.standards),
+                    commonButton: () => {
+                        this.props.appUrlContext.redirectTo(RouteConstant.STANDARD_CREATE)
                     }
                 }} />
         </FrameworkComponents.BasePage>

@@ -2,52 +2,54 @@ import Mongoose from "mongoose";
 import BaseSchema from "@app/framework/core/BaseSchema";
 import IProductTypeDocument from "@app/app/documents/IProductTypeDocument";
 import DBNameConstant from "@app/framework/constants/DBNameConstant";
+import { FormType } from "../constants/EnumConstant";
 
 const document = {
-	name: {
-		require: true,
-		type: String,
-	},
+    name: {
+        require: true,
+        type: String,
+    },
 
-	createdAt: {
-		require: true,
-		type: Number,
-	},
+    form_type: {
+        type: String,
+        require: true,
+        enum: FormType,
+    },
 
-	createdBy: {
-		require: true,
-		ref: DBNameConstant.USER,
-		type: Mongoose.Types.ObjectId,
-	},
+    createdAt: {
+        require: true,
+        type: Number,
+    },
 
-	updatedAt: {
-		type: Number,
-		require: true,
-	},
+    createdBy: {
+        require: true,
+        ref: DBNameConstant.USER,
+        type: Mongoose.Types.ObjectId,
+    },
 
-	updatedBy: {
-		require: true,
-		ref: DBNameConstant.USER,
-		type: Mongoose.Types.ObjectId,
-	},
+    updatedAt: {
+        type: Number,
+        require: true,
+    },
 
-	deleteAt: {
-		require: true,
-		type: Number,
-	},
+    updatedBy: {
+        require: true,
+        ref: DBNameConstant.USER,
+        type: Mongoose.Types.ObjectId,
+    },
 
-	deleteBy: {
-		require: true,
-		ref: DBNameConstant.USER,
-		type: Mongoose.Types.ObjectId,
-	},
+    deleteAt: {
+        require: true,
+        type: Number,
+    },
+
+    deleteBy: {
+        require: true,
+        ref: DBNameConstant.USER,
+        type: Mongoose.Types.ObjectId,
+    },
 };
 
-const schema = new Mongoose.Schema(document)
-	.pre("save", BaseSchema.preSave)
-	.pre("updateOne", BaseSchema.preUpdate);
+const schema = new Mongoose.Schema(document).pre("save", BaseSchema.preSave).pre("updateOne", BaseSchema.preUpdate);
 
-export default (Mongoose.model<IProductTypeDocument>(
-	DBNameConstant.PRODUCT_TYPE,
-	schema
-) as unknown) as Mongoose.Model<Mongoose.Document>;
+export default Mongoose.model<IProductTypeDocument>(DBNameConstant.PRODUCT_TYPE, schema) as unknown as Mongoose.Model<Mongoose.Document>;

@@ -1,5 +1,6 @@
 import ProductTypeApiService from "app/api/ProductTypeApiService";
 import IProductTypeModel from "app/documents/IProductTypeModel";
+import AppUtils from "app/utils/AppUtils";
 import BaseApiService from "framework/api/BaseApiService";
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode";
 import MessageId from "framework/constants/MessageId";
@@ -48,6 +49,7 @@ class SettingPageSupportProductType implements ISettingPageSupport<IProductTypeM
     renderHeader(): string[] {
         return [
             this.languageContext.current.getMessageString(MessageId.PRODUCT_TYPE),
+            this.languageContext.current.getMessageString(MessageId.FORM_TYPE),
             this.languageContext.current.getMessageString(MessageId.EMPLOYEE),
             this.languageContext.current.getMessageString(MessageId.CREATED_TIME),
             this.languageContext.current.getMessageString(MessageId.ACTION),
@@ -65,6 +67,8 @@ class SettingPageSupportProductType implements ISettingPageSupport<IProductTypeM
                 content: [
                     // name
                     element.name,
+
+                    AppUtils.formTitle(element.form_type),
 
                     // created by
                     FrameworkUtils.userName(element.createdBy),

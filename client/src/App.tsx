@@ -35,6 +35,8 @@ import SystemStandardDetail from "app/pages/system_standard/SystemStandardDetail
 import SystemStandardCreate from "app/pages/system_standard/SystemStandardCreate";
 import StandardDetail from "app/pages/standard/StandardDetail";
 import StandardCreate from "app/pages/standard/StandardCreate";
+import ProductTypeDetail from "app/pages/product_type/ProductTypeDetail";
+import ProductTypeCreate from "app/pages/product_type/ProductTypeCreate";
 
 class App extends React.Component {
     private appLoadingContext!: IAppLoadingContext;
@@ -110,6 +112,16 @@ class App extends React.Component {
                                                         exact
                                                         path={RouteConstant.CUSTOMER_CREATE}
                                                         children={<CustomerCreate />}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path={RouteConstant.PRODUCT_TYPE_DETAIL}
+                                                        children={<ProductTypeDetail />}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path={RouteConstant.PRODUCT_TYPE_CREATE}
+                                                        children={<ProductTypeCreate />}
                                                     />
                                                     <Route
                                                         exact

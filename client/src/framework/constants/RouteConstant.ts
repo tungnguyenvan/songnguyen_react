@@ -11,6 +11,7 @@ enum RouteConstant {
     SETTING = "/setting",
 
     PRODUCT_TYPE = "/product_types",
+    PRODUCT_TYPE_DETAIL = "/product_types/:id",
     PRODUCT_TYPE_CREATE = "/product_type/new",
 
     PRODUCT_NAME = "/product_names",
