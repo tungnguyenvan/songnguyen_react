@@ -9,6 +9,22 @@ const document = {
         type: String,
     },
 
+    system_standard: {
+        require: true,
+        type: Mongoose.Types.ObjectId,
+        ref: DBNameConstant.SYSTEM_STANDARD,
+    },
+
+    coefficient: {
+        require: true,
+        type: Number,
+    },
+
+    bolt: {
+        require: true,
+        type: Number,
+    },
+
     createdAt: {
         require: true,
         type: Number,

@@ -46,6 +46,7 @@
 	"VALIDATE_TAX_CODE": "Chỉ nhận dữ liệu 10 - 13 chữ số",
 	"VALIDATE_EMAIL": "Không đúng định dạng email",
 	"VALIDATE_PHONE_NUMBER": "Số điện thoại cần 10 chữ số",
+	"VALIDATE_ONLY_FLOAT": "Chỉ nhận dữ liệu dạng số",
 	"CANNOT_UPDATE": "Không cập nhật được",
 	"CANNOT_UPDATE_DETAIL": "Quá trình cập nhật đã xảy ra lỗi, thử lại sau",
 	"UPDATE_SUCCESS": "Cập nhật thành công",
@@ -68,5 +69,10 @@
 	"THICKNESS_CREATE": "Tạo mới độ dày",
 	"SYSTEM_STANDARD": "Hệ tiêu chuẩn",
 	"SYSTEM_STANDARD_DETAIL": "Chi tiết hệ tiêu chuẩn",
-	"SYSTEM_STANDARD_CREATE": "Tạo mới hệ tiêu chuẩn"
+	"SYSTEM_STANDARD_CREATE": "Tạo mới hệ tiêu chuẩn",
+	"STANDARD": "Tiêu chuẩn",
+	"STANDARD_DETAIL": "Chi tiết tiêu chuẩn",
+	"STANDARD_CREATE": "Tạo mới tiêu chuẩn",
+	"COEFFICIENT": "Hệ số",
+	"BOLT": "Bolt"
 }

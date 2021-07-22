@@ -46,6 +46,7 @@
 	"VALIDATE_TAX_CODE": "Only access 10 - 13 number character",
 	"VALIDATE_EMAIL": "Not matching email format",
 	"VALIDATE_PHONE_NUMBER": "Phone number need 10 number character",
+	"VALIDATE_ONLY_FLOAT": "Only access number",
 	"CANNOT_UPDATE": "Cannot update",
 	"CANNOT_UPDATE_DETAIL": "Update process have a wrong, please try again later",
 	"UPDATE_SUCCESS": "Update success",
@@ -68,5 +69,10 @@
 	"THICKNESS_CREATE": "Create new thickness",
 	"SYSTEM_STANDARD": "System standard",
 	"SYSTEM_STANDARD_DETAIL": "System standard detail",
-	"SYSTEM_STANDARD_CREATE": "Create new system standard"
+	"SYSTEM_STANDARD_CREATE": "Create new system standard",
+	"STANDARD": "Standard",
+	"STANDARD_DETAIL": "Standard detail",
+	"STANDARD_CREATE": "Create new standard",
+	"COEFFICIENT": "Coefficient",
+	"BOLT": "Bolt"
 }
