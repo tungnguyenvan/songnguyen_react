@@ -59,6 +59,8 @@
 	"CONFIRM_REGISTRATION_CONTENT": "Do you want registration this information?",
 	"SETTING": "Setting",
 	"PRODUCT_TYPE": "Product type",
+	"PRODUCT_TYPE_DETAIL": "Product type detail",
+	"PRODUCT_TYPE_CREATE": "Create new product type",
 	"CREATED_TIME": "Created time",
 	"PRODUCT_NAME": "Product name",
 	"PRODUCT_NAME_DETAIL": "Product name detail",
@@ -74,5 +76,6 @@
 	"STANDARD_DETAIL": "Standard detail",
 	"STANDARD_CREATE": "Create new standard",
 	"COEFFICIENT": "Coefficient",
-	"BOLT": "Bolt"
+	"BOLT": "Bolt",
+	"FORM_TYPE": "Form type"
 }

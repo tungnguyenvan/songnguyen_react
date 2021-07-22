@@ -41,6 +41,7 @@ enum DBNameConstant {
     THICKNESS = "thickness",
     SYSTEM_STANDARD = "system_standards",
     STANDARD = "standards",
+    SIZE = "sizes",
 }
 
 export default DBNameConstant;
