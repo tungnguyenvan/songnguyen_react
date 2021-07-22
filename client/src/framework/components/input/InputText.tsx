@@ -8,7 +8,7 @@ import LanguageContext from "framework/contexts/lang/LanguageContext";
 interface IInputTextProps {
 	placeHolder: string;
 	type?: string;
-	value?: string;
+	value?: string | number;
 	readOnly?: boolean;
 	validate?: Rule[]
 }

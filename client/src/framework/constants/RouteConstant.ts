@@ -24,6 +24,10 @@ enum RouteConstant {
     SYSTEM_STANDARD = "/system_standards",
     SYSTEM_STANDARD_DETAIL = "/system_standards/:id",
     SYSTEM_STANDARD_CREATE = "/system_standard/new",
+
+    STANDARD = "/standards",
+    STANDARD_DETAIL = "/standards/:id",
+    STANDARD_CREATE = "/standard/new",
 }
 
 export default RouteConstant;

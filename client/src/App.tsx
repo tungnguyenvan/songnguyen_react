@@ -33,6 +33,8 @@ import ThicknessCreate from "app/pages/thickness/ThicknessCreate";
 import ThicknessDetail from "app/pages/thickness/ThicknessDetail";
 import SystemStandardDetail from "app/pages/system_standard/SystemStandardDetail";
 import SystemStandardCreate from "app/pages/system_standard/SystemStandardCreate";
+import StandardDetail from "app/pages/standard/StandardDetail";
+import StandardCreate from "app/pages/standard/StandardCreate";
 
 class App extends React.Component {
     private appLoadingContext!: IAppLoadingContext;
@@ -153,6 +155,16 @@ class App extends React.Component {
                                                         exact
                                                         path={RouteConstant.SYSTEM_STANDARD_CREATE}
                                                         children={<SystemStandardCreate />}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path={RouteConstant.STANDARD_DETAIL}
+                                                        children={<StandardDetail />}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path={RouteConstant.STANDARD_CREATE}
+                                                        children={<StandardCreate />}
                                                     />
                                                     <Route
                                                         exact
