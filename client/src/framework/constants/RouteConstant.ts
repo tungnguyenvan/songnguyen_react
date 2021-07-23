@@ -29,6 +29,10 @@ enum RouteConstant {
     STANDARD = "/standards",
     STANDARD_DETAIL = "/standards/:id",
     STANDARD_CREATE = "/standard/new",
+
+    SIZE = "/sizes",
+    SIZE_DETAIL = "/sizes/:id",
+    SIZE_CREATE = "/size/new",
 }
 
 export default RouteConstant;

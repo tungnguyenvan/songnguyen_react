@@ -20,6 +20,7 @@ import ProductNameRouter from "./routers/ProductNameRouter";
 import ThicknessRouter from "./routers/ThicknessRouter";
 import SystemStandardRouter from "./routers/SystemStandardRouter";
 import StandardRouter from "./routers/StandardRouter";
+import SizeRouter from "./routers/SizeRouter";
 
 const NAME_SPACE = "APPLICATION";
 // initialize application
@@ -77,5 +78,6 @@ application.use("/customer", new CustomerRouter().getRouter());
 application.use("/thickness", new ThicknessRouter().getRouter());
 application.use("/system_standard", new SystemStandardRouter().getRouter());
 application.use("/standard", new StandardRouter().getRouter());
+application.use("/size", new SizeRouter().getRouter());
 
 export default application;

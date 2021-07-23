@@ -129,8 +129,8 @@ class FrameworkUtils {
         // check validate
         for (const key in formRefInterface) {
             const input = FrameworkUtils.readProp(formRefInterface, key) as React.RefObject<IFromInputElement>;
-            if (input && !input.current?.isValid()) {
-                isValid = false;
+            if (input && input.current) {
+                if (!input.current.isValid()) isValid = false;
             }
         }
 
@@ -177,6 +177,13 @@ class FrameworkUtils {
         }
 
         return type;
+    }
+
+    public static setErrorMessage(formRefInterface: any, errorMessage: string) {
+        for (const key in formRefInterface) {
+            const element = FrameworkUtils.readProp(formRefInterface, key) as React.RefObject<IFromInputElement>;
+            if (element) element.current?.setErrorMessage(errorMessage);
+        }
     }
 }
 

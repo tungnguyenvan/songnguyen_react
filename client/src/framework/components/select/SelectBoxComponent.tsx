@@ -11,10 +11,11 @@ interface SelectBoxComponentProps {
     selectedId?: string
     required?: boolean
     errorMessage?: string
+    onChanged?: (selectedId: string) => void;
 }
 
 interface SelectBoxComponentState {
-    selectedId?: string
+    selectedId: string
 }
 
 class SelectBoxComponent extends React.Component<SelectBoxComponentProps, SelectBoxComponentState> implements IFromInputElement {
@@ -25,7 +26,7 @@ class SelectBoxComponent extends React.Component<SelectBoxComponentProps, Select
         super(props)
 
         this.state = {
-            selectedId: this.props.selectedId
+            selectedId: this.props.selectedId ? this.props.selectedId : ""
         }
 
         this.rootRef = React.createRef();
@@ -52,7 +53,7 @@ class SelectBoxComponent extends React.Component<SelectBoxComponentProps, Select
         this.baseFormControl.current?.onBlur()
         if (this.state.selectedId !== this.props.selectedId && prevProps.selectedId !== this.props.selectedId) {
             this.setState({
-                selectedId: this.props.selectedId
+                selectedId: this.props.selectedId ? this.props.selectedId : ""
             }, () => {
                 this.baseFormControl.current?.onFocus()
                 this.baseFormControl.current?.onBlur()
@@ -98,6 +99,10 @@ class SelectBoxComponent extends React.Component<SelectBoxComponentProps, Select
         this.setErrorMessage("")
         this.setState({
             selectedId: this.getValue().toString()
+        }, () => {
+            if (this.props.onChanged) {
+                this.props.onChanged(this.state.selectedId)
+            }
         })
     }
     

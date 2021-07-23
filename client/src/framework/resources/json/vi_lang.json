@@ -77,5 +77,14 @@
 	"STANDARD_CREATE": "Tạo mới tiêu chuẩn",
 	"COEFFICIENT": "Hệ số",
 	"BOLT": "Bolt",
-	"FORM_TYPE": "Loại form"
+	"FORM_TYPE": "Loại form",
+	"SIZE": "kích thước",
+	"SIZE_DETAIL": "Chi tiết kích thước",
+	"SIZE_CREATE": "Tạo mới kích thước",
+	"INNER_DIAMETER": "Đường kính trong",
+	"OUTER_DIAMETER": "Đường kính ngoài",
+	"HOLE_COUNT": "Số lỗ",
+	"HOLE_DIAMETER": "Đường kính lỗ",
+	"WORK_PRICE": "Giá công",
+	"MATERIAL_PRICE": "Giá vật liệu"
 }

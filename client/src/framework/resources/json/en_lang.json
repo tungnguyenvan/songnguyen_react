@@ -77,5 +77,14 @@
 	"STANDARD_CREATE": "Create new standard",
 	"COEFFICIENT": "Coefficient",
 	"BOLT": "Bolt",
-	"FORM_TYPE": "Form type"
+	"FORM_TYPE": "Form type",
+	"SIZE": "Size",
+	"SIZE_DETAIL": "Size detail",
+	"SIZE_CREATE": "Create new size",
+	"INNER_DIAMETER": "Inner diameter",
+	"OUTER_DIAMETER": "Outer diameter",
+	"HOLE_COUNT": "Hole count",
+	"HOLE_DIAMETER": "Hole diameter",
+	"WORK_PRICE": "Work price",
+	"MATERIAL_PRICE": "Material price"
 }

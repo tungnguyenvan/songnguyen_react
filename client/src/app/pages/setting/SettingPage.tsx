@@ -1,5 +1,6 @@
 import IProductNameModel from "app/documents/IProductNameModel";
 import IProductTypeModel from "app/documents/IProductTypeModel";
+import ISizeModel from "app/documents/ISizeModel";
 import IStandardModel from "app/documents/IStandardModel";
 import ISystemStandardModel from "app/documents/ISystemStandardModel";
 import IThicknessModel from "app/documents/IThicknessModel";
@@ -13,6 +14,7 @@ import IAppUrlContext from "framework/contexts/url/IAppUrlContext";
 import React from "react";
 import SettingPageSupportProductName from "./SettingPageSupportProductName";
 import SettingPageSupportProductType from "./SettingPageSupportProductType";
+import SettingPageSupportSize from "./SettingPageSupportSize";
 import SettingPageSupportStandard from "./SettingPageSupportStandard";
 import SettingPageSupportSystemStandard from "./SettingPageSupportSystemStandard";
 import SettingPageSupportThickness from "./SettingPageSupportThickness";
@@ -28,7 +30,8 @@ interface SettingPageState {
     productNames: IProductNameModel[]
     thicknesses: IThicknessModel[]
     systemStandards: ISystemStandardModel[]
-    standards: IStandardModel[]
+    standards: IStandardModel[],
+    sizes: ISizeModel[]
 }
 
 class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
@@ -37,6 +40,7 @@ class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
     private settingPageSupportThickness: SettingPageSupportThickness
     private settingPageSupportSystemStandard: SettingPageSupportSystemStandard
     private settingPageSupportStandard: SettingPageSupportStandard
+    private settingPageSupportSize: SettingPageSupportSize
 
     constructor(props: SettingPageProps) {
         super(props)
@@ -46,9 +50,11 @@ class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
             productNames: [],
             thicknesses: [],
             systemStandards: [],
-            standards: []
+            standards: [],
+            sizes: []
         }
 
+        this.sizesRequestCallback = this.sizesRequestCallback.bind(this)
         this.productTypeRequestCallback = this.productTypeRequestCallback.bind(this)
         this.productNameRequestCallback = this.productNameRequestCallback.bind(this)
         this.thicknessRequestCallback = this.thicknessRequestCallback.bind(this)
@@ -60,6 +66,7 @@ class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
         this.settingPageSupportThickness = new SettingPageSupportThickness(this.props.appUrlContext, this.props.appDialogContext, this.props.languageContext, this.thicknessRequestCallback)
         this.settingPageSupportSystemStandard = new SettingPageSupportSystemStandard(this.props.appUrlContext, this.props.appDialogContext, this.props.languageContext, this.SystemStandardRequestCallback)
         this.settingPageSupportStandard = new SettingPageSupportStandard(this.props.appUrlContext, this.props.appDialogContext, this.props.languageContext, this.standardsRequestCallback)
+        this.settingPageSupportSize = new SettingPageSupportSize(this.props.appUrlContext, this.props.appDialogContext, this.props.languageContext, this.sizesRequestCallback)
     }
 
     componentDidMount() {
@@ -68,6 +75,7 @@ class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
         this.settingPageSupportThickness.all()
         this.settingPageSupportSystemStandard.all()
         this.settingPageSupportStandard.all()
+        this.settingPageSupportSize.all()
     }
 
     thicknessRequestCallback(thicknesses: IThicknessModel[]) {
@@ -97,6 +105,12 @@ class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
     standardsRequestCallback(models: IStandardModel[]) {
         this.setState({
             standards: models
+        })
+    }
+
+    sizesRequestCallback(models: ISizeModel[]) {
+        this.setState({
+            sizes: models
         })
     }
 
@@ -144,6 +158,15 @@ class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
                     content: this.settingPageSupportStandard.renderTableContent(this.state.standards),
                     commonButton: () => {
                         this.props.appUrlContext.redirectTo(RouteConstant.STANDARD_CREATE)
+                    }
+                }} />
+
+                <FrameworkComponents.Table {...{
+                    title: this.props.languageContext.current.getMessageString(MessageId.SIZE),
+                    header: this.settingPageSupportSize.renderHeader(),
+                    content: this.settingPageSupportSize.renderTableContent(this.state.sizes),
+                    commonButton: () => {
+                        this.props.appUrlContext.redirectTo(RouteConstant.SIZE_CREATE)
                     }
                 }} />
         </FrameworkComponents.BasePage>
