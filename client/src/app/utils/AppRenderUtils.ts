@@ -1,3 +1,4 @@
+import IProductTypeModel from "app/documents/IProductTypeModel";
 import ISystemStandardModel from "app/documents/ISystemStandardModel";
 import { FormType } from "framework/constants/AppEnumConstant";
 import IMultipleOptionModel from "framework/documents/ui/IMultipleOptionItemModel";
@@ -32,6 +33,17 @@ class AppRenderUtils {
             title: AppUtils.formTitle(FormType.FORM_3),
         });
         return optios;
+    }
+
+    public static renderProductTypeSelectBox(models: IProductTypeModel[]): ISelectOptionModel[] {
+        const options: ISelectOptionModel[] = [];
+        models.forEach((element) => {
+            options.push({
+                id: element._id,
+                title: element.name,
+            });
+        });
+        return options;
     }
 }
 

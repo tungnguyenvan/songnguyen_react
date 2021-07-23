@@ -7,6 +7,7 @@ enum RequestPathConstant {
     THICKNESS = "thickness/",
     SYSTEM_STANDARD = "system_standard/",
     STANDARD = "standard/",
+    SIZE = "size/",
 }
 
 export default RequestPathConstant;
