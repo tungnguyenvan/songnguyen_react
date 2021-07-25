@@ -1,8 +1,6 @@
 import Mongoose from "mongoose";
 import IBaseModel from "@app/framework/interfaces/IBaseModel";
 import IBaseDocument from "@app/framework/interfaces/IBaseDocument";
-import Logging from "../utils/Logging";
-import { MongooseQueryParser } from "mongoose-query-parser";
 import AppUtil from "../utils/AppUtil";
 
 const NAME_SPACE = "BaseModel";
@@ -18,8 +16,8 @@ class BaseModel implements IBaseModel {
      * get all record
      * @author tung.nguyenvan
      */
-    all(): any {
-        return this.schema.find({});
+    all(query: any): any {
+        return this.schema.find(query);
     }
 
     /**

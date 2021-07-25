@@ -8,6 +8,7 @@ import FrameworkUtils from "framework/utils/FrameworkUtils"
 interface SelectBoxComponentProps {
     placeHolder: string;
     options: ISelectOptionModel[];
+    disable?: boolean
     selectedId?: string
     required?: boolean
     errorMessage?: string
@@ -111,6 +112,7 @@ class SelectBoxComponent extends React.Component<SelectBoxComponentProps, Select
             getValue={this.getValue}
             onFocusCallback={this.onFocusCallback}
             placeHolder={this.props.placeHolder}
+            disable={this.props.disable}
             ref={this.baseFormControl}>
             <select
                 className={Style.select__box__component}
@@ -122,7 +124,8 @@ class SelectBoxComponent extends React.Component<SelectBoxComponentProps, Select
                     this.baseFormControl.current?.onFocus()
                 }}
                 onSelect={this.baseFormControl.current?.onFocus}
-                value={this.state.selectedId}>
+                value={this.state.selectedId}
+                disabled={this.props.disable}>
                 <option value=''></option>
                 {
                     this.props.options.map(element => {

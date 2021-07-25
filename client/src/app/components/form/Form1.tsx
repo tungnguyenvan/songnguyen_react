@@ -1,4 +1,5 @@
 import ISizeModel from "app/documents/ISizeModel";
+import IStandardModel from "app/documents/IStandardModel";
 import FrameworkComponents from "framework/components/FrameworkComponents"
 import IFromInputElement from "framework/components/IFormInputElement";
 import AppConstant from "framework/constants/AppConstant";
@@ -13,6 +14,8 @@ interface Form1Props {
     languageContext: ILanguageContext
     isCalculatorModel: boolean
     size?: ISizeModel
+    standard?: IStandardModel
+    title?: string
 }
 
 interface IForm1ref {
@@ -101,7 +104,8 @@ class Form1 extends React.Component<Form1Props> implements IFromInputElement {
     }
 
     render() {
-        return <FrameworkComponents.BaseForm>
+        return <FrameworkComponents.BaseForm
+            title={this.props.title}>
             <FrameworkComponents.FormGroup>
                 <FrameworkComponents.InputText
                     ref={this.formRef.inputInnerDiameter}
@@ -131,11 +135,13 @@ class Form1 extends React.Component<Form1Props> implements IFromInputElement {
                 <FrameworkComponents.InputText
                     ref={this.formRef.inputCoefficient}
                     readOnly={true}
+                    value={this.props.standard?.coefficient}
                     placeHolder={this.props.languageContext.current.getMessageString(MessageId.COEFFICIENT)}
                     validate={this.formValidate.inputCoefficient} />
                 <FrameworkComponents.InputText
                     ref={this.formRef.inputBolt}
                     readOnly={true}
+                    value={this.props.standard?.bolt}
                     placeHolder={this.props.languageContext.current.getMessageString(MessageId.BOLT)}
                     validate={this.formValidate.inputBolt} />
             </FrameworkComponents.FormGroup>}

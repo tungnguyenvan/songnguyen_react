@@ -14,6 +14,7 @@ import { ReactComponent as Award } from "framework/resources/image/award.svg";
 import { ReactComponent as PersonChecked } from "framework/resources/image/person-check.svg";
 import { ReactComponent as App } from "framework/resources/image/app.svg";
 import { ReactComponent as Gear } from "framework/resources/image/gear.svg";
+import { ReactComponent as Calculator } from "framework/resources/image/calculator.svg"
 import RouteConstant from "framework/constants/RouteConstant";
 import UserLoginContext from "../user/UserLoginContext";
 
@@ -88,6 +89,11 @@ class NavigationProvider
 											icon={<App />}
 											title={context.current.getMessageString(MessageId.DASHBOARD)}
 											redirectTo={RouteConstant.DASHBOARD}
+										/>
+										<NavigationItemComponent
+											icon={<Calculator />}
+											title={context.current.getMessageString(MessageId.MAKE_ORDER)}
+											redirectTo={RouteConstant.MAKE_ORDER}
 										/>
 										<NavigationItemComponent
 											icon={<HomeIcon />}

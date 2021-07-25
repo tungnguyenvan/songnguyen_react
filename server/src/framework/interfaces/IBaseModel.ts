@@ -6,7 +6,7 @@ export default interface IBaseModel {
      * get all record
      * @author tung.nguyenvan
      */
-    all(): any;
+    all(query: any): any;
 
     /**
      * get one record by id

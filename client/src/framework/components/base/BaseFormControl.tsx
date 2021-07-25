@@ -11,6 +11,7 @@ import Style from "framework/resources/css/BaseFormControl.module.scss";
 interface IBaseFormControlProps {
 	children?: any;
 	placeHolder?: String;
+	disable?: boolean
 	getValue: () => String | Number;
 	onFocusCallback?: () => void;
 	onBlurCallback?: () => void;
@@ -107,6 +108,7 @@ class BaseFormControl extends React.Component<IBaseFormControlProps, IBaseFormCo
 		const baseFormControlContainerClass = ClassName(Style.base__form__control, {
 			[Style.focus]: this.state.isFocus,
 			[Style.error]: !FrameworkUtils.isBlank(this.state.errorMessage),
+			[Style.disable]: this.props.disable
 		});
 
 		const labelClass = ClassName(Style.label, {

@@ -18,7 +18,11 @@ export default class BaseRepository implements IBaseRepository {
 
     all(request: Express.Request): Promise<Mongoose.Document> {
         try {
-            return this.populate(this.model.all());
+            if (request.query.search) {
+                return this.populate(this.model.all(JSON.parse(request.query.search.toString())));
+            } else {
+                return this.populate(this.model.all({}));
+            }
         } finally {
             Logging.debug(NAME_SPACE, `${NAME_SPACE}#all END`);
         }

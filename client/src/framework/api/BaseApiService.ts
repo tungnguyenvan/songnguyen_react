@@ -11,7 +11,12 @@ class BaseApiService<T extends IBaseModel> {
         this.requestPathConst = requestPathConst;
     }
 
-    all(): Promise<IBaseResponse<T>> {
+    all(params?: any): Promise<IBaseResponse<T>> {
+        if (this.requestPathConst === RequestPathConstant.PRODUCT_NAME) {
+            return axios.get(this.requestPathConst, {
+                params: params,
+            });
+        }
         return axios.get(this.requestPathConst);
     }
 

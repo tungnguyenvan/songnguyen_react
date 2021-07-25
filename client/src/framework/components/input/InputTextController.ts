@@ -57,6 +57,7 @@ class InputTextController {
 
     onInputBlur() {
         this.baseFormRef.current?.onBlur();
+        this.inputRef.current.blur();
     }
 
     onInputFocus() {

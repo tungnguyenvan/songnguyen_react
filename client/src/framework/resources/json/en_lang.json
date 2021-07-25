@@ -86,5 +86,19 @@
 	"HOLE_COUNT": "Hole count",
 	"HOLE_DIAMETER": "Hole diameter",
 	"WORK_PRICE": "Work price",
-	"MATERIAL_PRICE": "Material price"
+	"MATERIAL_PRICE": "Material price",
+	"MAKE_ORDER": "Make order",
+	"AMOUNT": "Amount",
+	"DISCOUNT_TYPE": "Discount type",
+	"DISCOUNT": "Discount",
+	"INCREASE": "Increase",
+	"PERCENT": "Percent",
+	"UNIT_PRICE": "Unit price",
+	"TOTAL_AMOUNT": "Total amount",
+	"ADD_TO_CART": "Add to cart",
+	"PRODUCT_OPTION": "Product option",
+	"PRODUCT_INFORMATION": "Product information",
+	"ORDER_INFORMATION": "Order information",
+	"CALCULATED": "Calculated",
+	"VALIDATE_NEED_INPUT_PERCENT": "Need input percent number"
 }

@@ -4,4 +4,9 @@ enum FormType {
     FORM_3 = "FORM_3",
 }
 
-export { FormType };
+enum DiscountType {
+    DISCOUNT = "DISCOUNT",
+    INCREASE = "INCREASE",
+}
+
+export { FormType, DiscountType };
