@@ -82,4 +82,8 @@
 		transform: translate(0px, 18px);
 		opacity: 1;
 	}
+
+	&.disable {
+		filter: brightness(.9);
+	}
 }

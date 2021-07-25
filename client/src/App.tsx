@@ -39,6 +39,7 @@ import ProductTypeDetail from "app/pages/product_type/ProductTypeDetail";
 import ProductTypeCreate from "app/pages/product_type/ProductTypeCreate";
 import SizeDetail from "app/pages/size/SizeDetail";
 import SizeCreate from "app/pages/size/SizeCreate";
+import MakeOrderPage from "app/pages/make_order/MakeOrderPage";
 
 class App extends React.Component {
     private appLoadingContext!: IAppLoadingContext;
@@ -104,6 +105,11 @@ class App extends React.Component {
                                                         exact
                                                         path={RouteConstant.DASHBOARD}
                                                         children={<DashboardPage />}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path={RouteConstant.MAKE_ORDER}
+                                                        children={<MakeOrderPage />}
                                                     />
                                                     <Route
                                                         exact

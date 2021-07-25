@@ -34,12 +34,14 @@ class InputText extends React.Component<IInputTextProps, IInputTextState> implem
 	componentDidMount() {
 		if (this.props.value) {
 			this.inputTextController.onInputFocus()
+			this.inputTextController.onInputBlur()
 		}
 	}
 
 	componentDidUpdate() {
 		if (this.props.value) {
 			this.inputTextController.onInputFocus()
+			this.inputTextController.onInputBlur()
 		}
 	}
 
@@ -65,6 +67,7 @@ class InputText extends React.Component<IInputTextProps, IInputTextState> implem
 				placeHolder={this.props.placeHolder}
 				onFocusCallback={this.inputTextController.onFocus}
 				getValue={this.inputTextController.getValue}
+				disable={this.props.readOnly}
 			>
 				<input
 					ref={this.inputTextController.getInputRef()}

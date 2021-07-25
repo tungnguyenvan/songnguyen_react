@@ -86,5 +86,19 @@
 	"HOLE_COUNT": "Số lỗ",
 	"HOLE_DIAMETER": "Đường kính lỗ",
 	"WORK_PRICE": "Giá công",
-	"MATERIAL_PRICE": "Giá vật liệu"
+	"MATERIAL_PRICE": "Giá vật liệu",
+	"MAKE_ORDER": "Làm báo giá",
+	"AMOUNT": "Số lượng",
+	"DISCOUNT_TYPE": "Loại chiếc khấu",
+	"DISCOUNT": "Giảm giá",
+	"INCREASE": "Tăng giá",
+	"PERCENT": "Phần trăm",
+	"UNIT_PRICE": "Đơn giá",
+	"TOTAL_AMOUNT": "Tổng tiền",
+	"ADD_TO_CART": "Thêm vào giỏ hàng",
+	"PRODUCT_OPTION": "Tuỳ chọn sản phẩm",
+	"PRODUCT_INFORMATION": "Thông tin sản phẩm",
+	"ORDER_INFORMATION": "Thông tin đơn hàng",
+	"CALCULATED": "Tính tiền",
+	"VALIDATE_NEED_INPUT_PERCENT": "Cần nhập số phần trăm"
 }
