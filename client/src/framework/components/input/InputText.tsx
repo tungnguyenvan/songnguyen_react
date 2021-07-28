@@ -54,6 +54,8 @@ class InputText extends React.Component<IInputTextProps, IInputTextState> implem
 	}
 
 	isValid(): boolean {
+		if (this.props.readOnly) return true
+
 		if (this.props.validate) {
 			return this.inputTextController.isValid(this.props.validate)
 		}

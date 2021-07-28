@@ -2,6 +2,7 @@ import Mongoose from "mongoose";
 import BaseSchema from "@app/framework/core/BaseSchema";
 import ISizeDocument from "@app/app/documents/ISizeDocument";
 import DBNameConstant from "@app/framework/constants/DBNameConstant";
+import { GasketPTCShape } from "@app/framework/constants/DBEnumConstant";
 
 const document = {
     name: {
@@ -43,6 +44,19 @@ const document = {
         ref: DBNameConstant.PRODUCT_TYPE,
     },
 
+    shape_type: {
+        type: String,
+        enum: GasketPTCShape,
+    },
+
+    coefficient: {
+        type: Number,
+    }, // only for gasket PTC
+
+    bolt: {
+        type: Number,
+    }, // only for gasket PTC
+
     wn: {
         type: Number,
     },
@@ -64,6 +78,10 @@ const document = {
     },
 
     or: {
+        type: Number,
+    },
+
+    bl: {
         type: Number,
     },
 

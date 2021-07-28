@@ -9,4 +9,12 @@ enum DiscountType {
     INCREASE = "INCREASE",
 }
 
-export { FormType, DiscountType };
+enum GasketPTCShape {
+    RF_CIRCLE = "RF_CIRCLE",
+    FF_CIRCLE = "FF_CIRCLE",
+    RF_RECTANGLE = "RF_RECTANGLE",
+    FF_RECTANGLE = "FF_RECTANGLE",
+    FF_MANHOLE = "FF_MANHOLE",
+}
+
+export { FormType, DiscountType, GasketPTCShape };

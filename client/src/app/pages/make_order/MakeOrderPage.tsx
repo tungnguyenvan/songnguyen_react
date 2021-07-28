@@ -5,6 +5,7 @@ import StandardApiService from "app/api/StandardApiService"
 import SystemStandardApiService from "app/api/SystemStandardApiService"
 import ThicknessApiService from "app/api/ThicknessApiService"
 import Form1 from "app/components/form/Form1"
+import Form2 from "app/components/form/Form2"
 import IProductNameModel from "app/documents/IProductNameModel"
 import IProductTypeModel from "app/documents/IProductTypeModel"
 import ISizeModel from "app/documents/ISizeModel"
@@ -15,7 +16,7 @@ import AppRenderUtils from "app/utils/AppRenderUtils"
 import FrameworkComponents from "framework/components/FrameworkComponents"
 import IFromInputElement from "framework/components/IFormInputElement"
 import AppConstant from "framework/constants/AppConstant"
-import { DiscountType, FormType } from "framework/constants/AppEnumConstant"
+import { DiscountType, FormType, GasketPTCShape } from "framework/constants/AppEnumConstant"
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant"
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
 import MessageId from "framework/constants/MessageId"
@@ -123,6 +124,7 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
         this.sizeOnChanged = this.sizeOnChanged.bind(this)
         this.validateInForm = this.validateInForm.bind(this)
         this.calculatorForm1 = this.calculatorForm1.bind(this)
+        this.calculatorForm2 = this.calculatorForm2.bind(this)
         this.standardOnChanged = this.standardOnChanged.bind(this)
         this.thicknessOnChanged = this.thicknessOnChanged.bind(this)
         this.productTypeOnChanged = this.productTypeOnChanged.bind(this)
@@ -254,6 +256,11 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                 switch (this.state.formType) {
                     case FormType.FORM_1: {
                         this.calculatorForm1(sizeModel)
+                        break
+                    }
+                    case FormType.FORM_2: {
+                        this.calculatorForm2(sizeModel)
+                        break
                     }
                 }
             }
@@ -299,6 +306,46 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
         let dtPrice = (this.makeOrderForm.priceSquareMeter.current.getValue() as number) * dt
         let tempValue = dtPrice + sizeModel.work_price + sizeModel.material_price
         tempValue = Math.round(tempValue / 1000) * 1000
+        let totalAmount = tempValue * (this.makeOrderForm.amount.current.getValue() as number)
+        this.setState({
+            unitPrice: tempValue
+        })
+
+        // calculator discount
+        if (discountType === DiscountType.DISCOUNT) {
+            totalAmount = totalAmount - (totalAmount * discountPercent)
+        } else if (discountType === DiscountType.INCREASE) {
+            totalAmount = totalAmount + (totalAmount * discountPercent/100)
+        }
+        this.setState({
+            totalAmount: totalAmount
+        })
+    }
+
+    calculatorForm2(sizeModel: ISizeModel) {
+        console.log(sizeModel)
+        const discountPercent = this.makeOrderForm.percent.current.getValue() as number
+        const discountType = this.makeOrderForm.discountType.current.getValue() as DiscountType
+        let dt = 0
+        switch(sizeModel.shape_type) {
+            case GasketPTCShape.RF_CIRCLE:
+            case GasketPTCShape.FF_CIRCLE: {
+                dt = (sizeModel.outer_diameter * OUTER_EXTRAS) / 1000
+                let dtp = dt * dt
+                let coreDiscount = 0
+
+                if (sizeModel.inner_diameter > MIN_INNER_DIAMETER) {
+                    coreDiscount = Math.PI * (Math.pow(sizeModel.inner_diameter / 1000, 2) / 4)
+                }
+
+                dt = parseFloat((dtp - coreDiscount).toFixed(2))
+                break;
+            }
+        }
+
+        let dtPrice = (this.makeOrderForm.priceSquareMeter.current.getValue() as number) * dt
+        let tempValue = dtPrice + sizeModel.work_price + sizeModel.material_price
+        tempValue = parseFloat((tempValue / 1000).toFixed(1)) * 1000
         let totalAmount = tempValue * (this.makeOrderForm.amount.current.getValue() as number)
         this.setState({
             unitPrice: tempValue
@@ -394,6 +441,13 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                 size={this.state.sizeSelected}
                 standard={this.state.standardSelected}
                 ref={this.makeOrderForm.form} />}
+
+            {(this.state.formType === FormType.FORM_2) &&
+            <Form2
+                title={this.props.languageContext.current.getMessageString(MessageId.PRODUCT_INFORMATION)}
+                ref={this.makeOrderForm.form}
+                languageContext={this.props.languageContext}
+                isCalculatorModel={true} />}
             
             <FrameworkComponents.BaseForm title={this.props.languageContext.current.getMessageString(MessageId.ORDER_INFORMATION)}>
                 <FrameworkComponents.FormGroup>
