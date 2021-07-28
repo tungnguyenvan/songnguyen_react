@@ -100,5 +100,18 @@
 	"PRODUCT_INFORMATION": "Thông tin sản phẩm",
 	"ORDER_INFORMATION": "Thông tin đơn hàng",
 	"CALCULATED": "Tính tiền",
-	"VALIDATE_NEED_INPUT_PERCENT": "Cần nhập số phần trăm"
+	"VALIDATE_NEED_INPUT_PERCENT": "Cần nhập số phần trăm",
+	"CHOOSE_SHAPE": "Chọn hình dạng",
+	"RF_CIRCLE": "Hình tròn RF",
+	"FF_CIRCLE": "Hình tròn FF",
+	"RF_RECTANGLE": "Tứ giá RF",
+	"FF_RECTANGLE": "Tứ giá FF",
+	"FF_MANHOLE": "Manhole FF",
+	"WN_DIAMETER": "WN",
+	"WT_DIAMETER": "WT",
+	"LN_DIAMETER": "LN",
+	"LT_DIAMETER": "LT",
+	"IR_DIAMETER": "IR",
+	"OR_DIAMETER": "OR",
+	"BL": "BL"
 }

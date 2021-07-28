@@ -4,7 +4,7 @@ import ISizeModel from "app/documents/ISizeModel";
 import IStandardModel from "app/documents/IStandardModel";
 import ISystemStandardModel from "app/documents/ISystemStandardModel";
 import IThicknessModel from "app/documents/IThicknessModel";
-import { DiscountType, FormType } from "framework/constants/AppEnumConstant";
+import { DiscountType, FormType, GasketPTCShape } from "framework/constants/AppEnumConstant";
 import MessageId from "framework/constants/MessageId";
 import ILanguageContext from "framework/contexts/lang/ILanguageContext";
 import IMultipleOptionModel from "framework/documents/ui/IMultipleOptionItemModel";
@@ -105,6 +105,31 @@ class AppRenderUtils {
         options.push({
             id: DiscountType.INCREASE.toString(),
             title: languageContext.current.getMessageString(MessageId.INCREASE),
+        });
+        return options;
+    }
+
+    public static renderChooseShape(languageContext: ILanguageContext): ISelectOptionModel[] {
+        const options: ISelectOptionModel[] = [];
+        options.push({
+            id: GasketPTCShape.RF_CIRCLE,
+            title: languageContext.current.getMessageString(MessageId.RF_CIRCLE),
+        });
+        options.push({
+            id: GasketPTCShape.FF_CIRCLE,
+            title: languageContext.current.getMessageString(MessageId.FF_CIRCLE),
+        });
+        options.push({
+            id: GasketPTCShape.RF_RECTANGLE,
+            title: languageContext.current.getMessageString(MessageId.RF_RECTANGLE),
+        });
+        options.push({
+            id: GasketPTCShape.FF_RECTANGLE,
+            title: languageContext.current.getMessageString(MessageId.FF_RECTANGLE),
+        });
+        options.push({
+            id: GasketPTCShape.FF_MANHOLE,
+            title: languageContext.current.getMessageString(MessageId.FF_MANHOLE),
         });
         return options;
     }

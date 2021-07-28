@@ -63,7 +63,7 @@ class SelectBoxComponent extends React.Component<SelectBoxComponentProps, Select
     }
 
     isValid(): boolean {
-        if (!this.props.required) return true
+        if (!this.props.required || this.props.disable) return true
 
         if (!FrameworkUtils.isBlank(this.getValue())) {
             this.setErrorMessage("")

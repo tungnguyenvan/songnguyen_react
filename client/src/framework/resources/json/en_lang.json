@@ -100,5 +100,18 @@
 	"PRODUCT_INFORMATION": "Product information",
 	"ORDER_INFORMATION": "Order information",
 	"CALCULATED": "Calculated",
-	"VALIDATE_NEED_INPUT_PERCENT": "Need input percent number"
+	"VALIDATE_NEED_INPUT_PERCENT": "Need input percent number",
+	"CHOOSE_SHAPE": "Choose shape",
+	"RF_CIRCLE": "Circle RF",
+	"FF_CIRCLE": "Circle FF",
+	"RF_RECTANGLE": "Rectangle RF",
+	"FF_RECTANGLE": "Rectangle FF",
+	"FF_MANHOLE": "Manhole FF",
+	"WN_DIAMETER": "WN",
+	"WT_DIAMETER": "WT",
+	"LN_DIAMETER": "LN",
+	"LT_DIAMETER": "LT",
+	"IR_DIAMETER": "IR",
+	"OR_DIAMETER": "OR",
+	"BL": "BL"
 }
