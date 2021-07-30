@@ -99,6 +99,12 @@ class BaseFormControl extends React.Component<IBaseFormControlProps, IBaseFormCo
 		FrameworkUtils.executeWhenNotNull(this.props.onBlurCallback);
 	}
 
+	setBlurHaveValue() {
+		this.setState({
+			isNotBlankData: true
+		})
+	}
+
 	/**
 	 * Render HTML
 	 * @returns UI

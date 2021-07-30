@@ -113,5 +113,7 @@
 	"LT_DIAMETER": "LT",
 	"IR_DIAMETER": "IR",
 	"OR_DIAMETER": "OR",
-	"BL": "BL"
+	"BL": "BL",
+	"WIDTH": "Width",
+	"LENGTH": "Length"
 }

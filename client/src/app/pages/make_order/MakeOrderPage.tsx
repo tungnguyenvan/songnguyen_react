@@ -6,6 +6,7 @@ import SystemStandardApiService from "app/api/SystemStandardApiService"
 import ThicknessApiService from "app/api/ThicknessApiService"
 import Form1 from "app/components/form/Form1"
 import Form2 from "app/components/form/Form2"
+import Form3 from "app/components/form/Form3"
 import IProductNameModel from "app/documents/IProductNameModel"
 import IProductTypeModel from "app/documents/IProductTypeModel"
 import ISizeModel from "app/documents/ISizeModel"
@@ -14,7 +15,7 @@ import ISystemStandardModel from "app/documents/ISystemStandardModel"
 import IThicknessModel from "app/documents/IThicknessModel"
 import AppRenderUtils from "app/utils/AppRenderUtils"
 import FrameworkComponents from "framework/components/FrameworkComponents"
-import IFromInputElement from "framework/components/IFormInputElement"
+import IFormInputElement from "framework/components/IFormInputElement"
 import AppConstant from "framework/constants/AppConstant"
 import { DiscountType, FormType, GasketPTCShape } from "framework/constants/AppEnumConstant"
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant"
@@ -89,19 +90,19 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
         this.systemStandardApiService = new SystemStandardApiService()
 
         this.makeOrderForm = {
-            productType: React.createRef<IFromInputElement>(),
-            productName: React.createRef<IFromInputElement>(),
-            thickness: React.createRef<IFromInputElement>(),
-            priceSquareMeter: React.createRef<IFromInputElement>(),
-            systemStandard: React.createRef<IFromInputElement>(),
-            standard: React.createRef<IFromInputElement>(),
-            size: React.createRef<IFromInputElement>(),
-            form: React.createRef<IFromInputElement>(),
-            amount: React.createRef<IFromInputElement>(),
-            discountType: React.createRef<IFromInputElement>(),
-            percent: React.createRef<IFromInputElement>(),
-            unitPrice: React.createRef<IFromInputElement>(),
-            totalAmount: React.createRef<IFromInputElement>()
+            productType: React.createRef<IFormInputElement>(),
+            productName: React.createRef<IFormInputElement>(),
+            thickness: React.createRef<IFormInputElement>(),
+            priceSquareMeter: React.createRef<IFormInputElement>(),
+            systemStandard: React.createRef<IFormInputElement>(),
+            standard: React.createRef<IFormInputElement>(),
+            size: React.createRef<IFormInputElement>(),
+            form: React.createRef<IFormInputElement>(),
+            amount: React.createRef<IFormInputElement>(),
+            discountType: React.createRef<IFormInputElement>(),
+            percent: React.createRef<IFormInputElement>(),
+            unitPrice: React.createRef<IFormInputElement>(),
+            totalAmount: React.createRef<IFormInputElement>()
         }
 
         this.state = {
@@ -125,6 +126,7 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
         this.validateInForm = this.validateInForm.bind(this)
         this.calculatorForm1 = this.calculatorForm1.bind(this)
         this.calculatorForm2 = this.calculatorForm2.bind(this)
+        this.calculatorForm3 = this.calculatorForm3.bind(this)
         this.standardOnChanged = this.standardOnChanged.bind(this)
         this.thicknessOnChanged = this.thicknessOnChanged.bind(this)
         this.productTypeOnChanged = this.productTypeOnChanged.bind(this)
@@ -262,6 +264,10 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                         this.calculatorForm2(sizeModel)
                         break
                     }
+                    case FormType.FORM_3: {
+                        this.calculatorForm3(sizeModel)
+                        break
+                    }
                 }
             }
         }
@@ -313,7 +319,30 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
 
         // calculator discount
         if (discountType === DiscountType.DISCOUNT) {
-            totalAmount = totalAmount - (totalAmount * discountPercent)
+            totalAmount = totalAmount - (totalAmount * discountPercent / 100)
+        } else if (discountType === DiscountType.INCREASE) {
+            totalAmount = totalAmount + (totalAmount * discountPercent/100)
+        }
+        this.setState({
+            totalAmount: totalAmount
+        })
+    }
+
+    calculatorForm3(sizeModel: ISizeModel) {
+        const discountPercent = parseFloat(this.makeOrderForm.percent.current.getValue())
+        const discountType = this.makeOrderForm.discountType.current.getValue() as DiscountType
+
+        const dt = (sizeModel.wt * OUTER_EXTRAS) * (sizeModel.lt * OUTER_EXTRAS)
+        let dtPrice = dt * parseFloat(this.makeOrderForm.priceSquareMeter.current.getValue())
+        dtPrice = parseFloat((dtPrice / 1000).toFixed(1)) * 1000
+        let totalAmount = dtPrice * parseFloat(this.makeOrderForm.amount.current.getValue())
+        this.setState({
+            unitPrice: dtPrice
+        })
+
+        // calculator discount
+        if (discountType === DiscountType.DISCOUNT) {
+            totalAmount = totalAmount - (totalAmount * discountPercent / 100)
         } else if (discountType === DiscountType.INCREASE) {
             totalAmount = totalAmount + (totalAmount * discountPercent/100)
         }
@@ -323,7 +352,6 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
     }
 
     calculatorForm2(sizeModel: ISizeModel) {
-        console.log(sizeModel)
         const discountPercent = this.makeOrderForm.percent.current.getValue() as number
         const discountType = this.makeOrderForm.discountType.current.getValue() as DiscountType
         let dt = 0
@@ -338,14 +366,49 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                     coreDiscount = Math.PI * (Math.pow(sizeModel.inner_diameter / 1000, 2) / 4)
                 }
 
-                dt = parseFloat((dtp - coreDiscount).toFixed(2))
-                break;
+                dt = (dtp - coreDiscount)
+                break
+            }
+            case GasketPTCShape.RF_RECTANGLE:
+            case GasketPTCShape.FF_RECTANGLE: {
+                dt = (sizeModel.ln * sizeModel.wn) * OUTER_EXTRAS
+                let coreDiscount = 0
+
+                if (sizeModel.wt > MIN_INNER_DIAMETER && sizeModel.lt > MIN_INNER_DIAMETER) {
+                    coreDiscount = (sizeModel.wt * sizeModel.lt) * 0.8
+                }
+
+                dt = parseFloat((dt - coreDiscount).toFixed(2))
+                break
+            }
+            case GasketPTCShape.FF_MANHOLE: {
+                break
             }
         }
 
-        let dtPrice = (this.makeOrderForm.priceSquareMeter.current.getValue() as number) * dt
-        let tempValue = dtPrice + sizeModel.work_price + sizeModel.material_price
-        tempValue = parseFloat((tempValue / 1000).toFixed(1)) * 1000
+        let dtPrice = parseFloat((this.makeOrderForm.priceSquareMeter.current.getValue())) * dt
+
+        // re-calculator in form 2
+        switch(sizeModel.shape_type) {
+            case GasketPTCShape.RF_CIRCLE:
+            case GasketPTCShape.FF_CIRCLE: {
+                this.makeOrderForm.form.current.setMaterialPrice(parseFloat(dtPrice.toFixed(0)))
+                break
+            }
+            case GasketPTCShape.FF_RECTANGLE:
+            case GasketPTCShape.FF_MANHOLE:
+            case GasketPTCShape.RF_RECTANGLE: {
+                this.makeOrderForm.form.current.setMaterialPrice(
+                    FrameworkUtils.calculatorMaterialPriceRectangle(sizeModel, (this.makeOrderForm.amount.current.getValue() as number))
+                )
+            }
+        }
+        const newSize = this.makeOrderForm.form.current.getValue()
+
+        let tempValue = parseFloat((dtPrice + newSize.work_price + newSize.material_price))
+        tempValue = tempValue / 1000
+        tempValue = parseFloat(tempValue.toFixed(1))
+        tempValue *= 1000
         let totalAmount = tempValue * (this.makeOrderForm.amount.current.getValue() as number)
         this.setState({
             unitPrice: tempValue
@@ -353,7 +416,7 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
 
         // calculator discount
         if (discountType === DiscountType.DISCOUNT) {
-            totalAmount = totalAmount - (totalAmount * discountPercent)
+            totalAmount = totalAmount - (totalAmount * discountPercent / 100)
         } else if (discountType === DiscountType.INCREASE) {
             totalAmount = totalAmount + (totalAmount * discountPercent/100)
         }
@@ -448,6 +511,12 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                 ref={this.makeOrderForm.form}
                 languageContext={this.props.languageContext}
                 isCalculatorModel={true} />}
+            
+            {(this.state.formType === FormType.FORM_3) &&
+            <Form3
+                languageContext={this.props.languageContext}
+                ref={this.makeOrderForm.form}
+                title={this.props.languageContext.current.getMessageString(MessageId.PRODUCT_INFORMATION)} />}
             
             <FrameworkComponents.BaseForm title={this.props.languageContext.current.getMessageString(MessageId.ORDER_INFORMATION)}>
                 <FrameworkComponents.FormGroup>

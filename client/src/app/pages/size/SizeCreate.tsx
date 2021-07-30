@@ -5,7 +5,7 @@ import IProductTypeModel from "app/documents/IProductTypeModel"
 import ISizeModel from "app/documents/ISizeModel"
 import AppRenderUtils from "app/utils/AppRenderUtils"
 import FrameworkComponents from "framework/components/FrameworkComponents"
-import IFromInputElement from "framework/components/IFormInputElement"
+import IFormInputElement from "framework/components/IFormInputElement"
 import { FormType } from "framework/constants/AppEnumConstant"
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant"
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
@@ -46,9 +46,9 @@ class SizeCreate extends React.Component<SizeCreateProps, SizeCreateState> {
         super(props)
 
         this.sizeFormRef = {
-            selectBoxProductType: React.createRef<IFromInputElement>(),
-            inputName: React.createRef<IFromInputElement>(),
-            form: React.createRef<IFromInputElement>()
+            selectBoxProductType: React.createRef<IFormInputElement>(),
+            inputName: React.createRef<IFormInputElement>(),
+            form: React.createRef<IFormInputElement>()
         }
 
         this.state = {

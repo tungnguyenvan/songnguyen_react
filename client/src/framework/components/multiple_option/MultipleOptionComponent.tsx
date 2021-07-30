@@ -1,6 +1,6 @@
 import React from "react"
 import ClassNames from "classnames"
-import IFromInputElement from "../IFormInputElement"
+import IFormInputElement from "../IFormInputElement"
 import Style from "framework/resources/css/MultipleOptionComponent.module.scss"
 import MultipleOptionItemComponent from "./MultipleOptionItemComponent"
 import IMultipleOptionModel from "framework/documents/ui/IMultipleOptionItemModel"
@@ -18,7 +18,7 @@ interface MultipleOptionComponentState {
     errorMessage: string
 }
 
-class MultipleOptionComponent extends React.Component<MultipleOptionComponentProps, MultipleOptionComponentState> implements IFromInputElement {
+class MultipleOptionComponent extends React.Component<MultipleOptionComponentProps, MultipleOptionComponentState> implements IFormInputElement {
 
     constructor(props: MultipleOptionComponentProps) {
         super(props)

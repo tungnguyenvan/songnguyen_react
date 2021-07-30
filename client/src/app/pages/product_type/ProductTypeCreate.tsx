@@ -2,7 +2,7 @@ import ProductTypeApiService from "app/api/ProductTypeApiService"
 import IProductTypeModel from "app/documents/IProductTypeModel"
 import AppRenderUtils from "app/utils/AppRenderUtils"
 import FrameworkComponents from "framework/components/FrameworkComponents"
-import IFromInputElement from "framework/components/IFormInputElement"
+import IFormInputElement from "framework/components/IFormInputElement"
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant"
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
 import MessageId from "framework/constants/MessageId"
@@ -33,8 +33,8 @@ class ProductTypeCreate extends React.Component<ProductTypeDetailProps> {
 
         this.productTypeApiService = new ProductTypeApiService();
         this.productTypeFormRef = {
-            inputName: React.createRef<IFromInputElement>(),
-            formTypeSelectBox: React.createRef<IFromInputElement>()
+            inputName: React.createRef<IFormInputElement>(),
+            formTypeSelectBox: React.createRef<IFormInputElement>()
         }
         this.productTypeFormValidate = {
             inputName: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE)],

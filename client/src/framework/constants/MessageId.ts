@@ -115,6 +115,8 @@ enum MessageId {
     IR_DIAMETER = "IR_DIAMETER",
     OR_DIAMETER = "OR_DIAMETER",
     BL = "BL",
+    WIDTH = "WIDTH",
+    LENGTH = "LENGTH",
 }
 
 export default MessageId;
