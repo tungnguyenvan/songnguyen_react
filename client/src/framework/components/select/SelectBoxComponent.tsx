@@ -1,6 +1,6 @@
 import React from "react"
 import BaseFormControl from "../base/BaseFormControl"
-import IFromInputElement from "../IFormInputElement"
+import IFormInputElement from "../IFormInputElement"
 import Style from "framework/resources/css/SelectBoxComponent.module.scss"
 import ISelectOptionModel from "framework/documents/ui/ISelectOptionModel"
 import FrameworkUtils from "framework/utils/FrameworkUtils"
@@ -19,7 +19,7 @@ interface SelectBoxComponentState {
     selectedId: string
 }
 
-class SelectBoxComponent extends React.Component<SelectBoxComponentProps, SelectBoxComponentState> implements IFromInputElement {
+class SelectBoxComponent extends React.Component<SelectBoxComponentProps, SelectBoxComponentState> implements IFormInputElement {
     private rootRef: React.RefObject<any>
     private baseFormControl: React.RefObject<BaseFormControl>
 

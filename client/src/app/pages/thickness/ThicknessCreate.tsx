@@ -3,7 +3,7 @@ import ThicknessApiService from "app/api/ThicknessApiService"
 import IProductNameModel from "app/documents/IProductNameModel"
 import IThicknessModel from "app/documents/IThicknessModel"
 import FrameworkComponents from "framework/components/FrameworkComponents"
-import IFromInputElement from "framework/components/IFormInputElement"
+import IFormInputElement from "framework/components/IFormInputElement"
 import AppConstant from "framework/constants/AppConstant"
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant"
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
@@ -40,9 +40,9 @@ class ThicknessCreate extends React.Component<ThicknessCreateProps, ThicknessCre
         super(props)
 
         this.thicknessFormRef = {
-            inputName: React.createRef<IFromInputElement>(),
-            inputPrice: React.createRef<IFromInputElement>(),
-            selectBoxProductName: React.createRef<IFromInputElement>()
+            inputName: React.createRef<IFormInputElement>(),
+            inputPrice: React.createRef<IFormInputElement>(),
+            selectBoxProductName: React.createRef<IFormInputElement>()
         }
         this.thicknessFormValidate = {
             inputName: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE)],

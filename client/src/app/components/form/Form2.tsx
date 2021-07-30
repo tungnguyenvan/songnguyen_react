@@ -11,7 +11,7 @@ import FFCircleResource from "app/resources/image/2.png"
 import RFRectangleResource from "app/resources/image/3.png"
 import FFRectangleResource from "app/resources/image/4.png"
 import FFManholeResource from "app/resources/image/5.png"
-import IFromInputElement from "framework/components/IFormInputElement"
+import IFormInputElement from "framework/components/IFormInputElement"
 import FrameworkUtils from "framework/utils/FrameworkUtils"
 import Rule from "framework/documents/models/Rule"
 import RuleConstant from "framework/constants/RuleConstant"
@@ -47,6 +47,8 @@ interface IForm2FormRef {
     holeCount: React.RefObject<any>
     holeDiameter: React.RefObject<any>
     bl: React.RefObject<any>
+    bolt: React.RefObject<any>
+    coefficient: React.RefObject<any>
     materialPrice: React.RefObject<any>
     workPrice: React.RefObject<any>
 }
@@ -91,7 +93,7 @@ const shapeResources: IShapeResource[] = [
     }
 ]
 
-class Form2 extends React.Component<Form2Props, Form2State> implements IFromInputElement {
+class Form2 extends React.Component<Form2Props, Form2State> implements IFormInputElement {
     private formRef: IForm2FormRef
     private formValidate: IFrom2FromValidate
 
@@ -99,20 +101,22 @@ class Form2 extends React.Component<Form2Props, Form2State> implements IFromInpu
         super(props)
 
         this.formRef = {
-            shapeType: React.createRef<IFromInputElement>(),
-            innerDiameter: React.createRef<IFromInputElement>(),
-            outerDiameter: React.createRef<IFromInputElement>(),
-            wnDiameter: React.createRef<IFromInputElement>(),
-            wtDiameter: React.createRef<IFromInputElement>(),
-            lnDiameter: React.createRef<IFromInputElement>(),
-            ltDiameter: React.createRef<IFromInputElement>(),
-            irDiameter: React.createRef<IFromInputElement>(),
-            orDiameter: React.createRef<IFromInputElement>(),
-            holeCount: React.createRef<IFromInputElement>(),
-            holeDiameter: React.createRef<IFromInputElement>(),
-            bl: React.createRef<IFromInputElement>(),
-            materialPrice: React.createRef<IFromInputElement>(),
-            workPrice: React.createRef<IFromInputElement>()
+            shapeType: React.createRef<IFormInputElement>(),
+            innerDiameter: React.createRef<IFormInputElement>(),
+            outerDiameter: React.createRef<IFormInputElement>(),
+            wnDiameter: React.createRef<IFormInputElement>(),
+            wtDiameter: React.createRef<IFormInputElement>(),
+            lnDiameter: React.createRef<IFormInputElement>(),
+            ltDiameter: React.createRef<IFormInputElement>(),
+            irDiameter: React.createRef<IFormInputElement>(),
+            orDiameter: React.createRef<IFormInputElement>(),
+            holeCount: React.createRef<IFormInputElement>(),
+            holeDiameter: React.createRef<IFormInputElement>(),
+            bl: React.createRef<IFormInputElement>(),
+            bolt: React.createRef<IFormInputElement>(),
+            coefficient: React.createRef<IFormInputElement>(),
+            materialPrice: React.createRef<IFormInputElement>(),
+            workPrice: React.createRef<IFormInputElement>()
         }
 
         this.formValidate = {
@@ -140,8 +144,11 @@ class Form2 extends React.Component<Form2Props, Form2State> implements IFromInpu
         this.isValid = this.isValid.bind(this)
         this.getValue = this.getValue.bind(this)
         this.isChanged = this.isChanged.bind(this)
+        this.innerOnChange = this.innerOnChange.bind(this)
         this.setErrorMessage = this.setErrorMessage.bind(this)
+        this.setMaterialPrice = this.setMaterialPrice.bind(this)
         this.chooseShapeOnChanged = this.chooseShapeOnChanged.bind(this)
+        this.holeDiameterOnChange = this.holeDiameterOnChange.bind(this)
     }
 
     isValid(): boolean {
@@ -236,6 +243,25 @@ class Form2 extends React.Component<Form2Props, Form2State> implements IFromInpu
         FrameworkUtils.formClear(this.formRef)
     }
 
+    innerOnChange() {
+        switch(this.state.shapeChoosed.shapeType) {
+            case GasketPTCShape.RF_CIRCLE:
+            case GasketPTCShape.FF_CIRCLE: {
+                this.formRef.bolt.current.setValue(FrameworkUtils.onCalculatorBoltC(parseFloat(this.formRef.innerDiameter.current.getValue()), this.state.shapeChoosed.shapeType))
+            }
+        }
+    }
+
+    holeDiameterOnChange() {
+        switch(this.state.shapeChoosed.shapeType) {
+            case GasketPTCShape.FF_CIRCLE:
+            case GasketPTCShape.FF_RECTANGLE:
+            case GasketPTCShape.FF_MANHOLE: {
+                this.formRef.bl.current.setValue(FrameworkUtils.calculatorBL(parseFloat(this.formRef.holeDiameter.current.getValue())))
+            }
+        }
+    }
+
     chooseShapeOnChanged(id: string) {
         const shapeType: GasketPTCShape = id as GasketPTCShape
         let shapeResource: IShapeResource = {} as IShapeResource
@@ -247,6 +273,11 @@ class Form2 extends React.Component<Form2Props, Form2State> implements IFromInpu
         this.setState({
             shapeChoosed: shapeResource
         })
+    }
+
+    setMaterialPrice(price: number) {
+        this.formRef.materialPrice.current.setValue(price)
+        this.formRef.workPrice.current.setValue((price * 1.1).toFixed(0))
     }
 
     render() {
@@ -270,6 +301,7 @@ class Form2 extends React.Component<Form2Props, Form2State> implements IFromInpu
                     <FrameworkComponents.InputText
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.INNER_DIAMETER)}
                         ref={this.formRef.innerDiameter}
+                        onChange={this.innerOnChange}
                         readOnly={this.state.shapeChoosed.shapeType === GasketPTCShape.FF_RECTANGLE ||
                         this.state.shapeChoosed.shapeType === GasketPTCShape.RF_RECTANGLE ||
                         this.state.shapeChoosed.shapeType === GasketPTCShape.FF_MANHOLE ||
@@ -350,6 +382,7 @@ class Form2 extends React.Component<Form2Props, Form2State> implements IFromInpu
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.HOLE_DIAMETER)}
                         ref={this.formRef.holeDiameter}
                         validate={this.formValidate.holeDiameter}
+                        onChange={this.holeDiameterOnChange}
                         readOnly={this.state.shapeChoosed.shapeType === GasketPTCShape.RF_CIRCLE ||
                         this.state.shapeChoosed.shapeType === GasketPTCShape.RF_RECTANGLE ||
                         !this.state.shapeChoosed.shapeType} />
@@ -364,18 +397,17 @@ class Form2 extends React.Component<Form2Props, Form2State> implements IFromInpu
                     <FrameworkComponents.InputText
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.COEFFICIENT)} />
                     <FrameworkComponents.InputText
-                        placeHolder={this.props.languageContext.current.getMessageString(MessageId.BOLT)} />
+                        placeHolder={this.props.languageContext.current.getMessageString(MessageId.BOLT)}
+                        ref={this.formRef.bolt} />
                 </FrameworkComponents.FormGroup>
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.InputText
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.MATERIAL_PRICE)}
                         ref={this.formRef.materialPrice}
-                        validate={this.formValidate.materialPrice}
                         readOnly={!this.state.shapeChoosed.shapeType} />
                     <FrameworkComponents.InputText
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.WORK_PRICE)}
                         ref={this.formRef.workPrice}
-                        validate={this.formValidate.workPrice}
                         readOnly={!this.state.shapeChoosed.shapeType} />
                 </FrameworkComponents.FormGroup>
             </FrameworkComponents.BaseForm>

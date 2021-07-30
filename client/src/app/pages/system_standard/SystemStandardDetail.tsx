@@ -1,7 +1,7 @@
 import SystemStandardApiService from "app/api/SystemStandardApiService"
 import ISystemStandardModel from "app/documents/ISystemStandardModel"
 import FrameworkComponents from "framework/components/FrameworkComponents"
-import IFromInputElement from "framework/components/IFormInputElement"
+import IFormInputElement from "framework/components/IFormInputElement"
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant"
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
 import MessageId from "framework/constants/MessageId"
@@ -39,7 +39,7 @@ class SystemStandardDetail extends React.Component<SystemStandardDetailProps, Sy
         super(props)
 
         this.systemStandardFormRef = {
-            inputName: React.createRef<IFromInputElement>()
+            inputName: React.createRef<IFormInputElement>()
         }
         this.systemStandardFormValidate = {
             inputName: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE)]

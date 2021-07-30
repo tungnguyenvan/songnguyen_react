@@ -4,7 +4,7 @@ import IStandardModel from "app/documents/IStandardModel"
 import ISystemStandardModel from "app/documents/ISystemStandardModel"
 import AppRenderUtils from "app/utils/AppRenderUtils"
 import FrameworkComponents from "framework/components/FrameworkComponents"
-import IFromInputElement from "framework/components/IFormInputElement"
+import IFormInputElement from "framework/components/IFormInputElement"
 import AppConstant from "framework/constants/AppConstant"
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant"
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
@@ -42,10 +42,10 @@ class StandardCreate extends React.Component<StandardCreateProps, StandardCreate
         this.systemStandardApiService = new SystemStandardApiService();
         this.standardApiService = new StandardApiService();
         this.standardFormRef = {
-            inputName: React.createRef<IFromInputElement>(),
-            selectBoxSystemStandard: React.createRef<IFromInputElement>(),
-            inputCoefficient: React.createRef<IFromInputElement>(),
-            inputBolt: React.createRef<IFromInputElement>()
+            inputName: React.createRef<IFormInputElement>(),
+            selectBoxSystemStandard: React.createRef<IFormInputElement>(),
+            inputCoefficient: React.createRef<IFormInputElement>(),
+            inputBolt: React.createRef<IFormInputElement>()
         }
         this.standardFormValidate = {
             inputName: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE)],

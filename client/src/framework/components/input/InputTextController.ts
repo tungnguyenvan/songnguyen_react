@@ -55,6 +55,11 @@ class InputTextController {
         return this.inputRef.current.value;
     }
 
+    setValue(value: any) {
+        this.inputRef.current.value = value;
+        this.baseFormRef.current?.setBlurHaveValue();
+    }
+
     onInputBlur() {
         this.baseFormRef.current?.onBlur();
         this.inputRef.current.blur();

@@ -1,7 +1,7 @@
 import ISizeModel from "app/documents/ISizeModel";
 import IStandardModel from "app/documents/IStandardModel";
 import FrameworkComponents from "framework/components/FrameworkComponents"
-import IFromInputElement from "framework/components/IFormInputElement";
+import IFormInputElement from "framework/components/IFormInputElement";
 import AppConstant from "framework/constants/AppConstant";
 import MessageId from "framework/constants/MessageId"
 import RuleConstant from "framework/constants/RuleConstant";
@@ -45,7 +45,7 @@ const defaultRule: Rule[] = [
     new Rule(RuleConstant.REGEXP, MessageId.VALIDATE_ONLY_FLOAT, AppConstant.DOUBLE_NUMBER_REGEXP)
 ]
 
-class Form1 extends React.Component<Form1Props> implements IFromInputElement {
+class Form1 extends React.Component<Form1Props> implements IFormInputElement {
     private formRef: IForm1ref;
     private formValidate: IFromValidate
 
@@ -53,14 +53,14 @@ class Form1 extends React.Component<Form1Props> implements IFromInputElement {
         super(props)
 
         this.formRef = {
-            inputInnerDiameter: React.createRef<IFromInputElement>(),
-            inputOuterDiameter: React.createRef<IFromInputElement>(),
-            inputHoleCount: React.createRef<IFromInputElement>(),
-            inputHoleDiameter: React.createRef<IFromInputElement>(),
-            inputCoefficient: React.createRef<IFromInputElement>(),
-            inputBolt: React.createRef<IFromInputElement>(),
-            inputWorkPrice: React.createRef<IFromInputElement>(),
-            inputMaterialPrice: React.createRef<IFromInputElement>(),
+            inputInnerDiameter: React.createRef<IFormInputElement>(),
+            inputOuterDiameter: React.createRef<IFormInputElement>(),
+            inputHoleCount: React.createRef<IFormInputElement>(),
+            inputHoleDiameter: React.createRef<IFormInputElement>(),
+            inputCoefficient: React.createRef<IFormInputElement>(),
+            inputBolt: React.createRef<IFormInputElement>(),
+            inputWorkPrice: React.createRef<IFormInputElement>(),
+            inputMaterialPrice: React.createRef<IFormInputElement>(),
         }
         this.formValidate = {
             inputInnerDiameter: [...defaultRule],

@@ -1,7 +1,7 @@
 import ProductTypeApiService from "app/api/ProductTypeApiService"
 import IProductTypeModel from "app/documents/IProductTypeModel"
 import FrameworkComponents from "framework/components/FrameworkComponents"
-import IFromInputElement from "framework/components/IFormInputElement"
+import IFormInputElement from "framework/components/IFormInputElement"
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant"
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
 import MessageId from "framework/constants/MessageId"
@@ -39,8 +39,8 @@ class ProductNameCreate extends React.Component<ProductNameCreateProps, ProductN
         super(props)
 
         this.productNameFormRef = {
-            inputName: React.createRef<IFromInputElement>(),
-            productTypeOption: React.createRef<IFromInputElement>()
+            inputName: React.createRef<IFormInputElement>(),
+            productTypeOption: React.createRef<IFormInputElement>()
         }
 
         this.productNameFormValidate = {

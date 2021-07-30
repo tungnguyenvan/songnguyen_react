@@ -1,4 +1,4 @@
-interface IFromInputElement {
+interface IFormInputElement {
     isValid(): boolean;
     setErrorMessage(errorMessage: string): void;
     getValue(): any;
@@ -6,4 +6,4 @@ interface IFromInputElement {
     clear(): void;
 }
 
-export default IFromInputElement;
+export default IFormInputElement;

@@ -2,7 +2,7 @@ import React from "react";
 import InputTextController from "./InputTextController";
 import BaseFormControl from "framework/components/base/BaseFormControl";
 import Rule from "framework/documents/models/Rule";
-import IFromInputElement from "../IFormInputElement";
+import IFormInputElement from "../IFormInputElement";
 import LanguageContext from "framework/contexts/lang/LanguageContext";
 
 interface IInputTextProps {
@@ -11,16 +11,21 @@ interface IInputTextProps {
 	value?: string | number;
 	readOnly?: boolean;
 	validate?: Rule[]
+	onChange?: () => void
 }
 
-interface IInputTextState {}
+interface IInputTextState {
+}
 
-class InputText extends React.Component<IInputTextProps, IInputTextState> implements IFromInputElement {
+class InputText extends React.Component<IInputTextProps, IInputTextState> implements IFormInputElement {
 	private inputTextController: InputTextController;
 
 	constructor(props: IInputTextProps) {
 		super(props);
 		this.inputTextController = new InputTextController(this);
+
+		this.onChange = this.onChange.bind(this)
+		this.onFocus = this.onFocus.bind(this)
 	}
 
 	isChanged(): boolean {
@@ -62,6 +67,22 @@ class InputText extends React.Component<IInputTextProps, IInputTextState> implem
 		return true
 	}
 
+	onFocus() {
+		this.inputTextController.onFocus()
+	}
+
+	onChange() {
+		if (this.props.onChange) {
+			this.props.onChange()
+		}
+		this.inputTextController.onChange()
+	}
+
+	setValue(value: any) {
+		console.log("set value", value)
+		this.inputTextController.setValue(value)
+	}
+
 	render() {
 		return (
 			<BaseFormControl
@@ -76,7 +97,7 @@ class InputText extends React.Component<IInputTextProps, IInputTextState> implem
 					type={this.props.type}
 					onBlur={this.inputTextController.onInputBlur}
 					onFocus={this.inputTextController.onInputFocus}
-					onChange={this.inputTextController.onChange}
+					onChange={this.onChange}
 					defaultValue={this.props.value}
 					readOnly={this.props.readOnly}
 				/>
