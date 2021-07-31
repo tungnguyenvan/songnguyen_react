@@ -12,9 +12,11 @@ class BaseApiService<T extends IBaseModel> {
     }
 
     all(params?: any): Promise<IBaseResponse<T>> {
-        if (this.requestPathConst === RequestPathConstant.PRODUCT_NAME) {
+        if (params) {
             return axios.get(this.requestPathConst, {
-                params: params,
+                params: {
+                    search: params,
+                },
             });
         }
         return axios.get(this.requestPathConst);

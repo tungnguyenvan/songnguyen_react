@@ -115,5 +115,17 @@
 	"OR_DIAMETER": "OR",
 	"BL": "BL",
 	"WIDTH": "Chiều rộng",
-	"LENGTH": "Chiều dài"
+	"LENGTH": "Chiều dài",
+	"CREATE_NEW_CART": "Tạo giỏ hàng mới",
+	"OR": "Hoặc",
+	"CHOOSE_CART": "Chọn giỏ hàng",
+	"VIEW_ALL": "Xem tất cả",
+	"EDIT": "Chỉnh sửa",
+	"PRODUCTS": "Danh sách sản phẩm",
+	"EXPORT_ORDER": "Xuất báo giá",
+	"NEED_CHOOSE_CART": "Cần chọn giỏ hàng trước khi thực hiện chức năng này",
+	"ADD_TO_CART_FAILED": "Thêm vào giỏ hàng không thành công",
+	"ADD_TO_CART_FAILED_CONTENT": "Quá trình thêm vào giỏ hàng đã xảy ra lỗi. Thử lại lần nữa!",
+	"ADD_TO_CART_SUCCESS": "Thêm sản phẩm thành công",
+	"ADD_TO_CART_SUCCESS_CONTENT": "Thêm sản phẩm vào giỏ hàng thành công, tiếp tục làm việc"
 }

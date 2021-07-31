@@ -3,6 +3,7 @@ import IStandardModel from "app/documents/IStandardModel";
 import FrameworkComponents from "framework/components/FrameworkComponents"
 import IFormInputElement from "framework/components/IFormInputElement";
 import AppConstant from "framework/constants/AppConstant";
+import { FormType } from "framework/constants/AppEnumConstant";
 import MessageId from "framework/constants/MessageId"
 import RuleConstant from "framework/constants/RuleConstant";
 import ILanguageContext from "framework/contexts/lang/ILanguageContext"
@@ -89,7 +90,8 @@ class Form1 extends React.Component<Form1Props> implements IFormInputElement {
             hole_count: this.formRef.inputHoleCount.current.getValue(),
             hole_diameter: this.formRef.inputHoleDiameter.current.getValue(),
             material_price: this.formRef.inputMaterialPrice.current.getValue(),
-            work_price: this.formRef.inputWorkPrice.current.getValue()
+            work_price: this.formRef.inputWorkPrice.current.getValue(),
+            form_type: FormType.FORM_1
         } as ISizeModel
 
         return valueModel

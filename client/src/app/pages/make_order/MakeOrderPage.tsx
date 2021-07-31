@@ -1,3 +1,5 @@
+import CartApiService from "app/api/CartApiService"
+import CartItemApiService from "app/api/CartItemApiService"
 import ProductNameApiService from "app/api/ProductNameApiService"
 import ProductTypeApiService from "app/api/ProductTypeApiService"
 import SizeApiService from "app/api/SizeApiService"
@@ -7,6 +9,10 @@ import ThicknessApiService from "app/api/ThicknessApiService"
 import Form1 from "app/components/form/Form1"
 import Form2 from "app/components/form/Form2"
 import Form3 from "app/components/form/Form3"
+import ICartContext from "app/context/cart/ICartContext"
+import WithCart from "app/context/cart/WithCart"
+import ICartItemModel from "app/documents/ICartItemModel"
+import ICartModel from "app/documents/ICartModel"
 import IProductNameModel from "app/documents/IProductNameModel"
 import IProductTypeModel from "app/documents/IProductTypeModel"
 import ISizeModel from "app/documents/ISizeModel"
@@ -37,6 +43,7 @@ interface MakeOrderPageProps {
     languageContext: ILanguageContext
     appDialogContext: IAppDialogContext
     appUrlContext: IAppUrlContext
+    cartContext: ICartContext
 }
 
 interface MakeOrderPageState {
@@ -72,17 +79,23 @@ interface IMakeOrderFormRef {
 
 class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageState> {
     private thicknessApiService: ThicknessApiService
+    private cartApiService: CartApiService
+    private cartItemApiService: CartItemApiService
     private productTypeApiService: ProductTypeApiService
     private productNameApiService: ProductNameApiService
     private systemStandardApiService: SystemStandardApiService
     private standardApiService: StandardApiService
     private sizeApiService: SizeApiService
     private makeOrderForm: IMakeOrderFormRef
+    private sizeModelCalculated: ISizeModel
+    private cartItemCalculated: ICartItemModel
 
     constructor(props: MakeOrderPageProps) {
         super(props)
 
         this.sizeApiService = new SizeApiService()
+        this.cartApiService = new CartApiService()
+        this.cartItemApiService = new CartItemApiService()
         this.standardApiService = new StandardApiService()
         this.thicknessApiService = new ThicknessApiService()
         this.productTypeApiService = new ProductTypeApiService()
@@ -104,6 +117,8 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
             unitPrice: React.createRef<IFormInputElement>(),
             totalAmount: React.createRef<IFormInputElement>()
         }
+        this.sizeModelCalculated = undefined as unknown as ISizeModel
+        this.cartItemCalculated = undefined as unknown as ICartItemModel
 
         this.state = {
             productTypes: [],
@@ -121,6 +136,8 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
         }
 
         this.onCancel = this.onCancel.bind(this)
+        this.onAddToCart = this.onAddToCart.bind(this)
+        this.saveCartItem = this.saveCartItem.bind(this)
         this.onCalculator = this.onCalculator.bind(this)
         this.sizeOnChanged = this.sizeOnChanged.bind(this)
         this.validateInForm = this.validateInForm.bind(this)
@@ -296,7 +313,6 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
     }
 
     calculatorForm1(sizeModel: ISizeModel) {
-
         const discountPercent = this.makeOrderForm.percent.current.getValue() as number
         const discountType = this.makeOrderForm.discountType.current.getValue() as DiscountType
 
@@ -325,10 +341,25 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
         }
         this.setState({
             totalAmount: totalAmount
+        }, () => {
+            this.cartItemCalculated = {
+                product_name: this.makeOrderForm.productName.current.getValue(),
+                product_type: this.makeOrderForm.productType.current.getValue(),
+                thickness: this.makeOrderForm.thickness.current.getValue(),
+                system_standard: this.makeOrderForm.systemStandard.current.getValue(),
+                standard: this.makeOrderForm.standard.current.getValue(),
+                size: this.makeOrderForm.size.current.getValue(),
+                amount: parseFloat(this.makeOrderForm.amount.current.getValue()),
+                unit_price: parseFloat(this.makeOrderForm.unitPrice.current.getValue()),
+                total_price: parseFloat(this.makeOrderForm.totalAmount.current.getValue()),
+                discount_type: this.makeOrderForm.discountType.current.getValue(),
+                discount_percent: parseFloat(this.makeOrderForm.percent.current.getValue()),
+            } as ICartItemModel
         })
     }
 
     calculatorForm3(sizeModel: ISizeModel) {
+        this.sizeModelCalculated = sizeModel
         const discountPercent = parseFloat(this.makeOrderForm.percent.current.getValue())
         const discountType = this.makeOrderForm.discountType.current.getValue() as DiscountType
 
@@ -348,10 +379,22 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
         }
         this.setState({
             totalAmount: totalAmount
+        }, () => {
+            this.cartItemCalculated = {
+                product_name: this.makeOrderForm.productName.current.getValue(),
+                product_type: this.makeOrderForm.productType.current.getValue(),
+                thickness: this.makeOrderForm.thickness.current.getValue(),
+                amount: parseFloat(this.makeOrderForm.amount.current.getValue()),
+                unit_price: parseFloat(this.makeOrderForm.unitPrice.current.getValue()),
+                total_price: parseFloat(this.makeOrderForm.totalAmount.current.getValue()),
+                discount_type: this.makeOrderForm.discountType.current.getValue(),
+                discount_percent: parseFloat(this.makeOrderForm.percent.current.getValue()),
+            } as ICartItemModel
         })
     }
 
     calculatorForm2(sizeModel: ISizeModel) {
+        this.sizeModelCalculated = sizeModel
         const discountPercent = this.makeOrderForm.percent.current.getValue() as number
         const discountType = this.makeOrderForm.discountType.current.getValue() as DiscountType
         let dt = 0
@@ -404,6 +447,7 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
             }
         }
         const newSize = this.makeOrderForm.form.current.getValue()
+        this.sizeModelCalculated = newSize
 
         let tempValue = parseFloat((dtPrice + newSize.work_price + newSize.material_price))
         tempValue = tempValue / 1000
@@ -422,7 +466,88 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
         }
         this.setState({
             totalAmount: totalAmount
+        }, () => {
+            this.cartItemCalculated = {
+                product_name: this.makeOrderForm.productName.current.getValue(),
+                product_type: this.makeOrderForm.productType.current.getValue(),
+                thickness: this.makeOrderForm.thickness.current.getValue(),
+                amount: parseFloat(this.makeOrderForm.amount.current.getValue()),
+                unit_price: parseFloat(this.makeOrderForm.unitPrice.current.getValue()),
+                total_price: parseFloat(this.makeOrderForm.totalAmount.current.getValue()),
+                discount_type: this.makeOrderForm.discountType.current.getValue(),
+                discount_percent: parseFloat(this.makeOrderForm.percent.current.getValue()),
+            } as ICartItemModel
         })
+    }
+
+    onAddToCart() {
+        if (!FrameworkUtils.isBlank(this.props.cartContext.current.getIdCartSelected())) {
+            if (this.state.formType === FormType.FORM_1) {
+                // doing add to cart with gasket standard
+                this.saveCartItem(this.cartItemCalculated)
+            } else {
+                let sizeModel: ISizeModel = this.sizeModelCalculated
+                this.sizeApiService.save(sizeModel)
+                    .then(response => {
+                        if (response.status === HttpRequestStatusCode.CREATED) {
+                            this.cartItemCalculated.size = (response.data.data as ISizeModel)._id
+                            this.saveCartItem(this.cartItemCalculated)
+                        }
+                    })
+            }
+        } else {
+            this.props.appDialogContext.addDialog({
+                title: this.props.languageContext.current.getMessageString(MessageId.CHOOSE_CART),
+                content: this.props.languageContext.current.getMessageString(MessageId.NEED_CHOOSE_CART)
+            })
+        }
+    }
+
+    saveCartItem(cartItem: ICartItemModel) {
+        this.cartItemApiService.save(cartItem)
+            .then(response => {
+                if (response.status === HttpRequestStatusCode.CREATED) {
+                    let cartModel: ICartModel = this.props.cartContext.current.getCurrentCart();
+                    let items: string[] = [];
+                    (cartModel.items as ICartItemModel[]).forEach((element: ICartItemModel) => {
+                        items.push(element._id)
+                    })
+                    items.push((response.data.data as ICartItemModel)._id);
+                    cartModel.items = items
+                    this.cartApiService.update(cartModel._id, cartModel)
+                        .then(response => {
+                            if (response.status === HttpRequestStatusCode.OK) {
+                                this.props.appDialogContext.addDialog({
+                                    title: this.props.languageContext.current.getMessageString(MessageId.ADD_TO_CART_SUCCESS),
+                                    content: this.props.languageContext.current.getMessageString(MessageId.ADD_TO_CART_SUCCESS_CONTENT)
+                                })
+                                this.props.cartContext.current.onRefresh()
+                            } else {
+                                this.props.appDialogContext.addDialog({
+                                    title: this.props.languageContext.current.getMessageString(MessageId.ADD_TO_CART_FAILED),
+                                    content: this.props.languageContext.current.getMessageString(MessageId.ADD_TO_CART_FAILED_CONTENT)
+                                })
+                            }
+                        })
+                        .catch(error => {
+                            this.props.appDialogContext.addDialog({
+                                title: this.props.languageContext.current.getMessageString(MessageId.ADD_TO_CART_FAILED),
+                                content: this.props.languageContext.current.getMessageString(MessageId.ADD_TO_CART_FAILED_CONTENT)
+                            })
+                        })
+                } else {
+                    this.props.appDialogContext.addDialog({
+                        title: this.props.languageContext.current.getMessageString(MessageId.ADD_TO_CART_FAILED),
+                        content: this.props.languageContext.current.getMessageString(MessageId.ADD_TO_CART_FAILED_CONTENT)
+                    })
+                }
+            })
+            .catch(error => {
+                this.props.appDialogContext.addDialog({
+                    title: this.props.languageContext.current.getMessageString(MessageId.ADD_TO_CART_FAILED),
+                    content: this.props.languageContext.current.getMessageString(MessageId.ADD_TO_CART_FAILED_CONTENT)
+                })
+            })
     }
 
     render() {
@@ -561,7 +686,8 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.Button
                         disable={!this.state.unitPrice || !this.state.totalAmount}
-                        type={ButtonTypeConstant.PRIMARY}>
+                        type={ButtonTypeConstant.PRIMARY}
+                        onClick={this.onAddToCart}>
                         {this.props.languageContext.current.getMessageString(MessageId.ADD_TO_CART)}
                     </FrameworkComponents.Button>
                 </FrameworkComponents.FormGroup>
@@ -572,6 +698,8 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
 
 export default WithFramework.withLanguage(
     WithFramework.withAppDialog(
-        WithFramework.withAppUrl(MakeOrderPage)
+        WithFramework.withAppUrl(
+            WithCart(MakeOrderPage)
+        )
     )
 )

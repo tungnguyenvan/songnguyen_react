@@ -2,6 +2,7 @@ import SizeApiService from "app/api/SizeApiService";
 import IProductTypeModel from "app/documents/IProductTypeModel";
 import ISizeModel from "app/documents/ISizeModel";
 import BaseApiService from "framework/api/BaseApiService";
+import { FormType } from "framework/constants/AppEnumConstant";
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode";
 import MessageId from "framework/constants/MessageId";
 import RouteConstant from "framework/constants/RouteConstant";
@@ -33,11 +34,15 @@ class SettingPageSupportSize implements ISettingPageSupport<ISizeModel> {
     }
 
     all(): void {
-        this.apiService.all().then((response) => {
-            if (response.status === HttpRequestStatusCode.OK) {
-                this.callback(response.data.data as ISizeModel[]);
-            }
-        });
+        this.apiService
+            .all({
+                form_type: FormType.FORM_1,
+            })
+            .then((response) => {
+                if (response.status === HttpRequestStatusCode.OK) {
+                    this.callback(response.data.data as ISizeModel[]);
+                }
+            });
     }
 
     edit(id: string): void {

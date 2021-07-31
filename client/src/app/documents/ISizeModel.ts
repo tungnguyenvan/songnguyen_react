@@ -1,4 +1,4 @@
-import { GasketPTCShape } from "framework/constants/AppEnumConstant";
+import { FormType, GasketPTCShape } from "framework/constants/AppEnumConstant";
 import IBaseModel from "framework/documents/models/IBaseModel";
 import IProductTypeModel from "./IProductTypeModel";
 
@@ -11,6 +11,7 @@ interface ISizeModel extends IBaseModel {
     material_price: number;
     work_price: number;
     product_type: IProductTypeModel | string;
+    form_type: FormType;
     shape_type: GasketPTCShape; // only for gasket PTC
     coefficient: number; // only for gasket PTC
     bolt: number; // only for gasket PTC

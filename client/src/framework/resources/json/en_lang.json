@@ -115,5 +115,17 @@
 	"OR_DIAMETER": "OR",
 	"BL": "BL",
 	"WIDTH": "Width",
-	"LENGTH": "Length"
+	"LENGTH": "Length",
+	"CREATE_NEW_CART": "Create new cart",
+	"OR": "Or",
+	"CHOOSE_CART": "Choose cart",
+	"VIEW_ALL": "View all",
+	"EDIT": "Edit",
+	"PRODUCTS": "Product list",
+	"EXPORT_ORDER": "Export order",
+	"NEED_CHOOSE_CART": "Need choose a cart before excuting this function",
+	"ADD_TO_CART_FAILED": "Add to cart failed",
+	"ADD_TO_CART_FAILED_CONTENT": "Add to cart process have a problem. Please try again!",
+	"ADD_TO_CART_SUCCESS": "Add to cart success",
+	"ADD_TO_CART_SUCCESS_CONTENT": "Add to cart success, continue your work"
 }

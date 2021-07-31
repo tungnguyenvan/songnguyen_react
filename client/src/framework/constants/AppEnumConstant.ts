@@ -17,4 +17,16 @@ enum GasketPTCShape {
     FF_MANHOLE = "FF_MANHOLE",
 }
 
-export { FormType, DiscountType, GasketPTCShape };
+enum CartItemStatus {
+    DISCUSS = "DISCUSS",
+    DOING = "DOING",
+    DONE = "DONE",
+}
+
+enum CartStatus {
+    DICUSS = "DICUSS",
+    DOING = "DOING",
+    DONE = "DONE",
+}
+
+export { FormType, DiscountType, GasketPTCShape, CartItemStatus, CartStatus };

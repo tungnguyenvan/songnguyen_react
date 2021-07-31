@@ -40,6 +40,7 @@ import ProductTypeCreate from "app/pages/product_type/ProductTypeCreate";
 import SizeDetail from "app/pages/size/SizeDetail";
 import SizeCreate from "app/pages/size/SizeCreate";
 import MakeOrderPage from "app/pages/make_order/MakeOrderPage";
+import CartProvider from "app/context/cart/CartProvider";
 
 class App extends React.Component {
     private appLoadingContext!: IAppLoadingContext;
@@ -101,6 +102,7 @@ class App extends React.Component {
                                             <Switch>
                                                 <NavigationProvider>
                                                     <HeaderComponent />
+                                                    <CartProvider>
                                                     <Route
                                                         exact
                                                         path={RouteConstant.DASHBOARD}
@@ -208,6 +210,7 @@ class App extends React.Component {
                                                         path={RouteConstant.REGISTRATION}
                                                         children={<RegistrationPage />}
                                                     />
+                                                    </CartProvider>
                                                 </NavigationProvider>
                                             </Switch>
                                         </StoreProvider>

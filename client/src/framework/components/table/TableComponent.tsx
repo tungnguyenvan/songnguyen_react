@@ -15,6 +15,7 @@ interface TableComponentProps {
     content: ITableCellModel[];
     title?: string
     commonButton?: () => void;
+    isDisableSearchComponent?: boolean
 }
 
 class TableComponent extends React.Component<TableComponentProps> {
@@ -27,7 +28,7 @@ class TableComponent extends React.Component<TableComponentProps> {
                 </FrameworkComponents.FormGroup>
                 
                 <FrameworkComponents.FormGroup>
-                    <FrameworkComponents.InputText placeHolder={this.props.languageContext.current.getMessageString(MessageId.SEARCH)} />
+                    {!this.props.isDisableSearchComponent && <FrameworkComponents.InputText placeHolder={this.props.languageContext.current.getMessageString(MessageId.SEARCH)} />}
                 </FrameworkComponents.FormGroup>
 
                 <div className={Style.table__component__table}>
