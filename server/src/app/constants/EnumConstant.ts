@@ -10,4 +10,22 @@ enum FormType {
     FORM_3 = "FORM_3",
 }
 
-export { GasketType, FormType };
+enum DiscountType {
+    NONE = "",
+    DISCOUNT = "DISCOUNT",
+    INCREASE = "INCREASE",
+}
+
+enum CartItemStatus {
+    DISCUSS = "DISCUSS",
+    DOING = "DOING",
+    DONE = "DONE",
+}
+
+enum CartStatus {
+    DICUSS = "DICUSS",
+    DOING = "DOING",
+    DONE = "DONE",
+}
+
+export { GasketType, FormType, DiscountType, CartItemStatus, CartStatus };

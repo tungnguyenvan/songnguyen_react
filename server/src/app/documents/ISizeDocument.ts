@@ -1,6 +1,7 @@
 import { GasketPTCShape } from "@app/framework/constants/DBEnumConstant";
 import IBaseDocument from "@app/framework/interfaces/IBaseDocument";
 import Mongoose from "mongoose";
+import { FormType } from "../constants/EnumConstant";
 
 /**
  * Size document
@@ -18,6 +19,7 @@ interface ISizeDocument extends IBaseDocument {
     hole_diameter: number;
     material_price: number;
     work_price: number;
+    form_type: FormType;
     product_type: Mongoose.Types.ObjectId;
     shape_type: GasketPTCShape;
     coefficient: number; // only for gasket PTC

@@ -21,6 +21,8 @@ import ThicknessRouter from "./routers/ThicknessRouter";
 import SystemStandardRouter from "./routers/SystemStandardRouter";
 import StandardRouter from "./routers/StandardRouter";
 import SizeRouter from "./routers/SizeRouter";
+import CartRouter from "./routers/CartRouter";
+import CartItemRouter from "./routers/CartItemRouter";
 
 const NAME_SPACE = "APPLICATION";
 // initialize application
@@ -79,5 +81,7 @@ application.use("/thickness", new ThicknessRouter().getRouter());
 application.use("/system_standard", new SystemStandardRouter().getRouter());
 application.use("/standard", new StandardRouter().getRouter());
 application.use("/size", new SizeRouter().getRouter());
+application.use("/cart", new CartRouter().getRouter());
+application.use("/cart_item", new CartItemRouter().getRouter());
 
 export default application;

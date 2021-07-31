@@ -8,6 +8,8 @@ enum RequestPathConstant {
     SYSTEM_STANDARD = "system_standard/",
     STANDARD = "standard/",
     SIZE = "size/",
+    CART = "cart/",
+    CART_ITEM = "cart_item/",
 }
 
 export default RequestPathConstant;

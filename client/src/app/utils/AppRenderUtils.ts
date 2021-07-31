@@ -1,3 +1,5 @@
+import ICartModel from "app/documents/ICartModel";
+import ICustomerModel from "app/documents/ICustomerModel";
 import IProductNameModel from "app/documents/IProductNameModel";
 import IProductTypeModel from "app/documents/IProductTypeModel";
 import ISizeModel from "app/documents/ISizeModel";
@@ -9,6 +11,7 @@ import MessageId from "framework/constants/MessageId";
 import ILanguageContext from "framework/contexts/lang/ILanguageContext";
 import IMultipleOptionModel from "framework/documents/ui/IMultipleOptionItemModel";
 import ISelectOptionModel from "framework/documents/ui/ISelectOptionModel";
+import FrameworkUtils from "framework/utils/FrameworkUtils";
 import AppUtils from "./AppUtils";
 
 class AppRenderUtils {
@@ -130,6 +133,17 @@ class AppRenderUtils {
         options.push({
             id: GasketPTCShape.FF_MANHOLE,
             title: languageContext.current.getMessageString(MessageId.FF_MANHOLE),
+        });
+        return options;
+    }
+
+    public static renderCartSelectBox(carts: ICartModel[]): ISelectOptionModel[] {
+        const options: ISelectOptionModel[] = [];
+        carts.forEach((element) => {
+            options.push({
+                id: element._id,
+                title: (element.customer as ICustomerModel).name + " - " + FrameworkUtils.generateDate(element.createdAt),
+            });
         });
         return options;
     }

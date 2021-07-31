@@ -2,7 +2,7 @@ import ISizeModel from "app/documents/ISizeModel"
 import IStandardModel from "app/documents/IStandardModel"
 import AppRenderUtils from "app/utils/AppRenderUtils"
 import FrameworkComponents from "framework/components/FrameworkComponents"
-import { GasketPTCShape } from "framework/constants/AppEnumConstant"
+import { FormType, GasketPTCShape } from "framework/constants/AppEnumConstant"
 import MessageId from "framework/constants/MessageId"
 import ILanguageContext from "framework/contexts/lang/ILanguageContext"
 import React from "react"
@@ -170,7 +170,8 @@ class Form2 extends React.Component<Form2Props, Form2State> implements IFormInpu
                     outer_diameter: parseFloat(this.formRef.outerDiameter.current.getValue()),
                     bl: parseFloat(this.formRef.bl.current.getValue()),
                     material_price: parseFloat(this.formRef.materialPrice.current.getValue()),
-                    work_price: parseFloat(this.formRef.workPrice.current.getValue())
+                    work_price: parseFloat(this.formRef.workPrice.current.getValue()),
+                    form_type: FormType.FORM_2
                 } as ISizeModel
                 break;
             }
@@ -183,7 +184,8 @@ class Form2 extends React.Component<Form2Props, Form2State> implements IFormInpu
                     hole_diameter: parseFloat(this.formRef.holeDiameter.current.getValue()),
                     bl: parseFloat(this.formRef.bl.current.getValue()),
                     material_price: parseFloat(this.formRef.materialPrice.current.getValue()),
-                    work_price: parseFloat(this.formRef.workPrice.current.getValue())
+                    work_price: parseFloat(this.formRef.workPrice.current.getValue()),
+                    form_type: FormType.FORM_2
                 } as ISizeModel
                 break;
             }
@@ -196,7 +198,8 @@ class Form2 extends React.Component<Form2Props, Form2State> implements IFormInpu
                     lt: parseFloat(this.formRef.ltDiameter.current.getValue()),
                     bl: parseFloat(this.formRef.bl.current.getValue()),
                     material_price: parseFloat(this.formRef.materialPrice.current.getValue()),
-                    work_price: parseFloat(this.formRef.workPrice.current.getValue())
+                    work_price: parseFloat(this.formRef.workPrice.current.getValue()),
+                    form_type: FormType.FORM_2
                 } as ISizeModel
                 break;
             }
@@ -211,7 +214,8 @@ class Form2 extends React.Component<Form2Props, Form2State> implements IFormInpu
                     hole_diameter: parseFloat(this.formRef.holeDiameter.current.getValue()),
                     bl: parseFloat(this.formRef.bl.current.getValue()),
                     material_price: parseFloat(this.formRef.materialPrice.current.getValue()),
-                    work_price: parseFloat(this.formRef.workPrice.current.getValue())
+                    work_price: parseFloat(this.formRef.workPrice.current.getValue()),
+                    form_type: FormType.FORM_2
                 } as ISizeModel
                 break;
             }
@@ -226,7 +230,8 @@ class Form2 extends React.Component<Form2Props, Form2State> implements IFormInpu
                     hole_diameter: parseFloat(this.formRef.holeDiameter.current.getValue()),
                     bl: parseFloat(this.formRef.bl.current.getValue()),
                     material_price: parseFloat(this.formRef.materialPrice.current.getValue()),
-                    work_price: parseFloat(this.formRef.workPrice.current.getValue())
+                    work_price: parseFloat(this.formRef.workPrice.current.getValue()),
+                    form_type: FormType.FORM_2
                 } as ISizeModel
                 break;
             }

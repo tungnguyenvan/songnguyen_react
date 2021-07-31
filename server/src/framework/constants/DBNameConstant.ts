@@ -42,6 +42,8 @@ enum DBNameConstant {
     SYSTEM_STANDARD = "system_standards",
     STANDARD = "standards",
     SIZE = "sizes",
+    CART = "carts",
+    CART_ITEM = "cart_items",
 }
 
 export default DBNameConstant;

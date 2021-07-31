@@ -8,6 +8,7 @@ import Rule from "framework/documents/models/Rule"
 import RuleConstant from "framework/constants/RuleConstant"
 import AppConstant from "framework/constants/AppConstant"
 import ISizeModel from "app/documents/ISizeModel"
+import { FormType } from "framework/constants/AppEnumConstant"
 
 interface Form3Props {
     languageContext: ILanguageContext
@@ -58,7 +59,8 @@ class Form3 extends React.Component<Form3Props> implements IFormInputElement {
     getValue() {
         const sizeModel: ISizeModel = {
             wt: parseFloat(this.formRef.width.current.getValue()),
-            lt: parseFloat(this.formRef.length.current.getValue())
+            lt: parseFloat(this.formRef.length.current.getValue()),
+            form_type: FormType.FORM_3
         } as ISizeModel
         return sizeModel
     }

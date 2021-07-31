@@ -1,42 +1,14 @@
 import Mongoose from "mongoose";
 import BaseSchema from "@app/framework/core/BaseSchema";
-import ISizeDocument from "@app/app/documents/ISizeDocument";
+import ICartItemDocument from "@app/app/documents/ICartItemDocument";
 import DBNameConstant from "@app/framework/constants/DBNameConstant";
-import { GasketPTCShape } from "@app/framework/constants/DBEnumConstant";
-import { FormType } from "../constants/EnumConstant";
+import { CartItemStatus, DiscountType } from "../constants/EnumConstant";
 
 const document = {
-    name: {
+    product_name: {
+        type: Mongoose.Types.ObjectId,
         require: true,
-        type: String,
-    },
-
-    inner_diameter: {
-        type: Number,
-        require: true,
-    },
-
-    outer_diameter: {
-        type: Number,
-        require: true,
-    },
-
-    hole_count: {
-        type: Number,
-        require: true,
-    },
-
-    hole_diameter: {
-        type: Number,
-        require: true,
-    },
-
-    material_price: {
-        type: Number,
-    },
-
-    work_price: {
-        type: Number,
+        ref: DBNameConstant.PRODUCT_NAME,
     },
 
     product_type: {
@@ -45,50 +17,64 @@ const document = {
         ref: DBNameConstant.PRODUCT_TYPE,
     },
 
-    shape_type: {
+    thickness: {
+        type: Mongoose.Types.ObjectId,
+        require: true,
+        ref: DBNameConstant.THICKNESS,
+    },
+
+    system_standard: {
+        type: Mongoose.Types.ObjectId,
+        require: true,
+        ref: DBNameConstant.SYSTEM_STANDARD,
+    },
+
+    standard: {
+        type: Mongoose.Types.ObjectId,
+        require: true,
+        ref: DBNameConstant.STANDARD,
+    },
+
+    size: {
+        require: true,
+        ref: DBNameConstant.SIZE,
+        type: Mongoose.Types.ObjectId,
+    },
+
+    amount: {
+        type: Number,
+        require: true,
+    },
+
+    unit_price: {
+        require: true,
+        type: Number,
+    },
+
+    total_price: {
+        require: true,
+        type: Number,
+    },
+
+    discount_type: {
         type: String,
-        enum: GasketPTCShape,
+        enum: DiscountType,
     },
 
-    form_type: {
+    discount_percent: {
+        type: Number,
+        require: true,
+    },
+
+    status: {
         type: String,
-        enum: FormType,
+        require: true,
+        enum: CartItemStatus,
     },
 
-    coefficient: {
+    delivered: {
         type: Number,
-    }, // only for gasket PTC
-
-    bolt: {
-        type: Number,
-    }, // only for gasket PTC
-
-    wn: {
-        type: Number,
-    },
-
-    wt: {
-        type: Number,
-    },
-
-    ln: {
-        type: Number,
-    },
-
-    lt: {
-        type: Number,
-    },
-
-    ir: {
-        type: Number,
-    },
-
-    or: {
-        type: Number,
-    },
-
-    bl: {
-        type: Number,
+        require: true,
     },
 
     createdAt: {
@@ -127,4 +113,4 @@ const document = {
 
 const fileschema = new Mongoose.Schema(document).pre("save", BaseSchema.preSave).pre("updateOne", BaseSchema.preUpdate);
 
-export default Mongoose.model<ISizeDocument>(DBNameConstant.SIZE, fileschema) as unknown as Mongoose.Model<Mongoose.Document>;
+export default Mongoose.model<ICartItemDocument>(DBNameConstant.CART_ITEM, fileschema) as unknown as Mongoose.Model<Mongoose.Document>;

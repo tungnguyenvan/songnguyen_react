@@ -4,8 +4,10 @@ import IUserModel from "framework/documents/models/IUserModel";
 import { matchPath } from "react-router";
 import IFormInputElement from "framework/components/IFormInputElement";
 import IProductTypeModel from "app/documents/IProductTypeModel";
-import { GasketPTCShape } from "framework/constants/AppEnumConstant";
+import { DiscountType, GasketPTCShape } from "framework/constants/AppEnumConstant";
 import ISizeModel from "app/documents/ISizeModel";
+import ILanguageContext from "framework/contexts/lang/ILanguageContext";
+import MessageId from "framework/constants/MessageId";
 
 /**
  * Class util for framework
@@ -329,6 +331,14 @@ class FrameworkUtils {
         }
 
         return parseFloat(price.toFixed(1)) * 1000;
+    }
+
+    public static getDisplayNameDiscountType(discountType: DiscountType, languageContext: ILanguageContext) {
+        if (!discountType) return "";
+        if (discountType === DiscountType.DISCOUNT) {
+            return languageContext.current.getMessageString(MessageId.DISCOUNT);
+        }
+        return languageContext.current.getMessageString(MessageId.INCREASE);
     }
 }
 
