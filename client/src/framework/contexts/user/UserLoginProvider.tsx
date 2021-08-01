@@ -44,8 +44,10 @@ class UserLoginProvider
     }
 
     addEventUserLogin(callback: () => void): void {
+        let callbacks = this.state.callbacks
+        callbacks.push(callback)
         this.setState({
-            callbacks: [...this.state.callbacks, callback],
+            callbacks: callbacks
         });
     }
 
@@ -115,7 +117,7 @@ class UserLoginProvider
         this.setState(
             {
                 user: user,
-            },
+            }, 
             this.authRedirect
         );
 

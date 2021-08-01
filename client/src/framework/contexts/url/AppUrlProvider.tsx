@@ -46,6 +46,8 @@ class AppUrlProvider
 			urlRedirectTo: url,
 			history: history
 		});
+
+		window.scrollTo(0, 0);
 	}
 
 	isCurrentUrl(url: string): boolean {

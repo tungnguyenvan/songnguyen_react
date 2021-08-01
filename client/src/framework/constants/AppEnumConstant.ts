@@ -19,12 +19,14 @@ enum GasketPTCShape {
 
 enum CartItemStatus {
     DISCUSS = "DISCUSS",
+    CONFIRM = "CONFIRM",
     DOING = "DOING",
     DONE = "DONE",
 }
 
 enum CartStatus {
     DICUSS = "DICUSS",
+    CONFIRM = "CONFIRM",
     DOING = "DOING",
     DONE = "DONE",
 }

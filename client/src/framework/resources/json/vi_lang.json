@@ -127,5 +127,17 @@
 	"ADD_TO_CART_FAILED": "Thêm vào giỏ hàng không thành công",
 	"ADD_TO_CART_FAILED_CONTENT": "Quá trình thêm vào giỏ hàng đã xảy ra lỗi. Thử lại lần nữa!",
 	"ADD_TO_CART_SUCCESS": "Thêm sản phẩm thành công",
-	"ADD_TO_CART_SUCCESS_CONTENT": "Thêm sản phẩm vào giỏ hàng thành công, tiếp tục làm việc"
+	"ADD_TO_CART_SUCCESS_CONTENT": "Thêm sản phẩm vào giỏ hàng thành công, tiếp tục làm việc",
+	"VAT": "VAT",
+	"PRICE": "Thành tiền",
+	"CART_DETAIL": "Thông tin giỏ hàng",
+	"CHANGE_CUSTOMER": "Đổi khách hàng",
+	"CART_STATUS": "Trạng thái giỏ hàng",
+	"DISCUSS": "Đang lên đơn",
+	"CONFIRM": "Xác nhận",
+	"DOING": "Đang thực hiện",
+	"DONE": "Hoàn thành",
+	"CARTS": "Danh sách đơn hàng",
+	"CART_CREATE": "Tạo mới đơn hàng",
+	"CHOOSE_CUSTOMER": "Chọn khách hàng"
 }

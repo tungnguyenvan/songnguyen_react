@@ -418,7 +418,7 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                 let coreDiscount = 0
 
                 if (sizeModel.wt > MIN_INNER_DIAMETER && sizeModel.lt > MIN_INNER_DIAMETER) {
-                    coreDiscount = (sizeModel.wt * sizeModel.lt) * 0.8
+                    coreDiscount = (sizeModel.wt * sizeModel.lt) * 0.9
                 }
 
                 dt = parseFloat((dt - coreDiscount).toFixed(2))

@@ -4,7 +4,7 @@ import IUserModel from "framework/documents/models/IUserModel";
 import { matchPath } from "react-router";
 import IFormInputElement from "framework/components/IFormInputElement";
 import IProductTypeModel from "app/documents/IProductTypeModel";
-import { DiscountType, GasketPTCShape } from "framework/constants/AppEnumConstant";
+import { CartStatus, DiscountType, GasketPTCShape } from "framework/constants/AppEnumConstant";
 import ISizeModel from "app/documents/ISizeModel";
 import ILanguageContext from "framework/contexts/lang/ILanguageContext";
 import MessageId from "framework/constants/MessageId";
@@ -339,6 +339,21 @@ class FrameworkUtils {
             return languageContext.current.getMessageString(MessageId.DISCOUNT);
         }
         return languageContext.current.getMessageString(MessageId.INCREASE);
+    }
+
+    static getDisplayNameCartStatus(cartStatus: CartStatus, languageContext: ILanguageContext): string {
+        if (!cartStatus) return "";
+
+        switch (cartStatus) {
+            case CartStatus.DICUSS:
+                return languageContext.current.getMessageString(MessageId.DISCUSS);
+            case CartStatus.CONFIRM:
+                return languageContext.current.getMessageString(MessageId.CONFIRM);
+            case CartStatus.DOING:
+                return languageContext.current.getMessageString(MessageId.DOING);
+            default:
+                return languageContext.current.getMessageString(MessageId.DONE);
+        }
     }
 }
 

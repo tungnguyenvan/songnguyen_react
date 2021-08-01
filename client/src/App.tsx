@@ -41,6 +41,9 @@ import SizeDetail from "app/pages/size/SizeDetail";
 import SizeCreate from "app/pages/size/SizeCreate";
 import MakeOrderPage from "app/pages/make_order/MakeOrderPage";
 import CartProvider from "app/context/cart/CartProvider";
+import CartDetail from "app/pages/cart/CartDetail";
+import Carts from "app/pages/cart/Carts";
+import CartCreate from "app/pages/cart/CartCreate";
 
 class App extends React.Component {
     private appLoadingContext!: IAppLoadingContext;
@@ -202,6 +205,21 @@ class App extends React.Component {
                                                         exact
                                                         path={RouteConstant.EXAMPLE}
                                                         children={<ExamplePage />}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path={RouteConstant.CART_DETAIL}
+                                                        children={<CartDetail />}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path={RouteConstant.CARTS}
+                                                        children={<Carts />}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path={RouteConstant.CART_CREATE}
+                                                        children={<CartCreate />}
                                                     />
                                                     <Route exact path={RouteConstant.STORES} children={<StoresPage />} />
                                                     <Route exact path={RouteConstant.LOGIN} children={<LoginPage />} />

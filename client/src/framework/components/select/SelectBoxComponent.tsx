@@ -126,7 +126,7 @@ class SelectBoxComponent extends React.Component<SelectBoxComponentProps, Select
                 onSelect={this.baseFormControl.current?.onFocus}
                 value={this.state.selectedId}
                 disabled={this.props.disable}>
-                <option value=''></option>
+                <option disabled={(this.props.selectedId && this.props.selectedId !== "") as boolean}></option>
                 {
                     this.props.options.map(element => {
                         return <option value={element.id} key={element.id}>{element.title}</option>
