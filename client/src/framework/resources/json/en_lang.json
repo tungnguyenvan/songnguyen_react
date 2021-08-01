@@ -127,5 +127,17 @@
 	"ADD_TO_CART_FAILED": "Add to cart failed",
 	"ADD_TO_CART_FAILED_CONTENT": "Add to cart process have a problem. Please try again!",
 	"ADD_TO_CART_SUCCESS": "Add to cart success",
-	"ADD_TO_CART_SUCCESS_CONTENT": "Add to cart success, continue your work"
+	"ADD_TO_CART_SUCCESS_CONTENT": "Add to cart success, continue your work",
+	"VAT": "VAT",
+	"PRICE": "Price",
+	"CART_DETAIL": "Cart detail",
+	"CHANGE_CUSTOMER": "Change customer",
+	"CART_STATUS": "Cart status",
+	"DISCUSS": "Discuss",
+	"CONFIRM": "Confirm",
+	"DOING": "Doing",
+	"DONE": "Done",
+	"CARTS": "Carts",
+	"CART_CREATE": "Create new cart",
+	"CHOOSE_CUSTOMER": "Choose customer"
 }

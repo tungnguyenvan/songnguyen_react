@@ -20,6 +20,8 @@ import ISizeModel from "app/documents/ISizeModel"
 import ISystemStandardModel from "app/documents/ISystemStandardModel"
 import IStandardModel from "app/documents/IStandardModel"
 import IProductTypeModel from "app/documents/IProductTypeModel"
+import Style from "app/resources/css/CartComponent.module.scss"
+import RouteConstant from "framework/constants/RouteConstant"
 
 interface CartComponentProps {
     languageContext: ILanguageContext;
@@ -31,6 +33,7 @@ interface CartComponentProps {
 interface CartComponentState {
     carts: ICartModel[]
     cartSelected: ICartModel
+    totalPrice: number
 }
 
 class CartComponent extends React.Component<CartComponentProps, CartComponentState> {
@@ -43,24 +46,29 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
 
         this.state = {
             carts: [],
-            cartSelected: {} as ICartModel
+            cartSelected: {} as ICartModel,
+            totalPrice: 0
         }
 
+        this.onEdit = this.onEdit.bind(this)
+        this.onCancel = this.onCancel.bind(this)
         this.deleteSize = this.deleteSize.bind(this)
-        this.redirectEditSize = this.redirectEditSize.bind(this)
+        this.calTotalPrice = this.calTotalPrice.bind(this)
         this.getCurrentCart = this.getCurrentCart.bind(this)
         this.onSelectedCart = this.onSelectedCart.bind(this)
         this.requestCartApi = this.requestCartApi.bind(this)
+        this.redirectViewAll = this.redirectViewAll.bind(this)
         this.renderCartItems = this.renderCartItems.bind(this)
+        this.redirectEditSize = this.redirectEditSize.bind(this)
         this.getIdCartSelected = this.getIdCartSelected.bind(this)
         this.renderCustomerTable = this.renderCustomerTable.bind(this)
-
-        this.props.userLoginContext.current.addEventUserLogin(this.requestCartApi)
     }
 
     componentDidMount() {
         if (this.props.userLoginContext.state.user) {
             this.requestCartApi()
+        } else {
+            this.props.userLoginContext.current.addEventUserLogin(this.requestCartApi)
         }
     }
 
@@ -106,13 +114,34 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
     }
 
     onSelectedCart(id: string) {
+        let isSetState = false
         this.state.carts.forEach(element => {
             if (id === element._id) {
+                isSetState = true
                 this.setState({
                     cartSelected: element
+                }, () => {
+                    this.calTotalPrice()
                 })
             }
         })
+
+        if (!isSetState) {
+            this.onCancel()
+        }
+    }
+
+    calTotalPrice() {
+        if (this.state.cartSelected._id) {
+            let totalPrice = 0;
+            (this.state.cartSelected.items as ICartItemModel[]).forEach(element => {
+                totalPrice += element.total_price
+            })
+
+            this.setState({
+                totalPrice: totalPrice
+            })
+        }
     }
 
     getIdCartSelected(): string {
@@ -124,7 +153,7 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
     }
 
     redirectEditSize(id: string) {
-
+        
     }
 
     deleteSize(id: string) {
@@ -154,14 +183,14 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
                     (element.system_standard as ISystemStandardModel)?.name,
                     (element.standard as IStandardModel)?.name,
                     element.amount?.toString(),
-                    element.unit_price?.toString(),
+                    element.unit_price?.toLocaleString(),
                     FrameworkUtils.getDisplayNameDiscountType(element.discount_type, this.props.languageContext),
                     element.discount_percent?.toString(),
-                    element.total_price?.toString()
+                    element.total_price?.toLocaleString()
                 ],
                 action: {
                     edit: {
-                        isAlive: true,
+                        isAlive: false,
                         func: this.redirectEditSize
                     },
                     delete: {
@@ -179,12 +208,32 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
         return tableCells
     }
 
+    onCancel() {
+        this.setState({
+            cartSelected: {} as ICartModel
+        })
+    }
+
+    onEdit() {
+        if (this.state.cartSelected._id) {
+            this.props.appUrlContext.redirectTo(RouteConstant.CARTS + this.state.cartSelected._id)
+        }
+    }
+
+    redirectViewAll() {
+        this.props.appUrlContext.redirectTo(RouteConstant.CARTS)
+    }
+
     render() {
-        return <FrameworkComponents.BasePage>
+        return <FrameworkComponents.BasePage {...{
+            disableBackButton: true
+        }}>
             {FrameworkUtils.isBlank(this.state.cartSelected._id) && 
             <FrameworkComponents.BaseForm>
                 <FrameworkComponents.FormGroup>
-                    <FrameworkComponents.Button type={ButtonTypeConstant.PRIMARY}>{this.props.languageContext.current.getMessageString(MessageId.CREATE_NEW_CART)}</FrameworkComponents.Button>
+                    <FrameworkComponents.Button type={ButtonTypeConstant.PRIMARY} onClick={() => {
+                        this.props.appUrlContext.redirectTo(RouteConstant.CART_CREATE)
+                    }}>{this.props.languageContext.current.getMessageString(MessageId.CREATE_NEW_CART)}</FrameworkComponents.Button>
                 </FrameworkComponents.FormGroup>
                 <span>{this.props.languageContext.current.getMessageString(MessageId.OR)}</span>
                 <FrameworkComponents.FormGroup>
@@ -194,7 +243,11 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
                         onChanged={this.onSelectedCart} />
                 </FrameworkComponents.FormGroup>
                 <FrameworkComponents.FormGroup>
-                    <FrameworkComponents.Button type={ButtonTypeConstant.FLAT}>{this.props.languageContext.current.getMessageString(MessageId.VIEW_ALL)}</FrameworkComponents.Button>
+                    <FrameworkComponents.Button
+                        type={ButtonTypeConstant.FLAT}
+                        onClick={this.redirectViewAll}>
+                        {this.props.languageContext.current.getMessageString(MessageId.VIEW_ALL)}
+                    </FrameworkComponents.Button>
                 </FrameworkComponents.FormGroup>
             </FrameworkComponents.BaseForm>}
 
@@ -240,14 +293,34 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
                         this.props.languageContext.current.getMessageString(MessageId.ACTION)
                     ]
                 }} />
+                <div className={Style.total__price__container}>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>{this.props.languageContext.current.getMessageString(MessageId.TOTAL_AMOUNT)} (VNĐ):</td>
+                                <td className={Style.text__right}>{this.state.totalPrice.toLocaleString()}</td>
+                            </tr>
+                            <tr>
+                                <td>{this.props.languageContext.current.getMessageString(MessageId.VAT)} 10% (VNĐ):</td>
+                                <td className={Style.text__right}>{(this.state.totalPrice * 10 / 100).toLocaleString()}</td>
+                            </tr>
+                            <tr>
+                                <td>{this.props.languageContext.current.getMessageString(MessageId.PRICE)} (VNĐ):</td>
+                                <td className={Style.text__right}>{(this.state.totalPrice + (this.state.totalPrice * 10 / 100)).toLocaleString()}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <FrameworkComponents.BaseForm title={this.props.languageContext.current.getMessageString(MessageId.ACTION)}>
                     <FrameworkComponents.FormGroup>
                         <FrameworkComponents.Button
-                            type={ButtonTypeConstant.FLAT}>
+                            type={ButtonTypeConstant.FLAT}
+                            onClick={this.onEdit}>
                             {this.props.languageContext.current.getMessageString(MessageId.EDIT)}
                         </FrameworkComponents.Button>
                         <FrameworkComponents.Button
-                            type={ButtonTypeConstant.DANGER}>
+                            type={ButtonTypeConstant.DANGER}
+                            onClick={this.onCancel}>
                             {this.props.languageContext.current.getMessageString(MessageId.CANCEL)}
                         </FrameworkComponents.Button>
                         <FrameworkComponents.Button type={ButtonTypeConstant.PRIMARY}>

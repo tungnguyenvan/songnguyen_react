@@ -6,7 +6,7 @@ import ISizeModel from "app/documents/ISizeModel";
 import IStandardModel from "app/documents/IStandardModel";
 import ISystemStandardModel from "app/documents/ISystemStandardModel";
 import IThicknessModel from "app/documents/IThicknessModel";
-import { DiscountType, FormType, GasketPTCShape } from "framework/constants/AppEnumConstant";
+import { CartStatus, DiscountType, FormType, GasketPTCShape } from "framework/constants/AppEnumConstant";
 import MessageId from "framework/constants/MessageId";
 import ILanguageContext from "framework/contexts/lang/ILanguageContext";
 import IMultipleOptionModel from "framework/documents/ui/IMultipleOptionItemModel";
@@ -15,6 +15,28 @@ import FrameworkUtils from "framework/utils/FrameworkUtils";
 import AppUtils from "./AppUtils";
 
 class AppRenderUtils {
+    static renderCartStatusSelectBox(languageContext: ILanguageContext): ISelectOptionModel[] {
+        const options: ISelectOptionModel[] = [
+            {
+                id: CartStatus.DICUSS,
+                title: languageContext.current.getMessageString(MessageId.DISCUSS),
+            },
+            {
+                id: CartStatus.CONFIRM,
+                title: languageContext.current.getMessageString(MessageId.CONFIRM),
+            },
+            {
+                id: CartStatus.DOING,
+                title: languageContext.current.getMessageString(MessageId.DOING),
+            },
+            {
+                id: CartStatus.DONE,
+                title: languageContext.current.getMessageString(MessageId.DONE),
+            },
+        ];
+        return options;
+    }
+
     public static renderSystemStandard(systemStandards: ISystemStandardModel[]): IMultipleOptionModel[] {
         const multipleOptions: IMultipleOptionModel[] = [];
         systemStandards.forEach((element) => {
@@ -143,6 +165,17 @@ class AppRenderUtils {
             options.push({
                 id: element._id,
                 title: (element.customer as ICustomerModel).name + " - " + FrameworkUtils.generateDate(element.createdAt),
+            });
+        });
+        return options;
+    }
+
+    public static renderCustomerSelectBox(customers: ICustomerModel[]): ISelectOptionModel[] {
+        const options: ISelectOptionModel[] = [];
+        customers.forEach((element) => {
+            options.push({
+                id: element._id,
+                title: element.name,
             });
         });
         return options;

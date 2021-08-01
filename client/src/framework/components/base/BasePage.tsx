@@ -8,7 +8,8 @@ import IAppUrlContext from "framework/contexts/url/IAppUrlContext";
 
 interface IBasePageProps {
 	title?: string;
-	appUrlContext: IAppUrlContext
+	appUrlContext: IAppUrlContext,
+	disableBackButton?: boolean
 }
 
 class BasePage extends React.Component<IBasePageProps> {
@@ -16,7 +17,7 @@ class BasePage extends React.Component<IBasePageProps> {
 		return (
 			<div className={Style.base__page}>
 				<div className={Style.base__page__header}>
-					{ this.props.appUrlContext.canBack() && <ArrowLeftShort className={Style.back__button} onClick={() => {
+					{ (this.props.appUrlContext.canBack() && !this.props.disableBackButton) && <ArrowLeftShort className={Style.back__button} onClick={() => {
 						this.props.appUrlContext.back()
 					}} />}
 					<h2 className={Style.page__title}>{this.props.title}</h2>

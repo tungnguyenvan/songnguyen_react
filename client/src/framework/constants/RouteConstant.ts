@@ -35,6 +35,13 @@ enum RouteConstant {
     SIZE_CREATE = "/size/new",
 
     MAKE_ORDER = "/makeorder",
+
+    CARTS = "/carts/",
+    CART_DETAIL = "/carts/:id",
+    CART_CREATE = "/cart/new",
+
+    CART_ITEM = "/cart_item/",
+    CART_ITEM_DETAI = "/cart_item/:id",
 }
 
 export default RouteConstant;
