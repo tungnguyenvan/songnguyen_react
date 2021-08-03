@@ -1,6 +1,7 @@
 import "@app/framework/utils/CustomDeclare";
 
 import Express from "express";
+import Path from "path";
 import Mongoose from "mongoose";
 import BodyParser from "body-parser";
 import RateLimit from "express-rate-limit";
@@ -83,5 +84,6 @@ application.use("/standard", new StandardRouter().getRouter());
 application.use("/size", new SizeRouter().getRouter());
 application.use("/cart", new CartRouter().getRouter());
 application.use("/cart_item", new CartItemRouter().getRouter());
+application.use("/resources", Express.static(Path.join(__dirname + "/../../storage")));
 
 export default application;
