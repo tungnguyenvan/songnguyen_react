@@ -13,6 +13,8 @@ const userDocument = {
 
     phoneNumber: {
         type: String,
+        unique: true,
+        require: true,
     },
 
     internationalCode: {
@@ -40,7 +42,7 @@ const userDocument = {
     },
 
     birthDate: {
-        type: Number,
+        type: String,
         require: true,
     },
 

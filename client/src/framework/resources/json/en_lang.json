@@ -139,5 +139,14 @@
 	"DONE": "Done",
 	"CARTS": "Carts",
 	"CART_CREATE": "Create new cart",
-	"CHOOSE_CUSTOMER": "Choose customer"
+	"CHOOSE_CUSTOMER": "Choose customer",
+	"BIRTH_DATE": "Birth date",
+	"EMPLOYEE_CREATE": "Create new account for employee",
+	"USER_ROLE": "Role",
+	"ADMIN": "Admin",
+	"SELLER": "Seller",
+	"ACCOUNTANT": "Accountant",
+	"VALIDATE_CONFIRM_PASSWORD": "Need same with password",
+	"VALIDATE_DATE": "Need date format",
+	"REGIS_EMPLOYEE_FAILE": "Cannot register because email or phone number is exist"
 }

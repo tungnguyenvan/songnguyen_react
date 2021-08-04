@@ -4,6 +4,7 @@ import UserModel from "@app/app/models/UserModel";
 import Logging from "@app/framework/utils/Logging";
 import IUserDocument from "../documents/IUserDocument";
 import Mongoose from "mongoose";
+import AppUtil from "@app/framework/utils/AppUtil";
 
 const NAME_SPACE = "UserRepository";
 
@@ -55,7 +56,7 @@ class UserRepository extends BaseRepository {
     }
 
     populate(object: any): any {
-        return object.select("-password -token -__v");
+        return AppUtil.populateUpdatedBy(AppUtil.populateCreatedBy(object)).select("-password -token -__v");
     }
 }
 

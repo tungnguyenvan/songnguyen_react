@@ -42,6 +42,10 @@ enum RouteConstant {
 
     CART_ITEM = "/cart_item/",
     CART_ITEM_DETAI = "/cart_item/:id",
+
+    EMPLOYEE = "/employees/",
+    EMPLOYEE_DETAIL = "/employees/:id",
+    EMPLOYEE_CREATE = "/employee/new",
 }
 
 export default RouteConstant;

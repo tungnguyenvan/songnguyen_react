@@ -8,6 +8,7 @@ import ISystemStandardModel from "app/documents/ISystemStandardModel";
 import IThicknessModel from "app/documents/IThicknessModel";
 import { CartStatus, DiscountType, FormType, GasketPTCShape } from "framework/constants/AppEnumConstant";
 import MessageId from "framework/constants/MessageId";
+import { UserRole } from "framework/constants/UserEnumConstant";
 import ILanguageContext from "framework/contexts/lang/ILanguageContext";
 import IMultipleOptionModel from "framework/documents/ui/IMultipleOptionItemModel";
 import ISelectOptionModel from "framework/documents/ui/ISelectOptionModel";
@@ -15,6 +16,22 @@ import FrameworkUtils from "framework/utils/FrameworkUtils";
 import AppUtils from "./AppUtils";
 
 class AppRenderUtils {
+    static renderUserRoleSelectBox(languageContext: ILanguageContext): ISelectOptionModel[] {
+        return [
+            {
+                id: UserRole.ADMIN,
+                title: languageContext.current.getMessageString(MessageId.ADMIN),
+            },
+            {
+                id: UserRole.SELLER,
+                title: languageContext.current.getMessageString(MessageId.SELLER),
+            },
+            {
+                id: UserRole.ACCOUNTANT,
+                title: languageContext.current.getMessageString(MessageId.ACCOUNTANT),
+            },
+        ];
+    }
     static renderCartStatusSelectBox(languageContext: ILanguageContext): ISelectOptionModel[] {
         const options: ISelectOptionModel[] = [
             {

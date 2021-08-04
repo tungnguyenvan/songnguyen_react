@@ -1,7 +1,7 @@
 enum UserRole {
-    ADMIN,
-    SELLER,
-    ACCOUNTANT,
+    ADMIN = "ADMIN",
+    SELLER = "SELLER",
+    ACCOUNTANT = "ACCOUNTANT",
 }
 
 enum UserStatus {

@@ -12,11 +12,14 @@ import IAppUrlContext from "framework/contexts/url/IAppUrlContext";
 import RouteConstant from "framework/constants/RouteConstant";
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant";
 import IAppDialogContext from "framework/contexts/dialog/IAppDialogContext";
+import IUserLoginContext from "framework/contexts/user/IUserLoginContext";
+import { UserRole } from "framework/constants/UserEnumConstant";
 
 interface CustomersPageProvider {
 	languageContext: ILanguageContext;
 	appUrlContext: IAppUrlContext;
 	appDialogContext: IAppDialogContext;
+	userLoginContext: IUserLoginContext;
 }
 
 interface CustomersPageState {
@@ -90,11 +93,11 @@ class CustomersPage extends React.Component<CustomersPageProvider, CustomersPage
 				],
 				action: {
 					edit: {
-						isAlive: true,
+						isAlive: this.props.userLoginContext.state.user?.role === UserRole.ADMIN,
 						func: this.onEditCustomer
 					},
 					delete: {
-						isAlive: true,
+						isAlive: this.props.userLoginContext.state.user?.role === UserRole.ADMIN,
 						func: this.onDeleteCustomer,
 						dialog: {
 							title: this.props.languageContext.current.getMessageString(MessageId.CONFIRM_DELETE),
@@ -139,6 +142,8 @@ class CustomersPage extends React.Component<CustomersPageProvider, CustomersPage
 
 export default  WithFramework.withAppUrl(
 	WithFramework.withLanguage(
-		WithFramework.withAppDialog(CustomersPage)
+		WithFramework.withAppDialog(
+			WithFramework.withUserLogin(CustomersPage)
+		)
 	)
 );

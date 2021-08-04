@@ -7,66 +7,66 @@ import { UserRole, UserStatus } from "@app/framework/constants/DBEnumConstant";
  * @author tung.nguyenvan
  */
 interface IUserDocument extends IBaseDocument {
-	/**
-	 * Email of user
-	 * Need to login
-	 */
-	email: string;
+    /**
+     * Email of user
+     * Need to login
+     */
+    email: string;
 
-	/**
-	 * Phone number of user
-	 * Need to login
-	 */
-	phoneNumber: string;
+    /**
+     * Phone number of user
+     * Need to login
+     */
+    phoneNumber: string;
 
-	/**
-	 * The interantional code
-	 * VN | AF | ...
-	 */
-	internationalCode: string;
+    /**
+     * The interantional code
+     * VN | AF | ...
+     */
+    internationalCode: string;
 
-	/**
-	 * Password for login
-	 */
-	password: string;
+    /**
+     * Password for login
+     */
+    password: string;
 
-	/**
-	 * First name
-	 */
-	firstName: string;
+    /**
+     * First name
+     */
+    firstName: string;
 
-	/**
-	 * Last name
-	 */
-	lastName: string;
+    /**
+     * Last name
+     */
+    lastName: string;
 
-	/**
-	 * Avatar user
-	 * file id
-	 * refer to file schema
-	 */
-	avatar: Mongoose.Types.ObjectId;
+    /**
+     * Avatar user
+     * file id
+     * refer to file schema
+     */
+    avatar: Mongoose.Types.ObjectId;
 
-	/**
-	 * Birth date
-	 * Timestamp
-	 */
-	birthDate: number;
+    /**
+     * Birth date
+     * Timestamp
+     */
+    birthDate: string;
 
-	/**
-	 * Role of user
-	 */
-	role: UserRole;
+    /**
+     * Role of user
+     */
+    role: UserRole;
 
-	/**
-	 * User status
-	 */
-	status: UserStatus;
+    /**
+     * User status
+     */
+    status: UserStatus;
 
-	/**
-	 * Token
-	 */
-	token: string;
+    /**
+     * Token
+     */
+    token: string;
 }
 
 export default IUserDocument;

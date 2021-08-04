@@ -107,6 +107,11 @@ class NavigationProvider
 										/>
 										<NavigationItemComponent
 											icon={<PersonChecked />}
+											title={context.current.getMessageString(MessageId.EMPLOYEE)}
+											redirectTo={RouteConstant.EMPLOYEE}
+										/>
+										<NavigationItemComponent
+											icon={<PersonChecked />}
 											title={context.current.getMessageString(MessageId.PARTNERS)}
 											redirectTo={RouteConstant.PARTNERS}
 										/>
