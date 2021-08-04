@@ -7,7 +7,7 @@ import { CartStatus } from "../constants/EnumConstant";
  * @author tung.nguyenvan
  */
 interface ICartDocument extends IBaseDocument {
-    customer: Mongoose.Types.ObjectId;
+    customer: Mongoose.Types.ObjectId | ICartDocument;
     items: Mongoose.Types.ObjectId[];
     status: CartStatus;
 }

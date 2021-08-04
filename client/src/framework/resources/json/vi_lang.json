@@ -139,5 +139,14 @@
 	"DONE": "Hoàn thành",
 	"CARTS": "Danh sách đơn hàng",
 	"CART_CREATE": "Tạo mới đơn hàng",
-	"CHOOSE_CUSTOMER": "Chọn khách hàng"
+	"CHOOSE_CUSTOMER": "Chọn khách hàng",
+	"BIRTH_DATE": "Ngày sinh",
+	"EMPLOYEE_CREATE": "Tạo tài khoản cho nhân viên mới",
+	"USER_ROLE": "Quyền hạn",
+	"ADMIN": "Quản trị viên",
+	"SELLER": "Người bán hàng",
+	"ACCOUNTANT": "Kế toán",
+	"VALIDATE_CONFIRM_PASSWORD": "Cần giống với mật khẩu",
+	"VALIDATE_DATE": "Cần nhập dạng ngày tháng năm",
+	"REGIS_EMPLOYEE_FAILE": "Đăng ký tài khoản không thành công vì email hoặc số điện thoại đã tồn tại trên hệ thống"
 }

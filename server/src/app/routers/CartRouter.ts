@@ -9,22 +9,20 @@ import RequestFieldConstant from "@app/framework/constants/RequestFieldConstant"
 const NAME_SPACE = "CartRouter";
 
 class CartRouter extends BaseRouter {
-	constructor() {
-		Logging.debug(NAME_SPACE, "CartRouter#constructor START");
-		super(new CartController());
-		Logging.debug(NAME_SPACE, "CartRouter#constructor END");
-	}
+    constructor() {
+        Logging.debug(NAME_SPACE, "CartRouter#constructor START");
+        super(new CartController());
 
-	initializeMiddleware() {
-		super.initializeMiddleware();
+        this.router.get("/download/:id", [AppMiddleware.auth], (this.controller as CartController).download);
 
-		this.baseRouterMiddleware.save.push(
-			...[
-				AppMiddleware.auth,
-				new BaseValidation(CartValidateDocument.save, RequestFieldConstant.BODY).validate,
-			]
-		);
-	}
+        Logging.debug(NAME_SPACE, "CartRouter#constructor END");
+    }
+
+    initializeMiddleware() {
+        super.initializeMiddleware();
+
+        this.baseRouterMiddleware.save.push(...[AppMiddleware.auth, new BaseValidation(CartValidateDocument.save, RequestFieldConstant.BODY).validate]);
+    }
 }
 
 export default CartRouter;

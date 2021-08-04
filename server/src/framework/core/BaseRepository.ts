@@ -40,6 +40,8 @@ export default class BaseRepository implements IBaseRepository {
     save(request: Express.Request): Promise<Mongoose.Document> {
         Logging.debug(NAME_SPACE, `${NAME_SPACE}#save START`);
         try {
+            Logging.debug(NAME_SPACE, `${NAME_SPACE}#save DEBUG`, request.body);
+            Logging.debug(NAME_SPACE, `${NAME_SPACE}#save DEBUG`, request.body as IBaseDocument);
             return this.model.save(request.body as IBaseDocument);
         } finally {
             Logging.debug(NAME_SPACE, `${NAME_SPACE}#save END`);

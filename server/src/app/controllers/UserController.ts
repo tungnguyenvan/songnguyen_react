@@ -61,6 +61,7 @@ class UserController extends BaseController {
                     _id: userId,
                     token: jsonwebToken,
                     email: request.body.email,
+                    birthDate: request.body.birthDate,
                     password: passwordEncrypt,
                     lastName: request.body.lastName,
                     firstName: request.body.firstName,

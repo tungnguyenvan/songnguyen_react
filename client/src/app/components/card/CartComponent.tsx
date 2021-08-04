@@ -57,6 +57,7 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
         this.getCurrentCart = this.getCurrentCart.bind(this)
         this.onSelectedCart = this.onSelectedCart.bind(this)
         this.requestCartApi = this.requestCartApi.bind(this)
+        this.exportExcelFile = this.exportExcelFile.bind(this)
         this.redirectViewAll = this.redirectViewAll.bind(this)
         this.renderCartItems = this.renderCartItems.bind(this)
         this.redirectEditSize = this.redirectEditSize.bind(this)
@@ -224,6 +225,14 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
         this.props.appUrlContext.redirectTo(RouteConstant.CARTS)
     }
 
+    exportExcelFile() {
+        this.cartApiService.download(this.state.cartSelected._id)
+            .then(response => {
+                console.log(response)
+                window.location.assign(response.data.data.url)
+            })
+    }
+
     render() {
         return <FrameworkComponents.BasePage {...{
             disableBackButton: true
@@ -323,7 +332,8 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
                             onClick={this.onCancel}>
                             {this.props.languageContext.current.getMessageString(MessageId.CANCEL)}
                         </FrameworkComponents.Button>
-                        <FrameworkComponents.Button type={ButtonTypeConstant.PRIMARY}>
+                        <FrameworkComponents.Button type={ButtonTypeConstant.PRIMARY}
+                            onClick={this.exportExcelFile}>
                             {this.props.languageContext.current.getMessageString(MessageId.EXPORT_ORDER)}
                         </FrameworkComponents.Button>
                     </FrameworkComponents.FormGroup>
