@@ -148,5 +148,18 @@
 	"ACCOUNTANT": "Accountant",
 	"VALIDATE_CONFIRM_PASSWORD": "Need same with password",
 	"VALIDATE_DATE": "Need date format",
-	"REGIS_EMPLOYEE_FAILE": "Cannot register because email or phone number is exist"
+	"REGIS_EMPLOYEE_FAILED": "Cannot register because email or phone number is exist",
+	"SOURCE": "Source",
+	"WAREHOUSE": "Warehouse",
+	"DIY": "DIY",
+	"DELIVERY": "Delivery",
+	"IMPORT_WAREHOUSE": "Import to warehouse",
+	"EXPORT_WAREHOUSE": "Export warehouse",
+	"UPLOAD_FILE": "Upload file",
+	"DOWNLOAD_TEMPLATE_FILE": "Download template file",
+	"CONFIRM_DATA": "Recheck the information",
+	"IMPORT_WAREHOUSE_SUCCESS": "Import to warehouse success",
+	"IMPORT_WAREHOUSE_SUCCESS_DETAIL": "Import to warehouse success",
+	"IMPORT_WAREHOUSE_FAILED": "Import to warehouse failed",
+	"IMPORT_WAREHOUSE_FAILED_DETAIL": "Import to warehouse failed"
 }

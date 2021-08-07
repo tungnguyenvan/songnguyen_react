@@ -21,7 +21,7 @@ const document = {
         type: String,
         require: true,
         enum: CartStatus,
-        default: CartStatus.DICUSS,
+        default: CartStatus.DISCUSS,
     },
 
     createdAt: {

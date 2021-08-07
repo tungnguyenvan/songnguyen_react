@@ -47,6 +47,8 @@ import CartCreate from "app/pages/cart/CartCreate";
 import Employees from "app/pages/employee/Employees";
 import EmployeeCreate from "app/pages/employee/EmployeeCreate";
 import EmployeeDetail from "app/pages/employee/EmployeeDetail";
+import WarehousePage from "app/pages/warehouse/WarehousePage";
+import WarehouseImport from "app/pages/warehouse/WarehouseImport";
 
 class App extends React.Component {
     private appLoadingContext!: IAppLoadingContext;
@@ -238,6 +240,16 @@ class App extends React.Component {
                                                         exact
                                                         path={RouteConstant.EMPLOYEE_DETAIL}
                                                         children={<EmployeeDetail />}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path={RouteConstant.WAREHOUSE}
+                                                        children={<WarehousePage />}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path={RouteConstant.WAREHOUSE_IMPORT}
+                                                        children={<WarehouseImport />}
                                                     />
                                                     <Route exact path={RouteConstant.STORES} children={<StoresPage />} />
                                                     <Route exact path={RouteConstant.LOGIN} children={<LoginPage />} />

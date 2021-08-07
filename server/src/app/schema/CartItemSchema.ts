@@ -2,7 +2,7 @@ import Mongoose from "mongoose";
 import BaseSchema from "@app/framework/core/BaseSchema";
 import ICartItemDocument from "@app/app/documents/ICartItemDocument";
 import DBNameConstant from "@app/framework/constants/DBNameConstant";
-import { CartItemStatus, DiscountType } from "../constants/EnumConstant";
+import { CartItemSource, CartItemStatus, DiscountType } from "../constants/EnumConstant";
 
 const document = {
     product_name: {
@@ -75,6 +75,13 @@ const document = {
     delivered: {
         type: Number,
         require: true,
+        default: 0,
+    },
+
+    source: {
+        type: String,
+        enum: CartItemSource,
+        default: CartItemSource.DIY,
     },
 
     createdAt: {

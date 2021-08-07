@@ -11,6 +11,7 @@ import IThicknessDocument from "../documents/IThicknessDocument";
 import IStandardDocument from "../documents/IStandardDocument";
 import ISizeDocument from "../documents/ISizeDocument";
 import { FormType } from "../constants/EnumConstant";
+import fs from "fs";
 
 const NAME_SPACE = "CartController";
 
@@ -49,6 +50,9 @@ class CartController extends BaseController {
                 workbook.xlsx
                     .writeFile(URL_PATH + fileName)
                     .then((status) => {
+                        setTimeout(() => {
+                            fs.unlinkSync(URL_PATH + fileName);
+                        }, 1200000);
                         this.appResponse.ok(request, response, {
                             url: request.protocol + "://" + request.get("host") + "/resources/" + fileName,
                         });

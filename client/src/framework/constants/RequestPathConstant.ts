@@ -10,6 +10,7 @@ enum RequestPathConstant {
     SIZE = "size/",
     CART = "cart/",
     CART_ITEM = "cart_item/",
+    WAREHOUSE = "/warehouse/",
 }
 
 export default RequestPathConstant;

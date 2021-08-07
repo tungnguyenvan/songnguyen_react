@@ -35,7 +35,7 @@ class AppRenderUtils {
     static renderCartStatusSelectBox(languageContext: ILanguageContext): ISelectOptionModel[] {
         const options: ISelectOptionModel[] = [
             {
-                id: CartStatus.DICUSS,
+                id: CartStatus.DISCUSS,
                 title: languageContext.current.getMessageString(MessageId.DISCUSS),
             },
             {

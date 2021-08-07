@@ -24,10 +24,15 @@ enum CartItemStatus {
 }
 
 enum CartStatus {
-    DICUSS = "DICUSS",
+    DISCUSS = "DISCUSS",
     CONFIRM = "CONFIRM",
     DOING = "DOING",
     DONE = "DONE",
 }
 
-export { GasketType, FormType, DiscountType, CartItemStatus, CartStatus };
+enum CartItemSource {
+    DIY = "DIY",
+    WAREHOUSE = "WAREHOUSE",
+}
+
+export { GasketType, FormType, DiscountType, CartItemStatus, CartStatus, CartItemSource };

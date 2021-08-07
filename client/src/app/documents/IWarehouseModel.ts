@@ -1,36 +1,19 @@
 import IBaseModel from "framework/documents/models/IBaseModel";
-import IFIleModel from "framework/documents/models/IFileModel";
+import IProductNameModel from "./IProductNameModel";
+import IProductTypeModel from "./IProductTypeModel";
+import ISizeModel from "./ISizeModel";
+import IStandardModel from "./IStandardModel";
+import ISystemStandardModel from "./ISystemStandardModel";
+import IThicknessModel from "./IThicknessModel";
 
 interface IWarehouseModel extends IBaseModel {
-  /**
-   * Warehouse name
-   */
-  name: string;
-
-  /**
-   * Avatar refer to file
-   */
-  avatar: IFIleModel;
-
-  /**
-   * Country code of warehouse
-   */
-  country: string;
-
-  /**
-   * City code of warehouse
-   */
-  city: string;
-
-  /**
-   * provinces code of warehouse
-   */
-  provinces: string;
-
-  /**
-   * Full address of warehouse
-   */
-  address: string;
+    product_name: string | IProductNameModel;
+    product_type: string | IProductTypeModel;
+    thickness: string | IThicknessModel;
+    system_standard: string | ISystemStandardModel;
+    standard: string | IStandardModel;
+    size: string | ISizeModel;
+    amount: number;
 }
 
 export default IWarehouseModel;

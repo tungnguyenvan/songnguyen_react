@@ -22,6 +22,7 @@ import IStandardModel from "app/documents/IStandardModel"
 import IProductTypeModel from "app/documents/IProductTypeModel"
 import Style from "app/resources/css/CartComponent.module.scss"
 import RouteConstant from "framework/constants/RouteConstant"
+import AppUtils from "app/utils/AppUtils"
 
 interface CartComponentProps {
     languageContext: ILanguageContext;
@@ -76,7 +77,7 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
     requestCartApi() {
         this.cartApiService.all({
             createdBy: this.props.userLoginContext.state.user._id,
-            status: CartStatus.DICUSS
+            status: CartStatus.DISCUSS
         })
         .then(response => {
             if (response.status === HttpRequestStatusCode.OK) {
@@ -187,7 +188,9 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
                     element.unit_price?.toLocaleString(),
                     FrameworkUtils.getDisplayNameDiscountType(element.discount_type, this.props.languageContext),
                     element.discount_percent?.toString(),
-                    element.total_price?.toLocaleString()
+                    element.total_price?.toLocaleString(),
+                    AppUtils.sourceTitle(this.props.languageContext, element.source),
+                    element.delivered.toString()
                 ],
                 action: {
                     edit: {
@@ -299,6 +302,8 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
                         this.props.languageContext.current.getMessageString(MessageId.DISCOUNT_TYPE),
                         this.props.languageContext.current.getMessageString(MessageId.PERCENT),
                         this.props.languageContext.current.getMessageString(MessageId.TOTAL_AMOUNT),
+                        this.props.languageContext.current.getMessageString(MessageId.SOURCE),
+                        this.props.languageContext.current.getMessageString(MessageId.DELIVERY),
                         this.props.languageContext.current.getMessageString(MessageId.ACTION)
                     ]
                 }} />
