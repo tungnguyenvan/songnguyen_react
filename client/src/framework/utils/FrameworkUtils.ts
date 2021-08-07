@@ -345,7 +345,7 @@ class FrameworkUtils {
         if (!cartStatus) return "";
 
         switch (cartStatus) {
-            case CartStatus.DICUSS:
+            case CartStatus.DISCUSS:
                 return languageContext.current.getMessageString(MessageId.DISCUSS);
             case CartStatus.CONFIRM:
                 return languageContext.current.getMessageString(MessageId.CONFIRM);

@@ -7,7 +7,7 @@ import BodyParser from "body-parser";
 import RateLimit from "express-rate-limit";
 import Logging from "@app/framework/utils/Logging";
 
-// router inport
+// router import
 import TagRouter from "./routers/TagRouter";
 import FileRouter from "@app/app/routers/FileRouter";
 import UserRouter from "@app/app/routers/UserRouter";
@@ -75,7 +75,7 @@ application.use("/user", new UserRouter().getRouter());
 // application.use("/store", new StoreRouter().getRouter());
 application.use("/product_type", new ProductTypeRouter().getRouter());
 application.use("/product_name", new ProductNameRouter().getRouter());
-// application.use("/warehouse", new WarehouseRouter().getRouter());
+application.use("/warehouse", new WarehouseRouter().getRouter());
 // application.use("/address", new AddressRouter().getRouter());
 application.use("/customer", new CustomerRouter().getRouter());
 application.use("/thickness", new ThicknessRouter().getRouter());

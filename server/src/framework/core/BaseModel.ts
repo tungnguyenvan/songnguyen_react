@@ -2,6 +2,7 @@ import Mongoose from "mongoose";
 import IBaseModel from "@app/framework/interfaces/IBaseModel";
 import IBaseDocument from "@app/framework/interfaces/IBaseDocument";
 import AppUtil from "../utils/AppUtil";
+import Logging from "../utils/Logging";
 
 const NAME_SPACE = "BaseModel";
 
@@ -50,6 +51,7 @@ class BaseModel implements IBaseModel {
      * @author tung.nguyenvan
      */
     updateOne(id: Mongoose.Types.ObjectId, document: IBaseDocument): any {
+        Logging.debug(NAME_SPACE, `${NAME_SPACE}#updateOne`, `${id} - ${document}`);
         return this.schema.updateOne(
             {
                 _id: id,

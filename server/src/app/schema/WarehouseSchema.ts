@@ -4,21 +4,44 @@ import IWarehouseDocument from "@app/app/documents/IWarehouseDocument";
 import DBNameConstant from "@app/framework/constants/DBNameConstant";
 
 const document = {
-    name: {
+    product_name: {
+        type: Mongoose.Types.ObjectId,
         require: true,
-        type: String,
+        ref: DBNameConstant.PRODUCT_NAME,
     },
 
-    avatar: {
+    product_type: {
+        type: Mongoose.Types.ObjectId,
         require: true,
-        ref: DBNameConstant.FILE,
+        ref: DBNameConstant.PRODUCT_TYPE,
+    },
+
+    thickness: {
+        type: Mongoose.Types.ObjectId,
+        require: true,
+        ref: DBNameConstant.THICKNESS,
+    },
+
+    system_standard: {
+        type: Mongoose.Types.ObjectId,
+        ref: DBNameConstant.SYSTEM_STANDARD,
+    },
+
+    standard: {
+        type: Mongoose.Types.ObjectId,
+        ref: DBNameConstant.STANDARD,
+    },
+
+    size: {
+        require: true,
+        ref: DBNameConstant.SIZE,
         type: Mongoose.Types.ObjectId,
     },
 
-    address: {
+    amount: {
+        type: Number,
         require: true,
-        ref: DBNameConstant.ADDRESS,
-        type: Mongoose.Types.ObjectId,
+        default: 0,
     },
 
     createdAt: {
@@ -57,7 +80,4 @@ const document = {
 
 const fileschema = new Mongoose.Schema(document).pre("save", BaseSchema.preSave).pre("updateOne", BaseSchema.preUpdate);
 
-export default Mongoose.model<IWarehouseDocument>(
-    DBNameConstant.WAREHOUSE,
-    fileschema
-) as unknown as Mongoose.Model<Mongoose.Document>;
+export default Mongoose.model<IWarehouseDocument>(DBNameConstant.WAREHOUSE, fileschema) as unknown as Mongoose.Model<Mongoose.Document>;

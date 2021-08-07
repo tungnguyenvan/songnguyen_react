@@ -1,4 +1,4 @@
-import { CartItemStatus, DiscountType } from "framework/constants/AppEnumConstant";
+import { CartItemSource, CartItemStatus, DiscountType } from "framework/constants/AppEnumConstant";
 import IBaseModel from "framework/documents/models/IBaseModel";
 import IProductNameModel from "./IProductNameModel";
 import IProductTypeModel from "./IProductTypeModel";
@@ -21,6 +21,7 @@ interface ICartItemModel extends IBaseModel {
     discount_percent: number;
     status: CartItemStatus;
     delivered: number;
+    source: CartItemSource;
 }
 
 export default ICartItemModel;

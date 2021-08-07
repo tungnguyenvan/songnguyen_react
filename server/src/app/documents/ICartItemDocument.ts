@@ -1,6 +1,6 @@
 import IBaseDocument from "@app/framework/interfaces/IBaseDocument";
 import Mongoose from "mongoose";
-import { CartItemStatus, DiscountType } from "../constants/EnumConstant";
+import { CartItemSource, CartItemStatus, DiscountType } from "../constants/EnumConstant";
 
 /**
  * CartItem document
@@ -20,6 +20,7 @@ interface ICartItemDocument extends IBaseDocument {
     discount_percent: number;
     status: CartItemStatus;
     delivered: number;
+    source: CartItemSource;
 }
 
 export default ICartItemDocument;

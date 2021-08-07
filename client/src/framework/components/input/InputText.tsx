@@ -79,7 +79,6 @@ class InputText extends React.Component<IInputTextProps, IInputTextState> implem
 	}
 
 	setValue(value: any) {
-		console.log("set value", value)
 		this.inputTextController.setValue(value)
 	}
 

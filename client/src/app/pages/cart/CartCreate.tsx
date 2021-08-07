@@ -72,7 +72,7 @@ class CartCreate extends React.Component<CartCreateProps, CartCreateState> {
             const cartModel: ICartModel = {
                 customer: this.cartCreateFormRef.customerSelectBox.current.getValue(),
                 items: [] as string[],
-                status: CartStatus.DICUSS
+                status: CartStatus.DISCUSS
             } as ICartModel
 
             this.cartApiService.save(cartModel)

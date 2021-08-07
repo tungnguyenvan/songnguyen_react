@@ -1,16 +1,12 @@
 import React from "react";
 import Style from "framework/resources/css/TableComponent.module.scss";
 import FrameworkComponents from "../FrameworkComponents";
-import WithFramework from "framework/constants/WithFramework";
-import ILanguageContext from "framework/contexts/lang/ILanguageContext";
-import MessageId from "framework/constants/MessageId";
 import ITableCellModel from "framework/documents/ui/ITableCellModel";
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant";
 import FrameworkUtils from "framework/utils/FrameworkUtils";
 import { ReactComponent as PlusIcon } from "framework/resources/image/plus-circle.svg"
 
 interface TableComponentProps {
-    languageContext: ILanguageContext;
     header: string[];
     content: ITableCellModel[];
     title?: string
@@ -28,7 +24,7 @@ class TableComponent extends React.Component<TableComponentProps> {
                 </FrameworkComponents.FormGroup>
                 
                 <FrameworkComponents.FormGroup>
-                    {!this.props.isDisableSearchComponent && <FrameworkComponents.InputText placeHolder={this.props.languageContext.current.getMessageString(MessageId.SEARCH)} />}
+                    {/* {!this.props.isDisableSearchComponent && <FrameworkComponents.InputText placeHolder={this.props.languageContext.current.getMessageString(MessageId.SEARCH)} />} */}
                 </FrameworkComponents.FormGroup>
 
                 <div className={Style.table__component__table}>
@@ -65,4 +61,4 @@ class TableComponent extends React.Component<TableComponentProps> {
     }
 }
 
-export default WithFramework.withLanguage(TableComponent);
+export default TableComponent;

@@ -6,20 +6,13 @@ import Mongoose from "mongoose";
  * @author tung.nguyenvan
  */
 interface IWarehouseDocument extends IBaseDocument {
-    /**
-     * Warehouse name
-     */
-    name: string;
-
-    /**
-     * Avatar refer to file
-     */
-    avatar: Mongoose.Types.ObjectId;
-
-    /**
-     * Full address of warehouse
-     */
-    address: Mongoose.Types.ObjectId;
+    product_name: Mongoose.Types.ObjectId;
+    product_type: Mongoose.Types.ObjectId;
+    thickness: Mongoose.Types.ObjectId;
+    system_standard: Mongoose.Types.ObjectId;
+    standard: Mongoose.Types.ObjectId;
+    size: Mongoose.Types.ObjectId;
+    amount: number;
 }
 
 export default IWarehouseDocument;

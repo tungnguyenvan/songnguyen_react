@@ -97,8 +97,8 @@ class NavigationProvider
 										/>
 										<NavigationItemComponent
 											icon={<HomeIcon />}
-											title={context.current.getMessageString(MessageId.STORES)}
-											redirectTo={RouteConstant.STORES}
+											title={context.current.getMessageString(MessageId.WAREHOUSE)}
+											redirectTo={RouteConstant.WAREHOUSE}
 										/>
 										<NavigationItemComponent
 											icon={<People />}

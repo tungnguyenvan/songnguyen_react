@@ -89,7 +89,7 @@ class EmployeeCreate extends React.Component<EmployeeCreateProps> {
                         } else {
                             this.props.appDialogContext.addDialog({
                                 title: this.props.languageContext.current.getMessageString(MessageId.REGISTRATION_FAILED),
-                                content: this.props.languageContext.current.getMessageString(MessageId.REGIS_EMPLOYEE_FAILE)
+                                content: this.props.languageContext.current.getMessageString(MessageId.REGIS_EMPLOYEE_FAILED)
                             })
                         }
                     })
@@ -102,7 +102,7 @@ class EmployeeCreate extends React.Component<EmployeeCreateProps> {
                         } else {
                             this.props.appDialogContext.addDialog({
                                 title: this.props.languageContext.current.getMessageString(MessageId.REGISTRATION_FAILED),
-                                content: this.props.languageContext.current.getMessageString(MessageId.REGIS_EMPLOYEE_FAILE)
+                                content: this.props.languageContext.current.getMessageString(MessageId.REGIS_EMPLOYEE_FAILED)
                             })
                         }
                     })

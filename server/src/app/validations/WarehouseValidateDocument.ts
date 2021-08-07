@@ -3,14 +3,9 @@ import RuleConstant from "@app/framework/constants/RuleConstant";
 import IbaseValidateDocument from "@app/framework/interfaces/IbaseValidateDocument";
 
 class WarehouseValidateDocument {
-	public static save: IbaseValidateDocument = {
-		rules: [
-			/**
-			 * Require name
-			 */
-			new Rule("name", RuleConstant.REQUIRED, "name is required"),
-		],
-	} as IbaseValidateDocument;
+    public static save: IbaseValidateDocument = {
+        rules: [],
+    } as IbaseValidateDocument;
 }
 
 export default WarehouseValidateDocument;
