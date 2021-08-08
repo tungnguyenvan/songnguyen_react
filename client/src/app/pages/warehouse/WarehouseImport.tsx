@@ -117,6 +117,7 @@ class WarehouseImport extends React.Component<WarehouseImportProps, WarehouseSta
         this.onCancel = this.onCancel.bind(this)
         this.onImport = this.onImport.bind(this)
         this.firstSetup = this.firstSetup.bind(this)
+        this.downloadTemplateFile = this.downloadTemplateFile.bind(this)
     }
 
     componentDidMount() {
@@ -307,6 +308,16 @@ class WarehouseImport extends React.Component<WarehouseImportProps, WarehouseSta
             })
     }
 
+    downloadTemplateFile() {
+        window.location.assign("http://localhost:3002/resources/warehouse.xlsx")
+        // this.warehouseApiService.downloadTemplateFile()
+        //     .then(response => {
+        //         if (response.status === HttpRequestStatusCode.OK) {
+        //             window.location.assign(response.data.data.url)
+        //         }
+        //     })
+    }
+
     render() {
         return (
             <FrameworkComponents.BasePage
@@ -318,7 +329,7 @@ class WarehouseImport extends React.Component<WarehouseImportProps, WarehouseSta
                     <FrameworkComponents.Button type={ButtonTypeConstant.FLAT}>
                         {this.props.languageContext.current.getMessageString(MessageId.UPLOAD_FILE)}
                     </FrameworkComponents.Button>
-                    <FrameworkComponents.Button type={ButtonTypeConstant.FLAT}>
+                    <FrameworkComponents.Button type={ButtonTypeConstant.FLAT} onClick={this.downloadTemplateFile}>
                         {this.props.languageContext.current.getMessageString(MessageId.DOWNLOAD_TEMPLATE_FILE)}
                     </FrameworkComponents.Button>
                 </FrameworkComponents.FormGroup>

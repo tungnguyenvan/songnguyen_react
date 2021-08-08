@@ -9,22 +9,20 @@ import RequestFieldConstant from "@app/framework/constants/RequestFieldConstant"
 const NAME_SPACE = "WarehouseRouter";
 
 class WarehouseRouter extends BaseRouter {
-	constructor() {
-		Logging.debug(NAME_SPACE, "WarehouseRouter#constructor START");
-		super(new WarehouseController());
-		Logging.debug(NAME_SPACE, "WarehouseRouter#constructor END");
-	}
+    constructor() {
+        Logging.debug(NAME_SPACE, "WarehouseRouter#constructor START");
+        super(new WarehouseController());
 
-	initializeMiddleware() {
-		super.initializeMiddleware();
+        this.router.get("/download/template", (this.controller as WarehouseController).download);
 
-		this.baseRouterMiddleware.save.push(
-			...[
-				AppMiddleware.auth,
-				new BaseValidation(WarehouseValidateDocument.save, RequestFieldConstant.BODY).validate,
-			]
-		);
-	}
+        Logging.debug(NAME_SPACE, "WarehouseRouter#constructor END");
+    }
+
+    initializeMiddleware() {
+        super.initializeMiddleware();
+
+        this.baseRouterMiddleware.save.push(...[AppMiddleware.auth, new BaseValidation(WarehouseValidateDocument.save, RequestFieldConstant.BODY).validate]);
+    }
 }
 
 export default WarehouseRouter;

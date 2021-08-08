@@ -231,7 +231,6 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
     exportExcelFile() {
         this.cartApiService.download(this.state.cartSelected._id)
             .then(response => {
-                console.log(response)
                 window.location.assign(response.data.data.url)
             })
     }
