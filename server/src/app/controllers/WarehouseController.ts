@@ -3,7 +3,20 @@ import WarehouseRepository from "@app/app/repositories/WarehouseRepository";
 import Express from "express";
 import Logging from "@app/framework/utils/Logging";
 import IWarehouseDocument from "../documents/IWarehouseDocument";
-import Mongoose from "mongoose";
+import ExcelJS from "exceljs";
+import ProductNameRepository from "../repositories/ProductNameRepository";
+import IProductNameDocument from "../documents/IProductNameDocument";
+import fs from "fs";
+import IThicknessDocument from "../documents/IThicknessDocument";
+import ThicknessRepository from "../repositories/ThicknessRepository";
+import SystemStandardRepository from "../repositories/SystemStandardRepository";
+import ISystemStandardDocument from "../documents/ISystemStandardDocument";
+import IStandardDocument from "../documents/IStandardDocument";
+import StandardRepository from "../repositories/StandardRepository";
+import IProductTypeDocument from "../documents/IProductTypeDocument";
+import ProductTypeRepository from "../repositories/ProductTypeRepository";
+import ISizeDocument from "../documents/ISizeDocument";
+import SizeRepository from "../repositories/SizeRepository";
 
 const NAME_SPACE = "WarehouseController";
 
@@ -16,6 +29,7 @@ class WarehouseController extends BaseController {
         super(new WarehouseRepository());
 
         this.save = this.save.bind(this);
+        this.download = this.download.bind(this);
     }
 
     save(request: Express.Request, response: Express.Response): void {
@@ -58,6 +72,203 @@ class WarehouseController extends BaseController {
         } catch (error) {
             this.catchError(request, response, error);
         }
+    }
+
+    download(request: Express.Request, response: Express.Response) {
+        Logging.debug(NAME_SPACE, `${NAME_SPACE}#download START`);
+        // data api
+        let productTypes: IProductTypeDocument[];
+        let productNames: IProductNameDocument[];
+        let thickness: IThicknessDocument[];
+        let systemStandards: ISystemStandardDocument[];
+        let standards: IStandardDocument[];
+        let sizes: ISizeDocument[];
+
+        const productTypeRepository: ProductTypeRepository = new ProductTypeRepository();
+        productTypeRepository.all(request).then((productTypeResponse) => {
+            productTypes = productTypeResponse as unknown as IProductTypeDocument[];
+            this.executeExcelFile(productTypes, productNames, thickness, systemStandards, standards, sizes, request, response);
+        });
+
+        const productNameRepository: ProductNameRepository = new ProductNameRepository();
+        productNameRepository.all(request).then((productNamesResponse) => {
+            productNames = productNamesResponse as unknown as IProductNameDocument[];
+            this.executeExcelFile(productTypes, productNames, thickness, systemStandards, standards, sizes, request, response);
+        });
+
+        const thicknessRepository: ThicknessRepository = new ThicknessRepository();
+        thicknessRepository.all(request).then((thicknessResponse) => {
+            thickness = thicknessResponse as unknown as IThicknessDocument[];
+            this.executeExcelFile(productTypes, productNames, thickness, systemStandards, standards, sizes, request, response);
+        });
+
+        const systemStandardRepository: SystemStandardRepository = new SystemStandardRepository();
+        systemStandardRepository.all(request).then((systemStandardResponse) => {
+            systemStandards = systemStandardResponse as unknown as ISystemStandardDocument[];
+            this.executeExcelFile(productTypes, productNames, thickness, systemStandards, standards, sizes, request, response);
+        });
+
+        const standardRepository: StandardRepository = new StandardRepository();
+        standardRepository.all(request).then((standardResponse) => {
+            standards = standardResponse as unknown as IStandardDocument[];
+            this.executeExcelFile(productTypes, productNames, thickness, systemStandards, standards, sizes, request, response);
+        });
+
+        const sizeRepository: SizeRepository = new SizeRepository();
+        sizeRepository.all(request).then((sizeResponse) => {
+            sizes = sizeResponse as unknown as ISizeDocument[];
+            this.executeExcelFile(productTypes, productNames, thickness, systemStandards, standards, sizes, request, response);
+        });
+        Logging.debug(NAME_SPACE, `${NAME_SPACE}#download END`);
+    }
+
+    executeExcelFile(
+        productTypes: IProductTypeDocument[],
+        productNames: IProductNameDocument[],
+        thickness: IThicknessDocument[],
+        systemStandards: ISystemStandardDocument[],
+        standards: IStandardDocument[],
+        sizes: ISizeDocument[],
+        request: Express.Request,
+        response: Express.Response
+    ) {
+        Logging.debug(NAME_SPACE, `${NAME_SPACE}#executeExcelFile START`);
+        if (
+            productTypes &&
+            productNames &&
+            thickness &&
+            systemStandards &&
+            standards &&
+            sizes &&
+            productTypes.length &&
+            productNames.length &&
+            thickness.length &&
+            systemStandards.length &&
+            standards.length &&
+            sizes.length
+        ) {
+            const URL_PATH = "storage/";
+            const fileName = `${Date.now()}.xlsx`;
+            const workbook = new ExcelJS.Workbook();
+            workbook.xlsx.readFile(__dirname + "/../../resource/warehouse.xlsx").then(() => {
+                Logging.debug(NAME_SPACE, `${NAME_SPACE}#readFile warehouse START`, workbook.properties);
+                const workSheet = workbook.getWorksheet(1);
+                this.writeSettingSheet(workSheet, productTypes, productNames, thickness, systemStandards, standards, sizes);
+
+                workbook.xlsx
+                    .writeFile(URL_PATH + fileName)
+                    .then((status) => {
+                        setTimeout(() => {
+                            fs.unlinkSync(URL_PATH + fileName);
+                        }, 120000);
+                        this.appResponse.ok(request, response, {
+                            url: request.protocol + "://" + request.get("host") + "/resources/" + fileName,
+                        });
+                    })
+                    .catch((error) => {
+                        Logging.error(NAME_SPACE, `${NAME_SPACE}#download`, error);
+                    });
+            });
+        }
+        Logging.debug(NAME_SPACE, `${NAME_SPACE}#executeExcelFile END`);
+    }
+
+    writeSettingSheet(
+        workSheet: ExcelJS.Worksheet,
+        productTypes: IProductTypeDocument[],
+        productNames: IProductNameDocument[],
+        thickness: IThicknessDocument[],
+        systemStandards: ISystemStandardDocument[],
+        standards: IStandardDocument[],
+        sizes: ISizeDocument[]
+    ) {
+        Logging.debug(NAME_SPACE, `${NAME_SPACE}#writeSettingSheet START`);
+        let maxLength = 0;
+        if (maxLength < productTypes.length) maxLength = productTypes.length;
+        if (maxLength < productNames.length) maxLength = productNames.length;
+        if (maxLength < thickness.length) maxLength = thickness.length;
+        if (maxLength < systemStandards.length) maxLength = systemStandards.length;
+        if (maxLength < standards.length) maxLength = standards.length;
+        if (maxLength < sizes.length) maxLength = sizes.length;
+
+        for (let i = 0; i < maxLength; i++) {
+            const value = [];
+
+            if (productTypes[i]) {
+                value.push(productTypes[i]._id.toHexString());
+                value.push(productTypes[i].name);
+            } else {
+                value.push(null);
+                value.push(null);
+            }
+            value.push(null);
+
+            if (productNames[i]) {
+                value.push(productNames[i]._id.toHexString());
+                value.push((productNames[i].product_type[0] as unknown as IProductTypeDocument)?._id.toHexString());
+                value.push((productNames[i].product_type[1] as unknown as IProductTypeDocument)?._id.toHexString());
+                value.push((productNames[i].product_type[2] as unknown as IProductTypeDocument)?._id.toHexString());
+                value.push(productNames[i].name);
+            } else {
+                value.push(null);
+                value.push(null);
+                value.push(null);
+                value.push(null);
+                value.push(null);
+            }
+            value.push(null);
+
+            if (thickness[i]) {
+                value.push(thickness[i]._id.toHexString());
+                value.push((thickness[i].product_name as unknown as IProductNameDocument)._id.toHexString());
+                value.push(thickness[i].name);
+                value.push(thickness[i].price);
+            } else {
+                value.push(null);
+                value.push(null);
+                value.push(null);
+            }
+            value.push(null);
+
+            if (systemStandards[i]) {
+                value.push(systemStandards[i]._id.toHexString());
+                value.push(systemStandards[i].name);
+            } else {
+                value.push(null);
+                value.push(null);
+            }
+            value.push(null);
+
+            if (standards[i]) {
+                value.push(standards[i]._id.toHexString());
+                value.push((standards[i].system_standard as unknown as ISystemStandardDocument)._id.toHexString());
+                value.push(standards[i].name);
+            } else {
+                value.push(null);
+                value.push(null);
+                value.push(null);
+            }
+            value.push(null);
+
+            if (sizes[i]) {
+                value.push(sizes[i]._id.toHexString());
+                value.push(sizes[i].name);
+                value.push(sizes[i].inner_diameter);
+                value.push(sizes[i].outer_diameter);
+                value.push(sizes[i].hole_count);
+                value.push(sizes[i].hole_diameter);
+            } else {
+                value.push(null);
+                value.push(null);
+                value.push(null);
+                value.push(null);
+                value.push(null);
+                value.push(null);
+            }
+
+            workSheet.addRow(value);
+        }
+        Logging.debug(NAME_SPACE, `${NAME_SPACE}#writeSettingSheet END`);
     }
 }
 

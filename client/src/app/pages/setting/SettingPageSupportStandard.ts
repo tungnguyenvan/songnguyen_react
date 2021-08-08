@@ -89,8 +89,8 @@ class SettingPageSupportStandard implements ISettingPageSupport<IStandardModel> 
                 content: [
                     element.name,
                     element.system_standard ? (element.system_standard as ISystemStandardModel).name : "",
-                    element.coefficient.toString(),
-                    element.bolt.toString(),
+                    element.coefficient?.toString(),
+                    element.bolt?.toString(),
                     FrameworkUtils.userName(element.createdBy),
                     FrameworkUtils.generateDate(element.createdAt),
                 ],
