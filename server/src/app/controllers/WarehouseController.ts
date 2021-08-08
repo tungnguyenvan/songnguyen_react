@@ -153,7 +153,12 @@ class WarehouseController extends BaseController {
             workbook.xlsx.readFile(__dirname + "/../../resource/warehouse.xlsx").then(() => {
                 Logging.debug(NAME_SPACE, `${NAME_SPACE}#readFile warehouse START`, workbook.properties);
                 const workSheet = workbook.getWorksheet(1);
-                this.writeSettingSheet(workSheet, productTypes, productNames, thickness, systemStandards, standards, sizes);
+                try {
+                    this.writeSettingSheet(workSheet, productTypes, productNames, thickness, systemStandards, standards, sizes);
+                } catch (error) {
+                    Logging.error(NAME_SPACE, `${NAME_SPACE}#download`, error);
+                    this.appResponse.internalServerError(request, response);
+                }
 
                 workbook.xlsx
                     .writeFile(URL_PATH + fileName)
@@ -190,6 +195,7 @@ class WarehouseController extends BaseController {
         if (maxLength < systemStandards.length) maxLength = systemStandards.length;
         if (maxLength < standards.length) maxLength = standards.length;
         if (maxLength < sizes.length) maxLength = sizes.length;
+        let index = 1;
 
         for (let i = 0; i < maxLength; i++) {
             const value = [];
@@ -266,7 +272,8 @@ class WarehouseController extends BaseController {
                 value.push(null);
             }
 
-            workSheet.addRow(value);
+            workSheet.insertRow(index, value);
+            index += 1;
         }
         Logging.debug(NAME_SPACE, `${NAME_SPACE}#writeSettingSheet END`);
     }
