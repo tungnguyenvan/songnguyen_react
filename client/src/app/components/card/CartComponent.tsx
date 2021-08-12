@@ -55,6 +55,7 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
         this.onCancel = this.onCancel.bind(this)
         this.deleteSize = this.deleteSize.bind(this)
         this.calTotalPrice = this.calTotalPrice.bind(this)
+        this.resetComponent = this.resetComponent.bind(this)
         this.getCurrentCart = this.getCurrentCart.bind(this)
         this.onSelectedCart = this.onSelectedCart.bind(this)
         this.requestCartApi = this.requestCartApi.bind(this)
@@ -71,25 +72,36 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
             this.requestCartApi()
         } else {
             this.props.userLoginContext.current.addEventUserLogin(this.requestCartApi)
+            this.props.userLoginContext.current.addEventUserLogout(this.resetComponent)
         }
     }
 
-    requestCartApi() {
-        this.cartApiService.all({
-            createdBy: this.props.userLoginContext.state.user._id,
-            status: CartStatus.DISCUSS
+    resetComponent() {
+        this.setState({
+            carts: [],
+            cartSelected: {} as ICartModel,
+            totalPrice: 0
         })
-        .then(response => {
-            if (response.status === HttpRequestStatusCode.OK) {
-                this.setState({
-                    carts: response.data.data as ICartModel[]
-                }, () => {
-                    if (this.state.cartSelected._id) {
-                        this.onSelectedCart(this.state.cartSelected._id)
+    }
+
+    requestCartApi() {
+        if (this.props.userLoginContext.state.user?._id) {
+            this.cartApiService.all({
+                createdBy: this.props.userLoginContext.state.user._id,
+                status: CartStatus.DISCUSS
+            })
+                .then(response => {
+                    if (response.status === HttpRequestStatusCode.OK) {
+                        this.setState({
+                            carts: response.data.data as ICartModel[]
+                        }, () => {
+                            if (this.state.cartSelected._id) {
+                                this.onSelectedCart(this.state.cartSelected._id)
+                            }
+                        })
                     }
                 })
-            }
-        })
+        }
     }
 
     getCurrentCart(): ICartModel {
@@ -236,6 +248,10 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
     }
 
     render() {
+        if (!this.props.userLoginContext.current.isLoggedIn()) {
+            return <div></div>
+        }
+
         return <FrameworkComponents.BasePage {...{
             disableBackButton: true
         }}>

@@ -45,8 +45,8 @@ class TableComponent extends React.Component<TableComponentProps> {
                                     {element.action && 
                                         <td>
                                             <div className={Style.action}>
-                                                { (element.action.edit && element.action.edit.isAlive) && <FrameworkComponents.Button type={ButtonTypeConstant.WARNING} isForTableCell={true} onClick={() => {element.action!.edit!.func(element.id)}}>&#x270E;</FrameworkComponents.Button>}
-                                                { (element.action.delete && element.action.delete.isAlive) && <FrameworkComponents.Button dialogModel={element.action.delete?.dialog} type={ButtonTypeConstant.DANGER} isForTableCell={true} onClick={() => {element.action!.delete?.func(element.id)}}>&#x2715;</FrameworkComponents.Button>}
+                                                { element.action.edit && <FrameworkComponents.Button disable={!element.action.edit.isAlive} type={ButtonTypeConstant.WARNING} isForTableCell={true} onClick={() => {element.action!.edit!.func(element.id)}}>&#x270E;</FrameworkComponents.Button>}
+                                                { element.action.delete && <FrameworkComponents.Button disable={!element.action.delete.isAlive} dialogModel={element.action.delete?.dialog} type={ButtonTypeConstant.DANGER} isForTableCell={true} onClick={() => {element.action!.delete?.func(element.id)}}>&#x2715;</FrameworkComponents.Button>}
                                             </div>
                                         </td>
                                     }

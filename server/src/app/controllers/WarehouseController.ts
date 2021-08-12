@@ -201,70 +201,48 @@ class WarehouseController extends BaseController {
             const value = [];
 
             if (productTypes[i]) {
-                value.push(productTypes[i]._id.toHexString());
                 value.push(productTypes[i].name);
             } else {
-                value.push(null);
                 value.push(null);
             }
             value.push(null);
 
             if (productNames[i]) {
-                value.push(productNames[i]._id.toHexString());
-                value.push((productNames[i].product_type[0] as unknown as IProductTypeDocument)?._id.toHexString());
-                value.push((productNames[i].product_type[1] as unknown as IProductTypeDocument)?._id.toHexString());
-                value.push((productNames[i].product_type[2] as unknown as IProductTypeDocument)?._id.toHexString());
                 value.push(productNames[i].name);
             } else {
-                value.push(null);
-                value.push(null);
-                value.push(null);
-                value.push(null);
                 value.push(null);
             }
             value.push(null);
 
             if (thickness[i]) {
-                value.push(thickness[i]._id.toHexString());
-                value.push((thickness[i].product_name as unknown as IProductNameDocument)._id.toHexString());
                 value.push(thickness[i].name);
                 value.push(thickness[i].price);
             } else {
-                value.push(null);
-                value.push(null);
                 value.push(null);
             }
             value.push(null);
 
             if (systemStandards[i]) {
-                value.push(systemStandards[i]._id.toHexString());
                 value.push(systemStandards[i].name);
             } else {
-                value.push(null);
                 value.push(null);
             }
             value.push(null);
 
             if (standards[i]) {
-                value.push(standards[i]._id.toHexString());
-                value.push((standards[i].system_standard as unknown as ISystemStandardDocument)._id.toHexString());
                 value.push(standards[i].name);
             } else {
-                value.push(null);
-                value.push(null);
                 value.push(null);
             }
             value.push(null);
 
             if (sizes[i]) {
-                value.push(sizes[i]._id.toHexString());
                 value.push(sizes[i].name);
                 value.push(sizes[i].inner_diameter);
                 value.push(sizes[i].outer_diameter);
                 value.push(sizes[i].hole_count);
                 value.push(sizes[i].hole_diameter);
             } else {
-                value.push(null);
                 value.push(null);
                 value.push(null);
                 value.push(null);

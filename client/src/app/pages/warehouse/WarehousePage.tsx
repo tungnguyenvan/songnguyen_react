@@ -39,10 +39,16 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
         }
 
         this.tableHeader = this.tableHeader.bind(this)
+        this.editWarehouse = this.editWarehouse.bind(this)
+        this.deleteWarehouse = this.deleteWarehouse.bind(this)
     }
 
     componentDidMount() {
-        this.warehouseApiService.all()
+        this.warehouseApiService.all({
+            amount: {
+                $ne: 0
+            }
+        })
             .then(response => {
                 if (response.status === HttpRequestStatusCode.OK) {
                     this.setState({
@@ -96,11 +102,29 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
                     (element.system_standard as ISystemStandardModel)?.name,
                     (element.standard as IStandardModel)?.name,
                     element.amount?.toString()
-                ]
+                ],
+                action: {
+                    edit: {
+                        isAlive: true,
+                        func: this.editWarehouse
+                    },
+                    delete: {
+                        isAlive: true,
+                        func: this.deleteWarehouse
+                    }
+                }
             })
         })
 
         return tableCells
+    }
+
+    editWarehouse(id: string) {
+
+    }
+
+    deleteWarehouse(id: string) {
+
     }
 
     render() {
@@ -111,7 +135,6 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
                 <FrameworkComponents.Button type={ButtonTypeConstant.FLAT} onClick={() => {
                     this.props.appUrlContext.redirectTo(RouteConstant.WAREHOUSE_IMPORT)
                 }}>{this.props.languageContext.current.getMessageString(MessageId.IMPORT_WAREHOUSE)}</FrameworkComponents.Button>
-                <FrameworkComponents.Button type={ButtonTypeConstant.FLAT}>{this.props.languageContext.current.getMessageString(MessageId.EXPORT_WAREHOUSE)}</FrameworkComponents.Button>
             </FrameworkComponents.FormGroup>
             <FrameworkComponents.Table 
                 header={this.tableHeader()}
