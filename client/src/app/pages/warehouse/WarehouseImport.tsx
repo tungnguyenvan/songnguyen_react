@@ -23,6 +23,7 @@ import { FormType } from "framework/constants/AppEnumConstant";
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant";
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode";
 import MessageId from "framework/constants/MessageId";
+import RouteConstant from "framework/constants/RouteConstant";
 import RuleConstant from "framework/constants/RuleConstant";
 import WithFramework from "framework/constants/WithFramework";
 import IAppDialogContext from "framework/contexts/dialog/IAppDialogContext";
@@ -309,13 +310,13 @@ class WarehouseImport extends React.Component<WarehouseImportProps, WarehouseSta
     }
 
     downloadTemplateFile() {
-        window.location.assign("http://localhost:3002/resources/warehouse.xlsx")
-        // this.warehouseApiService.downloadTemplateFile()
-        //     .then(response => {
-        //         if (response.status === HttpRequestStatusCode.OK) {
-        //             window.location.assign(response.data.data.url)
-        //         }
-        //     })
+        // window.location.assign("http://localhost:3002/resources/warehouse.xlsx")
+        this.warehouseApiService.downloadTemplateFile()
+            .then(response => {
+                if (response.status === HttpRequestStatusCode.OK) {
+                    window.location.assign(response.data.data.url)
+                }
+            })
     }
 
     render() {
@@ -326,7 +327,9 @@ class WarehouseImport extends React.Component<WarehouseImportProps, WarehouseSta
                 }}
             >
                 <FrameworkComponents.FormGroup>
-                    <FrameworkComponents.Button type={ButtonTypeConstant.FLAT}>
+                    <FrameworkComponents.Button type={ButtonTypeConstant.FLAT} onClick={() => {
+                        this.props.appUrlContext.redirectTo(RouteConstant.WAREHOUSE_IMPORT_EXCEL_FILE)
+                    }}>
                         {this.props.languageContext.current.getMessageString(MessageId.UPLOAD_FILE)}
                     </FrameworkComponents.Button>
                     <FrameworkComponents.Button type={ButtonTypeConstant.FLAT} onClick={this.downloadTemplateFile}>

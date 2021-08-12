@@ -49,6 +49,7 @@ enum RouteConstant {
 
     WAREHOUSE = "/warehouse",
     WAREHOUSE_IMPORT = "/warehouse/import",
+    WAREHOUSE_IMPORT_EXCEL_FILE = "/warehouse/import/excel",
 }
 
 export default RouteConstant;

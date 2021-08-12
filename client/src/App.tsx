@@ -49,6 +49,7 @@ import EmployeeCreate from "app/pages/employee/EmployeeCreate";
 import EmployeeDetail from "app/pages/employee/EmployeeDetail";
 import WarehousePage from "app/pages/warehouse/WarehousePage";
 import WarehouseImport from "app/pages/warehouse/WarehouseImport";
+import WarehouseImportByExcelFile from "app/pages/warehouse/WarehouseImportByExcelFile";
 
 class App extends React.Component {
     private appLoadingContext!: IAppLoadingContext;
@@ -245,6 +246,11 @@ class App extends React.Component {
                                                         exact
                                                         path={RouteConstant.WAREHOUSE}
                                                         children={<WarehousePage />}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path={RouteConstant.WAREHOUSE_IMPORT_EXCEL_FILE}
+                                                        children={<WarehouseImportByExcelFile />}
                                                     />
                                                     <Route
                                                         exact

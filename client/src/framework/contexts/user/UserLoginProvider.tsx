@@ -30,17 +30,32 @@ class UserLoginProvider
         this.state = {
             user: undefined as unknown as IUserModel,
             callbacks: [],
+            logoutCallbacks: []
         };
 
+        this.logout = this.logout.bind(this);
         this.setUser = this.setUser.bind(this);
         this.isLoggedIn = this.isLoggedIn.bind(this);
         this.authRedirect = this.authRedirect.bind(this);
         this.userLoginFromLocalStorage = this.userLoginFromLocalStorage.bind(this);
     }
 
+    addEventUserLogout(callback: () => void): void {
+        this.setState({
+            logoutCallbacks: [...this.state.logoutCallbacks, callback]
+        })
+    }
+
+    logout(): void {
+        this.removeUserLoggedIn()
+    }
+
     removeUserLoggedIn(): void {
         localStorage.setItem(AppConstant.ACCESS_TOKEN_KEY, "");
         this.setUser(undefined as unknown as IUserModel);
+        this.state.logoutCallbacks.forEach(element => {
+            if (element) element()
+        })
     }
 
     addEventUserLogin(callback: () => void): void {

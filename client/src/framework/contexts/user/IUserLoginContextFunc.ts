@@ -5,6 +5,8 @@ interface IUserLoginContextFunc {
     isLoggedIn(): boolean;
     addEventUserLogin(callback: () => void): void;
     removeUserLoggedIn(): void;
+    logout(): void;
+    addEventUserLogout(callback: () => void): void;
 }
 
 export default IUserLoginContextFunc;

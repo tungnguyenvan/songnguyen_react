@@ -161,5 +161,8 @@
 	"IMPORT_WAREHOUSE_SUCCESS": "Import to warehouse success",
 	"IMPORT_WAREHOUSE_SUCCESS_DETAIL": "Import to warehouse success",
 	"IMPORT_WAREHOUSE_FAILED": "Import to warehouse failed",
-	"IMPORT_WAREHOUSE_FAILED_DETAIL": "Import to warehouse failed"
+	"IMPORT_WAREHOUSE_FAILED_DETAIL": "Import to warehouse failed",
+	"INPUT_FILE_NOT_SUITABLE": "File not suitable",
+	"INPUT_FILE_NOT_SUITABLE_CONTENT": "File not suitable, because this file don't have content or malformed",
+	"LOGOUT": "Logout"
 }
