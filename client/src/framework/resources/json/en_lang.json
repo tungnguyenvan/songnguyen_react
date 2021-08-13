@@ -164,5 +164,9 @@
 	"IMPORT_WAREHOUSE_FAILED_DETAIL": "Import to warehouse failed",
 	"INPUT_FILE_NOT_SUITABLE": "File not suitable",
 	"INPUT_FILE_NOT_SUITABLE_CONTENT": "File not suitable, because this file don't have content or malformed",
-	"LOGOUT": "Logout"
+	"LOGOUT": "Logout",
+	"WAREHOUSE_ITEM_DETAIL": "Warehouse item detail",
+	"NOT_ENOUGH": "Not enough",
+	"NOT_ENOUGH_CONTENT": "The products not enough",
+	"CART_ITEM_DETAIL": "Cart item detail"
 }

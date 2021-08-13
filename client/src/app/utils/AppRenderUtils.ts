@@ -6,7 +6,7 @@ import ISizeModel from "app/documents/ISizeModel";
 import IStandardModel from "app/documents/IStandardModel";
 import ISystemStandardModel from "app/documents/ISystemStandardModel";
 import IThicknessModel from "app/documents/IThicknessModel";
-import { CartStatus, DiscountType, FormType, GasketPTCShape } from "framework/constants/AppEnumConstant";
+import { CartItemStatus, CartStatus, DiscountType, FormType, GasketPTCShape } from "framework/constants/AppEnumConstant";
 import MessageId from "framework/constants/MessageId";
 import { UserRole } from "framework/constants/UserEnumConstant";
 import ILanguageContext from "framework/contexts/lang/ILanguageContext";
@@ -16,6 +16,26 @@ import FrameworkUtils from "framework/utils/FrameworkUtils";
 import AppUtils from "./AppUtils";
 
 class AppRenderUtils {
+    static renderCartItemStatus(languageContext: ILanguageContext): ISelectOptionModel[] {
+        return [
+            {
+                id: CartItemStatus.DISCUSS,
+                title: languageContext.current.getMessageString(MessageId.DISCUSS),
+            },
+            {
+                id: CartItemStatus.CONFIRM,
+                title: languageContext.current.getMessageString(MessageId.CONFIRM),
+            },
+            {
+                id: CartItemStatus.DOING,
+                title: languageContext.current.getMessageString(MessageId.DOING),
+            },
+            {
+                id: CartItemStatus.DONE,
+                title: languageContext.current.getMessageString(MessageId.DONE),
+            },
+        ];
+    }
     static renderUserRoleSelectBox(languageContext: ILanguageContext): ISelectOptionModel[] {
         return [
             {

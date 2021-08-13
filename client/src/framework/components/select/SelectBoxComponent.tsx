@@ -81,7 +81,7 @@ class SelectBoxComponent extends React.Component<SelectBoxComponentProps, Select
     }
 
     getValue(): String | Number {
-        return this.rootRef.current.value
+        return this.rootRef.current ? this.rootRef.current.value: false
     }
 
     isChanged(): boolean {

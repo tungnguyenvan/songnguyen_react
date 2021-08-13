@@ -1,7 +1,7 @@
 import React from "react";
 import EventConstant from "framework/constants/EventConstant";
 import IUserModel from "framework/documents/models/IUserModel";
-import { matchPath } from "react-router";
+import { matchPath, generatePath } from "react-router";
 import IFormInputElement from "framework/components/IFormInputElement";
 import IProductTypeModel from "app/documents/IProductTypeModel";
 import { CartStatus, DiscountType, GasketPTCShape } from "framework/constants/AppEnumConstant";
@@ -120,6 +120,10 @@ class FrameworkUtils {
             exact: true,
             strict: false,
         });
+    }
+
+    public static generatePath(url: string, params: any) {
+        return generatePath(url, params);
     }
 
     public static readProp(obj: any, key: string) {

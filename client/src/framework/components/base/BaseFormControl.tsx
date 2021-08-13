@@ -118,7 +118,7 @@ class BaseFormControl extends React.Component<IBaseFormControlProps, IBaseFormCo
 		});
 
 		const labelClass = ClassName(Style.label, {
-			[Style.not__blank]: this.state.isNotBlankData,
+			[Style.not__blank]: (this.props.getValue && this.props.getValue()) || this.state.isFocus || false //this.state.isNotBlankData,
 		});
 
 		// render

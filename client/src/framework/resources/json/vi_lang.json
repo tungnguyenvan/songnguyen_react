@@ -164,5 +164,9 @@
 	"IMPORT_WAREHOUSE_FAILED_DETAIL": "Nhập kho thất bại",
 	"INPUT_FILE_NOT_SUITABLE": "Tệp không phù hợp",
 	"INPUT_FILE_NOT_SUITABLE_CONTENT": "Tệp không phù hợp vì chưa nhập dữ liệu hoặc không đúng định dạng",
-	"LOGOUT": "Đăng xuất"
+	"LOGOUT": "Đăng xuất",
+	"WAREHOUSE_ITEM_DETAIL": "Chi tiết sản phẩm kho",
+	"NOT_ENOUGH": "Không đủ",
+	"NOT_ENOUGH_CONTENT": "Sản phẩm không đủ",
+	"CART_ITEM_DETAIL": "Chi tiết sản phẩm trong giỏ hàng"
 }

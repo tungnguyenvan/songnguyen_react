@@ -52,12 +52,11 @@ class InputTextController {
     }
 
     getValue(): String | Number {
-        return this.inputRef.current.value;
+        return this.inputRef.current ? this.inputRef.current.value : false;
     }
 
     setValue(value: any) {
         this.inputRef.current.value = value;
-        this.baseFormRef.current?.setBlurHaveValue();
     }
 
     onInputBlur() {

@@ -50,6 +50,8 @@ import EmployeeDetail from "app/pages/employee/EmployeeDetail";
 import WarehousePage from "app/pages/warehouse/WarehousePage";
 import WarehouseImport from "app/pages/warehouse/WarehouseImport";
 import WarehouseImportByExcelFile from "app/pages/warehouse/WarehouseImportByExcelFile";
+import WarehouseItem from "app/pages/warehouse/WarehouseItem";
+import CartItemDetail from "app/pages/cart_item/CartItemDetail";
 
 class App extends React.Component {
     private appLoadingContext!: IAppLoadingContext;
@@ -219,6 +221,11 @@ class App extends React.Component {
                                                     />
                                                     <Route
                                                         exact
+                                                        path={RouteConstant.CART_ITEM_DETAIL}
+                                                        children={<CartItemDetail />}
+                                                    />
+                                                    <Route
+                                                        exact
                                                         path={RouteConstant.CARTS}
                                                         children={<Carts />}
                                                     />
@@ -256,6 +263,11 @@ class App extends React.Component {
                                                         exact
                                                         path={RouteConstant.WAREHOUSE_IMPORT}
                                                         children={<WarehouseImport />}
+                                                    />
+                                                    <Route
+                                                        exact
+                                                        path={RouteConstant.WAREHOUSE_ITEM_DETAIL}
+                                                        children={<WarehouseItem />}
                                                     />
                                                     <Route exact path={RouteConstant.STORES} children={<StoresPage />} />
                                                     <Route exact path={RouteConstant.LOGIN} children={<LoginPage />} />

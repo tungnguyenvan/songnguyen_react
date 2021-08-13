@@ -1,61 +1,66 @@
-import WarehouseApiService from "app/api/WarehouseApiService"
-import IProductNameModel from "app/documents/IProductNameModel"
-import IProductTypeModel from "app/documents/IProductTypeModel"
-import ISizeModel from "app/documents/ISizeModel"
-import IStandardModel from "app/documents/IStandardModel"
-import ISystemStandardModel from "app/documents/ISystemStandardModel"
-import IWarehouseModel from "app/documents/IWarehouseModel"
-import FrameworkComponents from "framework/components/FrameworkComponents"
-import ButtonTypeConstant from "framework/constants/ButtonTypeConstant"
-import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
-import MessageId from "framework/constants/MessageId"
-import RouteConstant from "framework/constants/RouteConstant"
-import WithFramework from "framework/constants/WithFramework"
-import IAppDialogContext from "framework/contexts/dialog/IAppDialogContext"
-import ILanguageContext from "framework/contexts/lang/ILanguageContext"
-import IAppUrlContext from "framework/contexts/url/IAppUrlContext"
-import ITableCellModel from "framework/documents/ui/ITableCellModel"
-import React from "react"
+import WarehouseApiService from "app/api/WarehouseApiService";
+import IProductNameModel from "app/documents/IProductNameModel";
+import IProductTypeModel from "app/documents/IProductTypeModel";
+import ISizeModel from "app/documents/ISizeModel";
+import IStandardModel from "app/documents/IStandardModel";
+import ISystemStandardModel from "app/documents/ISystemStandardModel";
+import IWarehouseModel from "app/documents/IWarehouseModel";
+import FrameworkComponents from "framework/components/FrameworkComponents";
+import ButtonTypeConstant from "framework/constants/ButtonTypeConstant";
+import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode";
+import MessageId from "framework/constants/MessageId";
+import RouteConstant from "framework/constants/RouteConstant";
+import { UserRole } from "framework/constants/UserEnumConstant";
+import WithFramework from "framework/constants/WithFramework";
+import IAppDialogContext from "framework/contexts/dialog/IAppDialogContext";
+import ILanguageContext from "framework/contexts/lang/ILanguageContext";
+import IAppUrlContext from "framework/contexts/url/IAppUrlContext";
+import IUserLoginContext from "framework/contexts/user/IUserLoginContext";
+import ITableCellModel from "framework/documents/ui/ITableCellModel";
+import FrameworkUtils from "framework/utils/FrameworkUtils";
+import React from "react";
 
 interface WarehouseProps {
-    languageContext: ILanguageContext
-    appDialogContext: IAppDialogContext
-    appUrlContext: IAppUrlContext
+    languageContext: ILanguageContext;
+    appDialogContext: IAppDialogContext;
+    appUrlContext: IAppUrlContext;
+    userLoginContext: IUserLoginContext;
 }
 
 interface WarehouseState {
-    items: IWarehouseModel[]
+    items: IWarehouseModel[];
 }
 
 class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
-    private warehouseApiService: WarehouseApiService
+    private warehouseApiService: WarehouseApiService;
 
     constructor(props: WarehouseProps) {
-        super(props)
+        super(props);
 
-        this.warehouseApiService = new WarehouseApiService()
+        this.warehouseApiService = new WarehouseApiService();
         this.state = {
-            items: []
-        }
+            items: [],
+        };
 
-        this.tableHeader = this.tableHeader.bind(this)
-        this.editWarehouse = this.editWarehouse.bind(this)
-        this.deleteWarehouse = this.deleteWarehouse.bind(this)
+        this.tableHeader = this.tableHeader.bind(this);
+        this.editWarehouse = this.editWarehouse.bind(this);
+        this.deleteWarehouse = this.deleteWarehouse.bind(this);
     }
 
     componentDidMount() {
-        this.warehouseApiService.all({
-            amount: {
-                $ne: 0
-            }
-        })
-            .then(response => {
+        this.warehouseApiService
+            .all({
+                amount: {
+                    $ne: 0,
+                },
+            })
+            .then((response) => {
                 if (response.status === HttpRequestStatusCode.OK) {
                     this.setState({
-                        items: response.data.data as IWarehouseModel[]
-                    })
+                        items: response.data.data as IWarehouseModel[],
+                    });
                 }
-            })
+            });
     }
 
     tableHeader(): string[] {
@@ -75,15 +80,15 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
             this.props.languageContext.current.getMessageString(MessageId.SYSTEM_STANDARD),
             this.props.languageContext.current.getMessageString(MessageId.STANDARD),
             this.props.languageContext.current.getMessageString(MessageId.AMOUNT),
-            this.props.languageContext.current.getMessageString(MessageId.ACTION)
-        ]
+            this.props.languageContext.current.getMessageString(MessageId.ACTION),
+        ];
     }
 
     tableContent(): ITableCellModel[] {
-        const tableCells: ITableCellModel[] = []
+        const tableCells: ITableCellModel[] = [];
 
-        this.state.items.forEach(element => {
-            const size = element.size as ISizeModel
+        this.state.items.forEach((element) => {
+            const size = element.size as ISizeModel;
             tableCells.push({
                 id: element._id,
                 content: [
@@ -101,51 +106,55 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
                     size.hole_diameter?.toString(),
                     (element.system_standard as ISystemStandardModel)?.name,
                     (element.standard as IStandardModel)?.name,
-                    element.amount?.toString()
+                    element.amount?.toString(),
                 ],
                 action: {
                     edit: {
                         isAlive: true,
-                        func: this.editWarehouse
+                        func: this.editWarehouse,
                     },
                     delete: {
-                        isAlive: true,
-                        func: this.deleteWarehouse
-                    }
-                }
-            })
-        })
+                        isAlive: this.props.userLoginContext.current.isLoggedIn() && this.props.userLoginContext.state.user.role === UserRole.ADMIN,
+                        func: this.deleteWarehouse,
+                    },
+                },
+            });
+        });
 
-        return tableCells
+        return tableCells;
     }
 
     editWarehouse(id: string) {
-
+        this.props.appUrlContext.redirectTo(
+            FrameworkUtils.generatePath(RouteConstant.WAREHOUSE_ITEM_DETAIL, {
+                id: id,
+            })
+        );
     }
 
-    deleteWarehouse(id: string) {
-
-    }
+    deleteWarehouse(id: string) {}
 
     render() {
-        return <FrameworkComponents.BasePage {...{
-        title: this.props.languageContext.current.getMessageString(MessageId.WAREHOUSE)
-        }}>
-            <FrameworkComponents.FormGroup>
-                <FrameworkComponents.Button type={ButtonTypeConstant.FLAT} onClick={() => {
-                    this.props.appUrlContext.redirectTo(RouteConstant.WAREHOUSE_IMPORT)
-                }}>{this.props.languageContext.current.getMessageString(MessageId.IMPORT_WAREHOUSE)}</FrameworkComponents.Button>
-            </FrameworkComponents.FormGroup>
-            <FrameworkComponents.Table 
-                header={this.tableHeader()}
-                content={this.tableContent()}
-                />
-        </FrameworkComponents.BasePage>
+        return (
+            <FrameworkComponents.BasePage
+                {...{
+                    title: this.props.languageContext.current.getMessageString(MessageId.WAREHOUSE),
+                }}
+            >
+                <FrameworkComponents.FormGroup>
+                    <FrameworkComponents.Button
+                        type={ButtonTypeConstant.FLAT}
+                        onClick={() => {
+                            this.props.appUrlContext.redirectTo(RouteConstant.WAREHOUSE_IMPORT);
+                        }}
+                    >
+                        {this.props.languageContext.current.getMessageString(MessageId.IMPORT_WAREHOUSE)}
+                    </FrameworkComponents.Button>
+                </FrameworkComponents.FormGroup>
+                <FrameworkComponents.Table header={this.tableHeader()} content={this.tableContent()} />
+            </FrameworkComponents.BasePage>
+        );
     }
 }
 
-export default WithFramework.withLanguage(
-    WithFramework.withAppDialog(
-        WithFramework.withAppUrl(WarehousePage)
-    )
-)
+export default WithFramework.withLanguage(WithFramework.withAppDialog(WithFramework.withAppUrl(WithFramework.withUserLogin(WarehousePage))));

@@ -1,5 +1,7 @@
 import CartApiService from "app/api/CartApiService"
+import CartItemApiService from "app/api/CartItemApiService"
 import CustomerApiService from "app/api/CustomerApiService"
+import WarehouseApiService from "app/api/WarehouseApiService"
 import ICartContext from "app/context/cart/ICartContext"
 import WithCart from "app/context/cart/WithCart"
 import ICartItemModel from "app/documents/ICartItemModel"
@@ -10,9 +12,11 @@ import IProductTypeModel from "app/documents/IProductTypeModel"
 import ISizeModel from "app/documents/ISizeModel"
 import IStandardModel from "app/documents/IStandardModel"
 import ISystemStandardModel from "app/documents/ISystemStandardModel"
+import IWarehouseModel from "app/documents/IWarehouseModel"
 import AppRenderUtils from "app/utils/AppRenderUtils"
 import FrameworkComponents from "framework/components/FrameworkComponents"
-import { CartStatus } from "framework/constants/AppEnumConstant"
+import IFormInputElement from "framework/components/IFormInputElement"
+import { CartItemSource, CartItemStatus, CartStatus } from "framework/constants/AppEnumConstant"
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant"
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
 import MessageId from "framework/constants/MessageId"
@@ -46,12 +50,18 @@ interface IParams {
 class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
     private cartApiService: CartApiService
     private customerApiService: CustomerApiService
+    private cartStatusRef: React.RefObject<any>;
+    private cartItemApiService: CartItemApiService;
+    private warehouseApiService: WarehouseApiService;
 
     constructor(props: CartDetailProps) {
         super(props)
 
         this.cartApiService = new CartApiService()
         this.customerApiService = new CustomerApiService()
+        this.cartItemApiService = new CartItemApiService();
+        this.warehouseApiService = new WarehouseApiService();
+        this.cartStatusRef = React.createRef<IFormInputElement>()
 
         this.state = {
             cartModel: {} as ICartModel,
@@ -157,7 +167,7 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                     ],
                     action: {
                         edit: {
-                            isAlive: false,
+                            isAlive: true,
                             func: this.redirectEditSize
                         },
                         delete: {
@@ -220,6 +230,39 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
     }
 
     onUpdateCart() {
+        if (this.cartStatusRef.current.getValue() === CartItemStatus.DONE) {
+            let isCannotUpdate = false;
+
+            (this.state.cartModel.items as ICartItemModel[]).forEach(element => {
+                if (element.source === CartItemSource.WAREHOUSE) {
+                    if (element.delivered > (element.warehouse as IWarehouseModel).amount && element.status !== CartItemStatus.DONE) {
+                        isCannotUpdate = true;
+                    }
+                }
+            })
+
+            if (!isCannotUpdate) {
+                (this.state.cartModel.items as ICartItemModel[]).forEach(element => {
+                    if (element.status !== CartItemStatus.DONE) {
+                        this.cartItemApiService.update(element._id, {
+                            status: CartItemStatus.DONE,
+                        } as ICartItemModel)
+    
+                        if (element.source === CartItemSource.WAREHOUSE) {
+                            this.warehouseApiService.update((element.warehouse as IWarehouseModel)._id, {
+                                amount: ((element.warehouse as IWarehouseModel).amount - element.delivered)
+                            } as IWarehouseModel)
+                        }
+                    }
+                })
+            } else {
+                this.props.appDialogContext.addDialog({
+                    title: this.props.languageContext.current.getMessageString(MessageId.NOT_ENOUGH),
+                    content: this.props.languageContext.current.getMessageString(MessageId.NOT_ENOUGH_CONTENT),
+                });
+            }
+        }
+
         this.cartApiService.update(this.state.cartModel._id, this.state.cartModel)
             .then(response => {
                 if (response.status === HttpRequestStatusCode.OK) {
@@ -308,7 +351,8 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                     placeHolder={this.props.languageContext.current.getMessageString(MessageId.CART_STATUS)}
                     options={AppRenderUtils.renderCartStatusSelectBox(this.props.languageContext)}
                     selectedId={this.state.cartModel.status}
-                    onChanged={this.cartStatusOnChange} />
+                    onChanged={this.cartStatusOnChange}
+                    ref={this.cartStatusRef} />
             </FrameworkComponents.FormGroup>
             <FrameworkComponents.FormGroup>
                 <FrameworkComponents.Button
