@@ -39,6 +39,10 @@ class CartItemRepository extends BaseRepository {
                 path: "size",
                 select: "-__v",
             })
+            .populate({
+                path: "warehouse",
+                select: "-__v",
+            })
             .select("-__v");
     }
 }

@@ -202,11 +202,11 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
                     element.discount_percent?.toString(),
                     element.total_price?.toLocaleString(),
                     AppUtils.sourceTitle(this.props.languageContext, element.source),
-                    element.delivered.toString()
+                    element.delivered?.toString()
                 ],
                 action: {
                     edit: {
-                        isAlive: false,
+                        isAlive: true,
                         func: this.redirectEditSize
                     },
                     delete: {

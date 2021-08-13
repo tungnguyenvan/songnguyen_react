@@ -43,8 +43,9 @@ class InputText extends React.Component<IInputTextProps, IInputTextState> implem
 		}
 	}
 
-	componentDidUpdate() {
-		if (this.props.value) {
+	componentDidUpdate(prevProps: IInputTextProps) {
+		if (this.props.value !== prevProps.value) {
+			this.setValue(this.props.value)
 			this.inputTextController.onInputFocus()
 			this.inputTextController.onInputBlur()
 		}

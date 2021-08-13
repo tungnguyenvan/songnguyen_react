@@ -23,7 +23,7 @@ import AppRenderUtils from "app/utils/AppRenderUtils"
 import FrameworkComponents from "framework/components/FrameworkComponents"
 import IFormInputElement from "framework/components/IFormInputElement"
 import AppConstant from "framework/constants/AppConstant"
-import { DiscountType, FormType, GasketPTCShape } from "framework/constants/AppEnumConstant"
+import { CartItemStatus, DiscountType, FormType, GasketPTCShape } from "framework/constants/AppEnumConstant"
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant"
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
 import MessageId from "framework/constants/MessageId"
@@ -291,8 +291,7 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
     }
 
     validateInForm() {
-        const discountType = this.makeOrderForm.discountType.current.getValue() as DiscountType
-        console.log(discountType, this.makeOrderForm.percent.current.getValue())
+        const discountType = this.makeOrderForm.discountType.current.getValue() as DiscountType;
         if (discountType === DiscountType.DISCOUNT || discountType === DiscountType.INCREASE) {
             if (FrameworkUtils.isBlank(this.makeOrderForm.percent.current.getValue())) {
                 this.makeOrderForm.percent.current.setErrorMessage(this.props.languageContext.current.getMessageString(MessageId.VALIDATE_NEED_INPUT_PERCENT))
@@ -354,6 +353,8 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                 total_price: parseFloat(this.makeOrderForm.totalAmount.current.getValue()),
                 discount_type: this.makeOrderForm.discountType.current.getValue(),
                 discount_percent: parseFloat(this.makeOrderForm.percent.current.getValue()),
+                delivered: 0,
+                status: CartItemStatus.DISCUSS
             } as ICartItemModel
         })
     }
@@ -389,6 +390,8 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                 total_price: parseFloat(this.makeOrderForm.totalAmount.current.getValue()),
                 discount_type: this.makeOrderForm.discountType.current.getValue(),
                 discount_percent: parseFloat(this.makeOrderForm.percent.current.getValue()),
+                delivered: 0,
+                status: CartItemStatus.DISCUSS
             } as ICartItemModel
         })
     }
@@ -476,6 +479,8 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                 total_price: parseFloat(this.makeOrderForm.totalAmount.current.getValue()),
                 discount_type: this.makeOrderForm.discountType.current.getValue(),
                 discount_percent: parseFloat(this.makeOrderForm.percent.current.getValue()),
+                delivered: 0,
+                status: CartItemStatus.DISCUSS
             } as ICartItemModel
         })
     }

@@ -21,6 +21,7 @@ interface ICartItemDocument extends IBaseDocument {
     status: CartItemStatus;
     delivered: number;
     source: CartItemSource;
+    warehouse: Mongoose.Types.ObjectId;
 }
 
 export default ICartItemDocument;

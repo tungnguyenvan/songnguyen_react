@@ -84,6 +84,11 @@ const document = {
         default: CartItemSource.DIY,
     },
 
+    warehouse: {
+        type: Mongoose.Types.ObjectId,
+        ref: DBNameConstant.WAREHOUSE,
+    },
+
     createdAt: {
         require: true,
         type: Number,

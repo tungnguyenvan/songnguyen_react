@@ -6,6 +6,7 @@ import ISizeModel from "./ISizeModel";
 import IStandardModel from "./IStandardModel";
 import ISystemStandardModel from "./ISystemStandardModel";
 import IThicknessModel from "./IThicknessModel";
+import IWarehouseModel from "./IWarehouseModel";
 
 interface ICartItemModel extends IBaseModel {
     product_name: IProductNameModel | string;
@@ -22,6 +23,7 @@ interface ICartItemModel extends IBaseModel {
     status: CartItemStatus;
     delivered: number;
     source: CartItemSource;
+    warehouse: IWarehouseModel | string;
 }
 
 export default ICartItemModel;
