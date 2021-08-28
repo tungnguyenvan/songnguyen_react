@@ -75,7 +75,7 @@ class SettingPageSupportThickness implements ISettingPageSupport<IThicknessModel
                 content: [
                     element.name,
                     element.price.toString(),
-                    (element.product_name as IProductNameModel).name,
+                    (element.product_name as IProductNameModel)?.name,
                     FrameworkUtils.userName(element.createdBy),
                     FrameworkUtils.generateDate(element.createdAt),
                 ],

@@ -5,11 +5,13 @@ import Style from "framework/resources/css/BasePage.module.scss";
 import { ReactComponent as ArrowLeftShort} from "framework/resources/image/arrow-left-short.svg";
 import WithFramework from "framework/constants/WithFramework";
 import IAppUrlContext from "framework/contexts/url/IAppUrlContext";
+import IUserLoginContext from "framework/contexts/user/IUserLoginContext";
 
 interface IBasePageProps {
 	title?: string;
 	appUrlContext: IAppUrlContext,
-	disableBackButton?: boolean
+	disableBackButton?: boolean,
+	userLoginContext: IUserLoginContext;
 }
 
 class BasePage extends React.Component<IBasePageProps> {
@@ -28,4 +30,4 @@ class BasePage extends React.Component<IBasePageProps> {
 	}
 }
 
-export default WithFramework.withAppUrl(BasePage)
+export default WithFramework.withAppUrl( WithFramework.withUserLogin(BasePage))

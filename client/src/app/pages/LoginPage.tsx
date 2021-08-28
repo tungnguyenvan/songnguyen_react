@@ -14,7 +14,6 @@ import UserLoginContext from "framework/contexts/user/UserLoginContext";
 import InputTextTypeConstant from "framework/constants/InputTextTypeConstant";
 import AppUrlContext from "framework/contexts/url/AppUrlContext";
 import IAppUrlContext from "framework/contexts/url/IAppUrlContext";
-import RouteConstant from "framework/constants/RouteConstant";
 import FrameworkUtils from "../../framework/utils/FrameworkUtils";
 
 class LoginPage extends React.Component {
@@ -64,7 +63,9 @@ class LoginPage extends React.Component {
 		return (
 			<LanguageContext.Consumer>
 				{(context) => (
-					<FrameworkComponents.BasePage>
+					<FrameworkComponents.BasePage {...{
+						disableBackButton: true
+					}}>
 						<UserLoginContext.Consumer>
 							{(context) => {
 								this.userLoginContext = context;
@@ -92,12 +93,12 @@ class LoginPage extends React.Component {
 								/>
 							</FrameworkComponents.FormGroup>
 							<FrameworkComponents.FormGroup>
-								<FrameworkComponents.Button
+								{/* <FrameworkComponents.Button
 									type={ButtonTypeConstant.FLAT}
 									onClick={() => this.appUrlContext.redirectTo(RouteConstant.REGISTRATION)}
 								>
 									{context.current.getMessageString(MessageId.REGISTRATION_REDIRECT)}
-								</FrameworkComponents.Button>
+								</FrameworkComponents.Button> */}
 								<FrameworkComponents.Button
 									type={ButtonTypeConstant.PRIMARY}
 									onClick={this.onLogin}

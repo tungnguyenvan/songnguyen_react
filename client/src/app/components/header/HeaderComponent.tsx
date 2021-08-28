@@ -67,9 +67,9 @@ class HeaderComponent extends React.Component<IHeaderComponentProps, IHeaderComp
                     </div>
                     <div className={Style.app__header__flex__center}></div>
                     <div className={Style.app__header__flex__right}>
-                        <FrameworkComponents.Button type={ButtonTypeConstant.FLAT} onClick={this.onLogout}>
+                        { this.props.userLoginContext.current.isLoggedIn() && <FrameworkComponents.Button type={ButtonTypeConstant.FLAT} onClick={this.onLogout}>
                             <LogOutIcon style={{ marginRight: 8 }} /> {this.props.languageContext.current.getMessageString(MessageId.LOGOUT)}
-                        </FrameworkComponents.Button>
+                        </FrameworkComponents.Button>}
                         <LanguageSelectComponent />
                         {/* <StoreSelectComponent /> */}
                     </div>

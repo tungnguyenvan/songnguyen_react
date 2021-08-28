@@ -120,7 +120,7 @@ class NavigationProvider
 											title={context.current.getMessageString(MessageId.SETTING)}
 											redirectTo={RouteConstant.SETTING}
 										/>
-										<NavigationItemComponent
+										{/* <NavigationItemComponent
 											icon={<Award />}
 											title="Example"
 											redirectTo={RouteConstant.EXAMPLE}
@@ -129,7 +129,7 @@ class NavigationProvider
 											icon={<Award />}
 											title="Example"
 											redirectTo={RouteConstant.REGISTRATION}
-										/>
+										/> */}
 									</NavigationComponent>
 								)
 							}

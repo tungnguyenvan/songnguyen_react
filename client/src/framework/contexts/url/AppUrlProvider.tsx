@@ -35,9 +35,7 @@ class AppUrlProvider
 		const history = this.state.history
 
 		if (this.state.urlRedirectTo !== RouteConstant.LOGIN) {
-			if (this.state.urlRedirectTo === "") {
-				history.push("/")
-			} else {
+			if (this.state.urlRedirectTo !== "") {
 				history.push(this.state.urlRedirectTo)
 			}
 		}
