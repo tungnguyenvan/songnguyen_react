@@ -1,0 +1,18 @@
+@import "framework/resources/css/base.scss";
+
+.total__price__container {
+    text-align: left;
+    display: flex;
+    font-size: 24pt;
+    justify-content: flex-end;
+    padding: 16px;
+    color: #858796;
+
+    & td {
+        padding-left: 24px;
+    }
+}
+
+.text__right {
+    text-align: right;
+}

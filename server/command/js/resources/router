@@ -1,0 +1,30 @@
+import BaseRouter from "@app/framework/core/BaseRouter";
+import __Controller from "@app/app/controllers/__Controller";
+import Logging from "@app/framework/utils/Logging";
+import AppMiddleware from "@app/framework/system/AppMiddleware";
+import BaseValidation from "@app/framework/core/BaseValidation";
+import __ValidateDocument from "@app/app/validations/__ValidateDocument";
+import RequestFieldConstant from "@app/framework/constants/RequestFieldConstant";
+
+const NAME_SPACE = "__Router";
+
+class __Router extends BaseRouter {
+	constructor() {
+		Logging.debug(NAME_SPACE, "__Router#constructor START");
+		super(new __Controller());
+		Logging.debug(NAME_SPACE, "__Router#constructor END");
+	}
+
+	initializeMiddleware() {
+		super.initializeMiddleware();
+
+		this.baseRouterMiddleware.save.push(
+			...[
+				AppMiddleware.auth,
+				new BaseValidation(__ValidateDocument.save, RequestFieldConstant.BODY).validate,
+			]
+		);
+	}
+}
+
+export default __Router;

@@ -1,0 +1,82 @@
+@import "framework/resources/css/base.scss";
+
+.language__select__component__container {
+	$background-color: #eeeeee;
+	$background-color-hover: #e2e8e6;
+
+	height: 64px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0px 8px;
+	padding: 0px 8px;
+	border: $border-default;
+	border-radius: $border-radius;
+	background-color: $background-color;
+	transition: $transition-default;
+	border-width: 2px;
+	cursor: pointer;
+
+	&:hover {
+		background-color: $background-color-hover;
+	}
+
+	& .language__select__flag {
+		font-size: 18px;
+		margin: 0px 8px;
+	}
+
+	& .language__select__name {
+		margin: 0px 8px;
+	}
+
+	&.active {
+		border-color: $primary-color;
+
+		& .language__select__component__select__box {
+			display: flex;
+		}
+	}
+
+	& .language__select__component__select__box {
+		background-color: $bg-color;
+		position: absolute;
+		top: calc(#{$header-bar-height} + 8px);
+		z-index: 2;
+		display: none;
+		padding: 8px 16px;
+		flex-direction: column;
+		overflow-y: auto;
+		margin-right: 8px;
+		border-radius: $border-radius;
+		border: $border-default;
+		width: 172px;
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+
+		& .language__select__item__component {
+			min-height: 64px;
+			padding: 0px 16px;
+			display: flex;
+			align-items: center;
+			border-radius: $border-radius;
+
+			&:hover {
+				background-color: $background-color-hover;
+			}
+		}
+	}
+}
+
+@media screen and (max-width: $screen-medium) {
+	.language__select__component__container {
+		& .language__select__name {
+			display: none;
+		}
+
+		& .language__select__component__select__box {
+			& .language__select__name {
+				display: flex;
+			}
+		}
+	}
+}
