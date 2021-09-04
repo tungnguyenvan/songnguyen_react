@@ -9,6 +9,13 @@
 	background-color: $bg-color;
 	border-radius: $border-radius;
 	margin-bottom: 8px;
+
+	&.small {
+		width: 18%;
+		margin: unset;
+		width: unset;
+		padding: 8px 0px;
+	}
 }
 
 @media screen and (max-width: 1007px) {
@@ -17,5 +24,12 @@
 		border: unset;
 		padding: unset;
 		margin-bottom: 8px;
+
+		&.small {
+			width: unset;
+			margin: unset;
+			width: unset;
+			padding: unset;
+		}
 	}
 }

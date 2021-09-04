@@ -1,4 +1,5 @@
 import React from "react";
+import classNames from "classnames";
 
 // resources
 import Style from "framework/resources/css/BaseForm.module.scss";
@@ -6,6 +7,7 @@ import Style from "framework/resources/css/BaseForm.module.scss";
 interface IBaseFormProps {
 	children?: any;
 	title?: String;
+	small?: boolean
 }
 
 interface IBaseFormState {}
@@ -13,7 +15,7 @@ interface IBaseFormState {}
 class BaseForm extends React.Component<IBaseFormProps, IBaseFormState> {
 	render() {
 		return (
-			<form className={Style.base__form}>
+			<form className={classNames(Style.base__form, {[Style.small]: this.props.small})}>
 				<h2>{this.props.title}</h2>
 				{this.props.children}
 			</form>

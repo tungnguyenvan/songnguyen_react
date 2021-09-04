@@ -168,5 +168,6 @@
 	"WAREHOUSE_ITEM_DETAIL": "Chi tiết sản phẩm kho",
 	"NOT_ENOUGH": "Không đủ",
 	"NOT_ENOUGH_CONTENT": "Sản phẩm không đủ",
-	"CART_ITEM_DETAIL": "Chi tiết sản phẩm trong giỏ hàng"
+	"CART_ITEM_DETAIL": "Chi tiết sản phẩm trong giỏ hàng",
+	"CHOOSE_SETTING_SESSION": "Chọn thành phần"
 }

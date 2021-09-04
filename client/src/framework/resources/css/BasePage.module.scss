@@ -10,6 +10,11 @@
 	padding-top: 36px;
 	padding-bottom: 72px;
 	background-color: $bg-color;
+	
+	& .wrap {
+		display: flex;
+		padding: unset;
+	}
 
 	& .base__page__header {
 		display: flex;
@@ -37,6 +42,16 @@
 			text-align: start;
 			margin-top: 0px;
 			margin-bottom: 0px;
+		}
+	}
+}
+
+@media screen and (max-width: 1007px) {
+	.base__page {
+
+		& .wrap {
+			display: unset;
+			padding: unset;
 		}
 	}
 }

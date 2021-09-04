@@ -65,6 +65,12 @@ Mongoose.connect(AppConfig.DB_URL, { useNewUrlParser: true }, (error: any): void
     }
 });
 
+application.use("/info", (request: Express.Request, response: Express.Response) => {
+    response.status(200).json({
+        message: "This is application page",
+    });
+});
+
 // use body parser
 application.use(BodyParser.urlencoded({ extended: true }));
 application.use(BodyParser.json());

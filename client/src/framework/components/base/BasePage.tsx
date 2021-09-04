@@ -1,4 +1,5 @@
 import React from "react";
+import Classnames from "classnames"
 
 // resources
 import Style from "framework/resources/css/BasePage.module.scss";
@@ -12,6 +13,7 @@ interface IBasePageProps {
 	appUrlContext: IAppUrlContext,
 	disableBackButton?: boolean,
 	userLoginContext: IUserLoginContext;
+	wrap?: boolean
 }
 
 class BasePage extends React.Component<IBasePageProps> {
@@ -24,7 +26,9 @@ class BasePage extends React.Component<IBasePageProps> {
 					}} />}
 					<h2 className={Style.page__title}>{this.props.title}</h2>
 				</div>
-				{this.props.children}
+				<div className={Classnames({[Style.wrap]: this.props.wrap})}>
+					{this.props.children}
+				</div>
 			</div>
 		);
 	}

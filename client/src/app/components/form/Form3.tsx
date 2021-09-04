@@ -12,7 +12,8 @@ import { FormType } from "framework/constants/AppEnumConstant"
 
 interface Form3Props {
     languageContext: ILanguageContext
-    title: string
+    title: string,
+    small?: boolean
 }
 
 interface IForm3FormRef {
@@ -73,7 +74,7 @@ class Form3 extends React.Component<Form3Props> implements IFormInputElement {
         FrameworkUtils.formClear(this.formRef)
     }
     render() {
-        return <FrameworkComponents.BaseForm title={this.props.title}>
+        return <FrameworkComponents.BaseForm title={this.props.title} small={this.props.small}>
             <FrameworkComponents.FormGroup>
                 <FrameworkComponents.InputText 
                     placeHolder={this.props.languageContext.current.getMessageString(MessageId.WIDTH)}

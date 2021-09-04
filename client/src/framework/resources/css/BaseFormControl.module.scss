@@ -20,6 +20,7 @@
 	transition: $transition-default;
 	padding-right: $padding-default;
 	background-color: $background-color;
+	min-width: 128px;
 
 	// actions
 	&:hover {
@@ -40,6 +41,7 @@
 	& .label {
 		font-size: 13px;
 		position: absolute;
+		overflow: hidden;
 		color: $placeholder-color;
 		transition: $transition-default;
 	}

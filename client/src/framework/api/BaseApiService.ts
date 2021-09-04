@@ -3,6 +3,7 @@ import RequestPathConstant from "framework/constants/RequestPathConstant";
 import IBaseResponse from "framework/documents/response/IBaseResponse";
 import IBaseModel from "framework/documents/models/IBaseModel";
 import IUpdateDeleteResponseModel from "framework/documents/response/IUpdateDeleteResponseModel";
+import IUserModel from "framework/documents/models/IUserModel";
 
 class BaseApiService<T extends IBaseModel> {
     protected requestPathConst: RequestPathConstant;
@@ -31,6 +32,7 @@ class BaseApiService<T extends IBaseModel> {
     }
 
     update(id: string, body: T): Promise<IBaseResponse<T>> {
+        body.createdBy = undefined as unknown as IUserModel;
         return axios.put(this.requestPathConst + id, body);
     }
 

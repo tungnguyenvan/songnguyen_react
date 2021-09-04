@@ -12,8 +12,11 @@ import IStandardDocument from "../documents/IStandardDocument";
 import ISizeDocument from "../documents/ISizeDocument";
 import { FormType } from "../constants/EnumConstant";
 import fs from "fs";
+import Https from "https"
 
 const NAME_SPACE = "CartController";
+const ORDER_FILE_INTERNET_DIR = "https://firebasestorage.googleapis.com/v0/b/songnguyen.appspot.com/o/Song%20Nguyen%20Gasket%20-%20Ba%CC%81o%20gia%CC%81.xlsx?alt=media&token=fb2dd341-ae65-4f9f-8159-b6004d17d463";
+const ORDER_FILE_RESOURCE_DIR = __dirname + "/../../resource/Song Nguyen Gasket - Báo giá.xlsx";
 
 /**
  * Cart Controller
@@ -27,40 +30,66 @@ class CartController extends BaseController {
     }
 
     download(request: Express.Request, response: Express.Response): void {
+        this.repository.get(request).then((responseData) => {
+            const file = fs.createWriteStream(ORDER_FILE_RESOURCE_DIR);
+            Https.get(ORDER_FILE_INTERNET_DIR, (rs) => {
+                rs.pipe(file)
+                Logging.debug(NAME_SPACE, `${NAME_SPACE}#download#Https.get`, file)
+
+                file.on("finish", () => {
+                    this.execDownloadOrderFile(request, response, responseData);
+                    setTimeout(() => {
+                        fs.unlinkSync(ORDER_FILE_RESOURCE_DIR)
+                    }, 12000);
+                })
+                file.on("error", (error) => {
+                    fs.unlinkSync(ORDER_FILE_RESOURCE_DIR)
+                    this.appResponse.internalServerError(request, response);
+                    Logging.error(NAME_SPACE, `${NAME_SPACE}#download#response.pipe`, error)
+                })
+            })
+            .on("error", (error) => {
+                fs.unlinkSync(ORDER_FILE_RESOURCE_DIR)
+                this.appResponse.internalServerError(request, response);
+                Logging.error(NAME_SPACE, `${NAME_SPACE}#download#Https.get`, error)
+            })
+        });
+    }
+
+    execDownloadOrderFile(request: Express.Request, response: Express.Response, responseData: any) {
         const URL_PATH = "storage/";
         const fileName = `${Date.now()}.xlsx`;
-        this.repository.get(request).then((responseData) => {
-            const workbook = new ExcelJS.Workbook();
-            workbook.xlsx.readFile(__dirname + "/../../resource/Song Nguyen Gasket - Báo giá.xlsx").then(() => {
-                let workSheet = workbook.getWorksheet(1);
-                try {
-                    // write data for sheet 1
-                    this.writeCustomer((responseData as ICartDocument).customer as unknown as ICustomerDocument, workSheet);
-                    this.writeCartItems((responseData as ICartDocument).items as unknown as ICartItemDocument[], workSheet, true);
+        const workbook = new ExcelJS.Workbook();
 
-                    // write data for sheet 2
-                    workSheet = workbook.getWorksheet(2);
-                    this.writeCustomer((responseData as ICartDocument).customer as unknown as ICustomerDocument, workSheet);
-                    this.writeCartItems((responseData as ICartDocument).items as unknown as ICartItemDocument[], workSheet);
-                } catch (error) {
-                    Logging.error(NAME_SPACE, `${NAME_SPACE}#download`, error);
-                    this.appResponse.internalServerError(request, response);
-                }
+        workbook.xlsx.readFile(ORDER_FILE_RESOURCE_DIR).then(() => {
+            let workSheet = workbook.getWorksheet(1);
+            try {
+                // write data for sheet 1
+                this.writeCustomer((responseData as ICartDocument).customer as unknown as ICustomerDocument, workSheet);
+                this.writeCartItems((responseData as ICartDocument).items as unknown as ICartItemDocument[], workSheet, true);
 
-                workbook.xlsx
-                    .writeFile(URL_PATH + fileName)
-                    .then((status) => {
-                        setTimeout(() => {
-                            fs.unlinkSync(URL_PATH + fileName);
-                        }, 1200000);
-                        this.appResponse.ok(request, response, {
-                            url: request.protocol + "://" + request.get("host") + "/resources/" + fileName,
-                        });
-                    })
-                    .catch((error) => {
-                        Logging.error(NAME_SPACE, `${NAME_SPACE}#download`, error);
+                // write data for sheet 2
+                workSheet = workbook.getWorksheet(2);
+                this.writeCustomer((responseData as ICartDocument).customer as unknown as ICustomerDocument, workSheet);
+                this.writeCartItems((responseData as ICartDocument).items as unknown as ICartItemDocument[], workSheet);
+            } catch (error) {
+                Logging.error(NAME_SPACE, `${NAME_SPACE}#download`, error);
+                this.appResponse.internalServerError(request, response);
+            }
+
+            workbook.xlsx
+                .writeFile(URL_PATH + fileName)
+                .then((status) => {
+                    setTimeout(() => {
+                        fs.unlinkSync(URL_PATH + fileName);
+                    }, 1200000);
+                    this.appResponse.ok(request, response, {
+                        url: request.protocol + "://" + request.get("host") + "/resources/" + fileName,
                     });
-            });
+                })
+                .catch((error) => {
+                    Logging.error(NAME_SPACE, `${NAME_SPACE}#download`, error);
+                });
         });
     }
 

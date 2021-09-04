@@ -27,7 +27,8 @@ interface Form2Props {
     isCalculatorModel: boolean
     size?: ISizeModel
     standard?: IStandardModel
-    title?: string
+    title?: string,
+    small?: boolean
 }
 
 interface Form2State {
@@ -287,7 +288,7 @@ class Form2 extends React.Component<Form2Props, Form2State> implements IFormInpu
 
     render() {
         return <div>
-            <FrameworkComponents.BaseForm title={this.props.title}>
+            <FrameworkComponents.BaseForm title={this.props.title} small={this.props.small}>
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.SelectBox
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.CHOOSE_SHAPE)}
@@ -298,7 +299,9 @@ class Form2 extends React.Component<Form2Props, Form2State> implements IFormInpu
                         errorMessage={this.props.languageContext.current.getMessageString(MessageId.VALIDATE_REQUIRE)} />
                 </FrameworkComponents.FormGroup>
                 <FrameworkComponents.FormGroup>
-                    {this.state.shapeChoosed.resource && <img src={this.state.shapeChoosed.resource} alt='Shape' />}
+                    {this.state.shapeChoosed.resource && <img src={this.state.shapeChoosed.resource} alt='Shape' style={{
+                        width: 128,
+                    }} />}
                 </FrameworkComponents.FormGroup>
             </FrameworkComponents.BaseForm>
             <FrameworkComponents.BaseForm>

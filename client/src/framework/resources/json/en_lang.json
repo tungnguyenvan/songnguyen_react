@@ -168,5 +168,6 @@
 	"WAREHOUSE_ITEM_DETAIL": "Warehouse item detail",
 	"NOT_ENOUGH": "Not enough",
 	"NOT_ENOUGH_CONTENT": "The products not enough",
-	"CART_ITEM_DETAIL": "Cart item detail"
+	"CART_ITEM_DETAIL": "Cart item detail",
+	"CHOOSE_SETTING_SESSION": "Choose setting session"
 }

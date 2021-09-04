@@ -32,6 +32,7 @@ import WithFramework from "framework/constants/WithFramework"
 import IAppDialogContext from "framework/contexts/dialog/IAppDialogContext"
 import ILanguageContext from "framework/contexts/lang/ILanguageContext"
 import IAppUrlContext from "framework/contexts/url/IAppUrlContext"
+import IUserModel from "framework/documents/models/IUserModel"
 import Rule from "framework/documents/models/Rule"
 import FrameworkUtils from "framework/utils/FrameworkUtils"
 import React from "react"
@@ -325,7 +326,7 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
 
         dt = Math.round((dtp - coreDiscount) * 100) / 100
         let dtPrice = (this.makeOrderForm.priceSquareMeter.current.getValue() as number) * dt
-        let tempValue = dtPrice + sizeModel.work_price + sizeModel.material_price
+        let tempValue = parseFloat(dtPrice.toString()) + parseFloat(sizeModel.work_price.toString()) + parseFloat(sizeModel.material_price.toString())
         tempValue = Math.round(tempValue / 1000) * 1000
         let totalAmount = tempValue * (this.makeOrderForm.amount.current.getValue() as number)
         this.setState({
@@ -452,7 +453,7 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
         const newSize = this.makeOrderForm.form.current.getValue()
         this.sizeModelCalculated = newSize
 
-        let tempValue = parseFloat((dtPrice + newSize.work_price + newSize.material_price))
+        let tempValue = parseFloat((dtPrice + parseFloat(newSize.work_price) + parseFloat(newSize.material_price)).toString())
         tempValue = tempValue / 1000
         tempValue = parseFloat(tempValue.toFixed(1))
         tempValue *= 1000
@@ -519,6 +520,7 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                     })
                     items.push((response.data.data as ICartItemModel)._id);
                     cartModel.items = items
+                    cartModel.createdBy = undefined as unknown as IUserModel;
                     this.cartApiService.update(cartModel._id, cartModel)
                         .then(response => {
                             if (response.status === HttpRequestStatusCode.OK) {
@@ -557,10 +559,12 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
 
     render() {
         return <FrameworkComponents.BasePage {...{
-            title: this.props.languageContext.current.getMessageString(MessageId.MAKE_ORDER)
+            title: this.props.languageContext.current.getMessageString(MessageId.MAKE_ORDER),
+            wrap: true
         }}>
             <FrameworkComponents.BaseForm
-                title={this.props.languageContext.current.getMessageString(MessageId.PRODUCT_OPTION)}>
+                title={this.props.languageContext.current.getMessageString(MessageId.PRODUCT_OPTION)}
+                small={true}>
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.SelectBox
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.PRODUCT_TYPE)}
@@ -633,22 +637,25 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                 isCalculatorModel={true}
                 size={this.state.sizeSelected}
                 standard={this.state.standardSelected}
-                ref={this.makeOrderForm.form} />}
+                ref={this.makeOrderForm.form}
+                small={true} />}
 
             {(this.state.formType === FormType.FORM_2) &&
             <Form2
                 title={this.props.languageContext.current.getMessageString(MessageId.PRODUCT_INFORMATION)}
                 ref={this.makeOrderForm.form}
                 languageContext={this.props.languageContext}
-                isCalculatorModel={true} />}
+                isCalculatorModel={true}
+                small={true} />}
             
             {(this.state.formType === FormType.FORM_3) &&
             <Form3
                 languageContext={this.props.languageContext}
                 ref={this.makeOrderForm.form}
-                title={this.props.languageContext.current.getMessageString(MessageId.PRODUCT_INFORMATION)} />}
+                title={this.props.languageContext.current.getMessageString(MessageId.PRODUCT_INFORMATION)}
+                small={true} />}
             
-            <FrameworkComponents.BaseForm title={this.props.languageContext.current.getMessageString(MessageId.ORDER_INFORMATION)}>
+            <FrameworkComponents.BaseForm title={this.props.languageContext.current.getMessageString(MessageId.ORDER_INFORMATION)} small={true}>
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.InputText
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.AMOUNT)}

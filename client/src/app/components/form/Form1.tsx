@@ -16,7 +16,8 @@ interface Form1Props {
     isCalculatorModel: boolean
     size?: ISizeModel
     standard?: IStandardModel
-    title?: string
+    title?: string,
+    small?: boolean
 }
 
 interface IForm1ref {
@@ -107,7 +108,8 @@ class Form1 extends React.Component<Form1Props> implements IFormInputElement {
 
     render() {
         return <FrameworkComponents.BaseForm
-            title={this.props.title}>
+            title={this.props.title}
+            small={this.props.small}>
             <FrameworkComponents.FormGroup>
                 <FrameworkComponents.InputText
                     ref={this.formRef.inputInnerDiameter}
