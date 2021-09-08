@@ -17,7 +17,7 @@ import IProductTypeDocument from "../documents/IProductTypeDocument";
 import ProductTypeRepository from "../repositories/ProductTypeRepository";
 import ISizeDocument from "../documents/ISizeDocument";
 import SizeRepository from "../repositories/SizeRepository";
-import Https from "https"
+import Https from "https";
 
 const NAME_SPACE = "WarehouseController";
 const WAREHOUSE_FILE_INTERNET_DIR = "https://firebasestorage.googleapis.com/v0/b/songnguyen.appspot.com/o/warehouse.xlsx?alt=media&token=e0d4c97a-688e-4f05-8467-37727e981b7a";
@@ -155,7 +155,7 @@ class WarehouseController extends BaseController {
             const workbook = new ExcelJS.Workbook();
             const file = fs.createWriteStream(WAREHOUSE_FILE_RESOURCE_DIR);
             Https.get(WAREHOUSE_FILE_INTERNET_DIR, (res) => {
-                res.pipe(file)
+                res.pipe(file);
 
                 file.on("finish", () => {
                     workbook.xlsx.readFile(WAREHOUSE_FILE_RESOURCE_DIR).then(() => {
@@ -172,7 +172,7 @@ class WarehouseController extends BaseController {
                             .writeFile(URL_PATH + fileName)
                             .then((status) => {
                                 setTimeout(() => {
-                                    fs.unlinkSync(URL_PATH + fileName);
+                                    // fs.unlinkSync(URL_PATH + fileName);
                                 }, 120000);
                                 this.appResponse.ok(request, response, {
                                     url: request.protocol + "://" + request.get("host") + "/resources/" + fileName,
@@ -183,21 +183,19 @@ class WarehouseController extends BaseController {
                             });
                     });
                     setTimeout(() => {
-                        fs.unlinkSync(WAREHOUSE_FILE_RESOURCE_DIR)
+                        // fs.unlinkSync(WAREHOUSE_FILE_RESOURCE_DIR)
                     }, 12000);
-                })
+                });
                 file.on("error", (error) => {
-                    fs.unlinkSync(WAREHOUSE_FILE_RESOURCE_DIR)
+                    // fs.unlinkSync(WAREHOUSE_FILE_RESOURCE_DIR)
                     this.appResponse.internalServerError(request, response);
-                    Logging.error(NAME_SPACE, `${NAME_SPACE}#download#response.pipe`, error)
-                })
-            })
-            .on("error", (error) => {
-                fs.unlinkSync(WAREHOUSE_FILE_RESOURCE_DIR)
+                    Logging.error(NAME_SPACE, `${NAME_SPACE}#download#response.pipe`, error);
+                });
+            }).on("error", (error) => {
+                // fs.unlinkSync(WAREHOUSE_FILE_RESOURCE_DIR)
                 this.appResponse.internalServerError(request, response);
-                Logging.error(NAME_SPACE, `${NAME_SPACE}#download#Https.get`, error)
-            })
-
+                Logging.error(NAME_SPACE, `${NAME_SPACE}#download#Https.get`, error);
+            });
         }
         Logging.debug(NAME_SPACE, `${NAME_SPACE}#executeExcelFile END`);
     }
