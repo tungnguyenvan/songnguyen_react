@@ -3,7 +3,6 @@ import SizeApiService from "app/api/SizeApiService"
 import Form1 from "app/components/form/Form1"
 import IProductTypeModel from "app/documents/IProductTypeModel"
 import ISizeModel from "app/documents/ISizeModel"
-import AppRenderUtils from "app/utils/AppRenderUtils"
 import FrameworkComponents from "framework/components/FrameworkComponents"
 import IFormInputElement from "framework/components/IFormInputElement"
 import { FormType } from "framework/constants/AppEnumConstant"
@@ -93,7 +92,13 @@ class SizeCreate extends React.Component<SizeCreateProps, SizeCreateState> {
         if (FrameworkUtils.validateFrom(this.sizeFormRef)) {
             const sizeModel: ISizeModel = this.sizeFormRef.form.current.getValue()
             sizeModel.name = this.sizeFormRef.inputName.current.getValue()
-            sizeModel.product_type = this.sizeFormRef.selectBoxProductType.current.getValue()
+            
+            this.state.productTypes.forEach(element => {
+                if (element.form_type === FormType.FORM_1 && !sizeModel.product_type) {
+                    sizeModel.product_type = element._id;
+                }
+            })
+            sizeModel.form_type = FormType.FORM_1;
             
             this.sizeApiService.save(sizeModel)
                 .then(response => {
@@ -124,7 +129,7 @@ class SizeCreate extends React.Component<SizeCreateProps, SizeCreateState> {
             title: this.props.languageContext.current.getMessageString(MessageId.SIZE_CREATE)
         }}>
             <FrameworkComponents.BaseForm>
-                <FrameworkComponents.FormGroup>
+                {/* <FrameworkComponents.FormGroup>
                     <FrameworkComponents.SelectBox
                         ref={this.sizeFormRef.selectBoxProductType}
                         required={true}
@@ -132,7 +137,7 @@ class SizeCreate extends React.Component<SizeCreateProps, SizeCreateState> {
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.PRODUCT_TYPE)}
                         options={AppRenderUtils.renderProductTypeSelectBox(this.state.productTypes)}
                         onChanged={this.onProductTypeChanged} />
-                </FrameworkComponents.FormGroup>
+                </FrameworkComponents.FormGroup> */}
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.InputText
                         ref={this.sizeFormRef.inputName}
@@ -141,10 +146,10 @@ class SizeCreate extends React.Component<SizeCreateProps, SizeCreateState> {
                 </FrameworkComponents.FormGroup>
             </FrameworkComponents.BaseForm>
 
-            {this.state.formType === FormType.FORM_1 && <Form1
+            <Form1
                 ref={this.sizeFormRef.form}
                 isCalculatorModel={false}
-                languageContext={this.props.languageContext} /> }
+                languageContext={this.props.languageContext} />
             
             <FrameworkComponents.BaseForm>
                 <FrameworkComponents.FormGroup>

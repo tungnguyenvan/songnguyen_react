@@ -429,6 +429,7 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                 break
             }
             case GasketPTCShape.FF_MANHOLE: {
+                dt = parseFloat(((sizeModel.ln * sizeModel.wn) * OUTER_EXTRAS).toFixed(2))
                 break
             }
         }
@@ -453,7 +454,7 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
         const newSize = this.makeOrderForm.form.current.getValue()
         this.sizeModelCalculated = newSize
 
-        let tempValue = parseFloat((dtPrice + parseFloat(newSize.work_price) + parseFloat(newSize.material_price)).toString())
+        let tempValue = parseFloat((dtPrice + parseFloat(newSize.work_price).toString()));
         tempValue = tempValue / 1000
         tempValue = parseFloat(tempValue.toFixed(1))
         tempValue *= 1000

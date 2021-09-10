@@ -54,6 +54,7 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
         this.onEdit = this.onEdit.bind(this)
         this.onCancel = this.onCancel.bind(this)
         this.deleteSize = this.deleteSize.bind(this)
+        this.onUpdateCart = this.onUpdateCart.bind(this)
         this.calTotalPrice = this.calTotalPrice.bind(this)
         this.resetComponent = this.resetComponent.bind(this)
         this.getCurrentCart = this.getCurrentCart.bind(this)
@@ -171,7 +172,42 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
     }
 
     deleteSize(id: string) {
+        const cartModel: ICartModel = this.state.cartSelected;
+        (cartModel.items as ICartItemModel[]).forEach((element, index) => {
+            if (id === element._id) {
+                cartModel.items.splice(index, 1)
+            }
+        })
 
+        this.setState({
+            cartSelected: cartModel
+        }, () => {
+            this.onUpdateCart()
+        })
+    }
+
+    onUpdateCart() {
+        this.cartApiService.update(this.state.cartSelected._id, this.state.cartSelected)
+            .then(response => {
+                if (response.status === HttpRequestStatusCode.OK) {
+                    this.props.appDialogContext.addDialog({
+                        title: this.props.languageContext.current.getMessageString(MessageId.UPDATE_SUCCESS),
+                        content: this.props.languageContext.current.getMessageString(MessageId.UPDATE_SUCCESS_DETAIL)
+                    })
+                    this.requestCartApi()
+                } else {
+                    this.props.appDialogContext.addDialog({
+                        title: this.props.languageContext.current.getMessageString(MessageId.CANNOT_UPDATE),
+                        content: this.props.languageContext.current.getMessageString(MessageId.CANNOT_UPDATE_DETAIL)
+                    })
+                }
+            })
+            .catch(error => {
+                this.props.appDialogContext.addDialog({
+                    title: this.props.languageContext.current.getMessageString(MessageId.SERVER_ERROR),
+                    content: this.props.languageContext.current.getMessageString(MessageId.SERVER_ERROR_CONTENT)
+                })
+            })
     }
 
     renderCartItems(): ITableCellModel[] {
@@ -205,10 +241,6 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
                     element.delivered?.toString()
                 ],
                 action: {
-                    edit: {
-                        isAlive: true,
-                        func: this.redirectEditSize
-                    },
                     delete: {
                         isAlive: true,
                         func: this.deleteSize,

@@ -74,6 +74,8 @@ class Form1 extends React.Component<Form1Props> implements IFormInputElement {
             inputWorkPrice: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE), new Rule(RuleConstant.REGEXP, MessageId.VALIDATE_ONLY_NUMBER, AppConstant.ONLY_NUMBER_REGEXP)],
             inputMaterialPrice: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE), new Rule(RuleConstant.REGEXP, MessageId.VALIDATE_ONLY_NUMBER, AppConstant.ONLY_NUMBER_REGEXP)],
         }
+
+        this.getValue = this.getValue.bind(this);
     }
 
     isValid(): boolean {
