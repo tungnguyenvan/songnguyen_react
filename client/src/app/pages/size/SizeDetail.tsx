@@ -104,7 +104,7 @@ class SizeDetail extends React.Component<SizeDetailProps, SizeDetailState> {
                 if (response.status === HttpRequestStatusCode.OK) {
                     this.setState({
                         size: response.data.data as ISizeModel,
-                        formType: ((response.data.data as ISizeModel).product_type as IProductTypeModel).form_type
+                        formType: (response.data.data as ISizeModel).form_type
                     })
                 }
             })
@@ -178,7 +178,7 @@ class SizeDetail extends React.Component<SizeDetailProps, SizeDetailState> {
             title: this.props.languageContext.current.getMessageString(MessageId.SIZE_DETAIL)
         }}>
             <FrameworkComponents.BaseForm>
-                <FrameworkComponents.FormGroup>
+                {/* <FrameworkComponents.FormGroup>
                     <FrameworkComponents.SelectBox
                         ref={this.sizeFormRef.selectBoxProductType}
                         required={true}
@@ -187,7 +187,7 @@ class SizeDetail extends React.Component<SizeDetailProps, SizeDetailState> {
                         options={AppRenderUtils.renderProductTypeSelectBox(this.state.productTypes)}
                         onChanged={this.onProductTypeChanged}
                         selectedId={this.state.size.product_type ? (this.state.size.product_type as IProductTypeModel)._id : ""} />
-                </FrameworkComponents.FormGroup>
+                </FrameworkComponents.FormGroup> */}
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.InputText
                         ref={this.sizeFormRef.inputName}
