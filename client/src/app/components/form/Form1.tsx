@@ -88,13 +88,13 @@ class Form1 extends React.Component<Form1Props> implements IFormInputElement {
 
     getValue() {
         const valueModel: ISizeModel = {
-            inner_diameter: this.formRef.inputInnerDiameter.current.getValue(),
-            outer_diameter: this.formRef.inputOuterDiameter.current.getValue(),
-            hole_count: this.formRef.inputHoleCount.current.getValue(),
-            hole_diameter: this.formRef.inputHoleDiameter.current.getValue(),
-            material_price: this.formRef.inputMaterialPrice.current.getValue(),
-            work_price: this.formRef.inputWorkPrice.current.getValue(),
-            form_type: FormType.FORM_1
+            inner_diameter: parseFloat(this.formRef.inputInnerDiameter.current.getValue()),
+            outer_diameter: parseFloat(this.formRef.inputOuterDiameter.current.getValue()),
+            hole_count: parseFloat(this.formRef.inputHoleCount.current.getValue()) | 0,
+            hole_diameter: parseFloat(this.formRef.inputHoleDiameter.current.getValue()) | 0,
+            material_price: parseFloat(this.formRef.inputMaterialPrice.current.getValue()),
+            work_price: parseFloat(this.formRef.inputWorkPrice.current.getValue()),
+            form_type: FormType.FORM_1,
         } as ISizeModel
 
         return valueModel

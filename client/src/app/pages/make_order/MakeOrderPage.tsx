@@ -38,7 +38,7 @@ import FrameworkUtils from "framework/utils/FrameworkUtils"
 import React from "react"
 
 const OUTER_EXTRAS = 1.1
-const MIN_INNER_DIAMETER = 115
+// const MIN_INNER_DIAMETER = 115
 
 interface MakeOrderPageProps {
     languageContext: ILanguageContext
@@ -316,23 +316,24 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
         const discountPercent = this.makeOrderForm.percent.current.getValue() as number
         const discountType = this.makeOrderForm.discountType.current.getValue() as DiscountType
 
-        let dt = (sizeModel.outer_diameter * OUTER_EXTRAS) / 1000
-        const dtp = dt * dt
+        let amount = parseFloat(this.makeOrderForm.amount.current.getValue());
+        let m2Price = parseFloat(this.makeOrderForm.priceSquareMeter.current.getValue());
 
-        let coreDiscount = 0
-        if (sizeModel.inner_diameter > MIN_INNER_DIAMETER) {
-            coreDiscount = Math.PI * (Math.pow(sizeModel.inner_diameter / 1000, 2) / 4)
+        let coreDiscount = 0;
+        if (sizeModel.inner_diameter > 100) {
+            coreDiscount = 3.14 * Math.pow(sizeModel.inner_diameter - 5, 2) / 4
         }
 
-        dt = Math.round((dtp - coreDiscount) * 100) / 100
-        let dtPrice = (this.makeOrderForm.priceSquareMeter.current.getValue() as number) * dt
-        let tempValue = parseFloat(dtPrice.toString()) + parseFloat(sizeModel.work_price.toString()) + parseFloat(sizeModel.material_price.toString())
-        tempValue = Math.round(tempValue / 1000) * 1000
-        let totalAmount = tempValue * (this.makeOrderForm.amount.current.getValue() as number)
+        let materialPrice = (3.14 * (sizeModel.outer_diameter + sizeModel.inner_diameter + 20) * 100) / amount;
+        materialPrice = parseInt(materialPrice.toFixed(1), 10);
+        let unitPrice = (Math.pow(sizeModel.outer_diameter + 5, 2) - coreDiscount) / 1000000 * m2Price + materialPrice + (sizeModel.hole_count * 500)
+        unitPrice = parseInt(unitPrice.toFixed(1), 10);
+
         this.setState({
-            unitPrice: tempValue
+            unitPrice: unitPrice
         })
 
+        let totalAmount = unitPrice * amount;
         // calculator discount
         if (discountType === DiscountType.DISCOUNT) {
             totalAmount = totalAmount - (totalAmount * discountPercent / 100)
@@ -350,8 +351,8 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                 standard: this.makeOrderForm.standard.current.getValue(),
                 size: this.makeOrderForm.size.current.getValue(),
                 amount: parseFloat(this.makeOrderForm.amount.current.getValue()),
-                unit_price: parseFloat(this.makeOrderForm.unitPrice.current.getValue()),
-                total_price: parseFloat(this.makeOrderForm.totalAmount.current.getValue()),
+                unit_price: this.state.unitPrice,
+                total_price: this.state.totalAmount,
                 discount_type: this.makeOrderForm.discountType.current.getValue(),
                 discount_percent: parseFloat(this.makeOrderForm.percent.current.getValue()),
                 delivered: 0,
@@ -387,8 +388,8 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                 product_type: this.makeOrderForm.productType.current.getValue(),
                 thickness: this.makeOrderForm.thickness.current.getValue(),
                 amount: parseFloat(this.makeOrderForm.amount.current.getValue()),
-                unit_price: parseFloat(this.makeOrderForm.unitPrice.current.getValue()),
-                total_price: parseFloat(this.makeOrderForm.totalAmount.current.getValue()),
+                unit_price: this.state.unitPrice,
+                total_price: this.state.totalAmount,
                 discount_type: this.makeOrderForm.discountType.current.getValue(),
                 discount_percent: parseFloat(this.makeOrderForm.percent.current.getValue()),
                 delivered: 0,
@@ -401,68 +402,76 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
         this.sizeModelCalculated = sizeModel
         const discountPercent = this.makeOrderForm.percent.current.getValue() as number
         const discountType = this.makeOrderForm.discountType.current.getValue() as DiscountType
-        let dt = 0
+
+        let unitPrice = 0;
+        let materialPrice = 0;
+        let amount = parseFloat(this.makeOrderForm.amount.current.getValue());
+        let m2Price = parseFloat(this.makeOrderForm.priceSquareMeter.current.getValue());
+
         switch(sizeModel.shape_type) {
             case GasketPTCShape.RF_CIRCLE:
             case GasketPTCShape.FF_CIRCLE: {
-                dt = (sizeModel.outer_diameter * OUTER_EXTRAS) / 1000
-                let dtp = dt * dt
-                let coreDiscount = 0
-
-                if (sizeModel.inner_diameter > MIN_INNER_DIAMETER) {
-                    coreDiscount = Math.PI * (Math.pow(sizeModel.inner_diameter / 1000, 2) / 4)
+                let coreDiscount = 0;
+                if (sizeModel.inner_diameter > 100) {
+                    coreDiscount = 3.14 * Math.pow(sizeModel.inner_diameter - 5, 2) / 4
                 }
 
-                dt = (dtp - coreDiscount)
+                materialPrice = (3.14 * (sizeModel.outer_diameter + sizeModel.inner_diameter + 20) * 100) / amount;
+                materialPrice = parseInt(materialPrice.toFixed(1), 10);
+                unitPrice = (Math.pow(sizeModel.outer_diameter + 5, 2) - coreDiscount) / 1000000 * m2Price + materialPrice + (sizeModel.hole_count * 500)
+                unitPrice = parseInt(unitPrice.toFixed(1), 10);
                 break
             }
             case GasketPTCShape.RF_RECTANGLE:
             case GasketPTCShape.FF_RECTANGLE: {
-                dt = (sizeModel.ln * sizeModel.wn) * OUTER_EXTRAS
-                let coreDiscount = 0
-
-                if (sizeModel.wt > MIN_INNER_DIAMETER && sizeModel.lt > MIN_INNER_DIAMETER) {
-                    coreDiscount = (sizeModel.wt * sizeModel.lt) * 0.9
+                let coreDiscount = 0;
+                if (sizeModel.lt > 100 && sizeModel.lt > 100) {
+                    coreDiscount = (sizeModel.lt - 5) * (sizeModel.wt - 5)
                 }
 
-                dt = parseFloat((dt - coreDiscount).toFixed(2))
-                break
+                materialPrice = (sizeModel.wn + sizeModel.ln + sizeModel.wt + sizeModel.lt + 20) *100 / amount
+                materialPrice = parseInt(materialPrice.toFixed(1), 10);
+                unitPrice = (((sizeModel.ln + 5) * (sizeModel.wn + 5) - coreDiscount) / 1000000) * m2Price + materialPrice + (sizeModel.hole_count * 500)
+                unitPrice = parseInt(unitPrice.toFixed(1), 10);
+                break;
             }
             case GasketPTCShape.FF_MANHOLE: {
-                dt = parseFloat(((sizeModel.ln * sizeModel.wn) * OUTER_EXTRAS).toFixed(2))
+                let coreDiscount = 0;
+                if (sizeModel.ir > 100) {
+                    coreDiscount = (2 * 3.14 * sizeModel.ir + (sizeModel.ln - 2 * sizeModel.ir) * sizeModel.ir)
+                }
+
+                materialPrice = ((sizeModel.ln + 5) + (sizeModel.wn + 5) + coreDiscount) * 100 / amount;
+                materialPrice = parseInt(materialPrice.toFixed(1), 10);
+                unitPrice = ((sizeModel.ln + 5) * (sizeModel.wn + 5) - (3.14 * Math.pow(sizeModel.ir, 2) + (sizeModel.ln - 2 * sizeModel.ir) * sizeModel.ir)) * m2Price + materialPrice + (sizeModel.hole_count * 500)
+                unitPrice = parseInt(unitPrice.toFixed(1), 10);
                 break
             }
         }
-
-        let dtPrice = parseFloat((this.makeOrderForm.priceSquareMeter.current.getValue())) * dt
 
         // re-calculator in form 2
         switch(sizeModel.shape_type) {
             case GasketPTCShape.RF_CIRCLE:
             case GasketPTCShape.FF_CIRCLE: {
-                this.makeOrderForm.form.current.setMaterialPrice(parseFloat(dtPrice.toFixed(0)))
+                this.makeOrderForm.form.current.setMaterialPrice(parseFloat(materialPrice.toFixed(0)))
                 break
             }
             case GasketPTCShape.FF_RECTANGLE:
             case GasketPTCShape.FF_MANHOLE:
             case GasketPTCShape.RF_RECTANGLE: {
                 this.makeOrderForm.form.current.setMaterialPrice(
-                    FrameworkUtils.calculatorMaterialPriceRectangle(sizeModel, (this.makeOrderForm.amount.current.getValue() as number))
+                    parseFloat(materialPrice.toFixed(0))
                 )
             }
         }
         const newSize = this.makeOrderForm.form.current.getValue()
         this.sizeModelCalculated = newSize
 
-        let tempValue = parseFloat((dtPrice + parseFloat(newSize.work_price).toString()));
-        tempValue = tempValue / 1000
-        tempValue = parseFloat(tempValue.toFixed(1))
-        tempValue *= 1000
-        let totalAmount = tempValue * (this.makeOrderForm.amount.current.getValue() as number)
         this.setState({
-            unitPrice: tempValue
+            unitPrice: unitPrice
         })
 
+        let totalAmount = unitPrice * amount;
         // calculator discount
         if (discountType === DiscountType.DISCOUNT) {
             totalAmount = totalAmount - (totalAmount * discountPercent / 100)
@@ -477,8 +486,8 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                 product_type: this.makeOrderForm.productType.current.getValue(),
                 thickness: this.makeOrderForm.thickness.current.getValue(),
                 amount: parseFloat(this.makeOrderForm.amount.current.getValue()),
-                unit_price: parseFloat(this.makeOrderForm.unitPrice.current.getValue()),
-                total_price: parseFloat(this.makeOrderForm.totalAmount.current.getValue()),
+                unit_price: this.state.unitPrice,
+                total_price: this.state.totalAmount,
                 discount_type: this.makeOrderForm.discountType.current.getValue(),
                 discount_percent: parseFloat(this.makeOrderForm.percent.current.getValue()),
                 delivered: 0,
