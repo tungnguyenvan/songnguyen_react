@@ -19,6 +19,14 @@ class SizeRepository extends BaseRepository {
                 path: "product_type",
                 select: "_id name form_type",
             })
+            .populate({
+                path: "system_standard",
+                select: "_id name form_type",
+            })
+            .populate({
+                path: "standard",
+                select: "_id name form_type",
+            })
             .select("-__v");
     }
 }

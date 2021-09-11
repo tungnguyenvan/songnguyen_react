@@ -201,7 +201,7 @@ class AppRenderUtils {
         carts.forEach((element) => {
             options.push({
                 id: element._id,
-                title: (element.customer as ICustomerModel).name + " - " + FrameworkUtils.generateDate(element.createdAt),
+                title: (element.customer as ICustomerModel)?.name + " - " + FrameworkUtils.generateDate(element.createdAt),
             });
         });
         return options;

@@ -36,7 +36,6 @@ class CartProvider extends React.Component<CartProviderProps> implements ICartCo
     }
 
     getIdCartSelected(): string {
-        console.log(this.cartComponentRef.current)
         return this.cartComponentRef.current.getIdCartSelected()
     }
 

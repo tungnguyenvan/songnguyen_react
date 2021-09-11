@@ -1,8 +1,12 @@
 import { FormType, GasketPTCShape } from "framework/constants/AppEnumConstant";
 import IBaseModel from "framework/documents/models/IBaseModel";
 import IProductTypeModel from "./IProductTypeModel";
+import IStandardModel from "./IStandardModel";
+import ISystemStandardModel from "./ISystemStandardModel";
 
 interface ISizeModel extends IBaseModel {
+    system_standard: string | ISystemStandardModel;
+    standard: string | IStandardModel;
     name: string;
     inner_diameter: number;
     outer_diameter: number;

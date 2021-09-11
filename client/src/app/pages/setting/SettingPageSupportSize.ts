@@ -1,6 +1,7 @@
 import SizeApiService from "app/api/SizeApiService";
-import IProductTypeModel from "app/documents/IProductTypeModel";
 import ISizeModel from "app/documents/ISizeModel";
+import IStandardModel from "app/documents/IStandardModel";
+import ISystemStandardModel from "app/documents/ISystemStandardModel";
 import BaseApiService from "framework/api/BaseApiService";
 import { FormType } from "framework/constants/AppEnumConstant";
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode";
@@ -76,8 +77,9 @@ class SettingPageSupportSize implements ISettingPageSupport<ISizeModel> {
 
     renderHeader(): string[] {
         return [
+            this.languageContext.current.getMessageString(MessageId.SYSTEM_STANDARD),
+            this.languageContext.current.getMessageString(MessageId.STANDARD),
             this.languageContext.current.getMessageString(MessageId.NAME),
-            this.languageContext.current.getMessageString(MessageId.PRODUCT_TYPE),
             this.languageContext.current.getMessageString(MessageId.INNER_DIAMETER),
             this.languageContext.current.getMessageString(MessageId.OUTER_DIAMETER),
             this.languageContext.current.getMessageString(MessageId.HOLE_COUNT),
@@ -96,8 +98,9 @@ class SettingPageSupportSize implements ISettingPageSupport<ISizeModel> {
             tableCells.push({
                 id: element._id,
                 content: [
+                    (element.system_standard as ISystemStandardModel)?.name,
+                    (element.standard as IStandardModel)?.name,
                     element.name,
-                    (element.product_type as IProductTypeModel)?.name,
                     element.inner_diameter?.toString(),
                     element.outer_diameter?.toString(),
                     element.hole_count?.toString(),

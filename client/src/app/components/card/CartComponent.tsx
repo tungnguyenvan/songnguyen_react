@@ -114,14 +114,14 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
         if (this.state.cartSelected) {
             const customer = this.state.cartSelected.customer as ICustomerModel
             tableCell.push({
-                id: customer._id,
+                id: customer?._id,
                 content: [
-                    customer.name,
-                    customer.address,
-                    customer.tax,
-                    customer.email,
-                    customer.phone_number,
-                    customer.contact_name
+                    customer?.name,
+                    customer?.address,
+                    customer?.tax,
+                    customer?.email,
+                    customer?.phone_number,
+                    customer?.contact_name
                 ]
             })
         }

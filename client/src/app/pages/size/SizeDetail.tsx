@@ -1,8 +1,12 @@
 import ProductTypeApiService from "app/api/ProductTypeApiService"
 import SizeApiService from "app/api/SizeApiService"
+import StandardApiService from "app/api/StandardApiService"
+import SystemStandardApiService from "app/api/SystemStandardApiService"
 import Form1 from "app/components/form/Form1"
 import IProductTypeModel from "app/documents/IProductTypeModel"
 import ISizeModel from "app/documents/ISizeModel"
+import IStandardModel from "app/documents/IStandardModel"
+import ISystemStandardModel from "app/documents/ISystemStandardModel"
 import AppRenderUtils from "app/utils/AppRenderUtils"
 import FrameworkComponents from "framework/components/FrameworkComponents"
 import IFormInputElement from "framework/components/IFormInputElement"
@@ -29,10 +33,14 @@ interface SizeDetailProps {
 interface SizeDetailState {
     productTypes: IProductTypeModel[]
     formType: FormType
-    size: ISizeModel
+    size: ISizeModel,
+    systemStandards: ISystemStandardModel[],
+    standards: IStandardModel[]
 }
 
 interface ISizeFormRef {
+    systemStandard: React.RefObject<any>
+    standard: React.RefObject<any>
     selectBoxProductType: React.RefObject<any>
     inputName: React.RefObject<any>
     form: React.RefObject<any>
@@ -46,11 +54,15 @@ class SizeDetail extends React.Component<SizeDetailProps, SizeDetailState> {
     private sizeApiService: SizeApiService
     private productTypeApiService: ProductTypeApiService
     private sizeFormRef: ISizeFormRef
+    private systemStandardApiService: SystemStandardApiService;
+    private standardApiService: StandardApiService;
 
     constructor(props: SizeDetailProps) {
         super(props)
 
         this.sizeFormRef = {
+            systemStandard: React.createRef<IFormInputElement>(),
+            standard: React.createRef<IFormInputElement>(),
             selectBoxProductType: React.createRef<IFormInputElement>(),
             inputName: React.createRef<IFormInputElement>(),
             form: React.createRef<IFormInputElement>()
@@ -61,24 +73,37 @@ class SizeDetail extends React.Component<SizeDetailProps, SizeDetailState> {
         this.state = {
             productTypes: [],
             formType: undefined as unknown as FormType,
-            size: {} as ISizeModel
+            size: {} as ISizeModel,
+            systemStandards: [],
+            standards: []
         }
+
+        this.systemStandardApiService = new SystemStandardApiService();
+        this.standardApiService = new StandardApiService();
 
         this.onUpdate = this.onUpdate.bind(this)
         this.onDelete = this.onDelete.bind(this)
         this.requestApi = this.requestApi.bind(this)
         this.onProductTypeChanged = this.onProductTypeChanged.bind(this)
+        this.systemStandardSelectBoxHasChanged = this.systemStandardSelectBoxHasChanged.bind(this)
     }
 
     componentDidMount() {
         // get product type
-        this.productTypeApiService.all()
+        // this.productTypeApiService.all()
+        //     .then(response => {
+        //         if (response.status === HttpRequestStatusCode.OK) {
+        //             this.setState({
+        //                 productTypes: response.data.data as IProductTypeModel[]
+        //             })
+        //         }
+        //     })
+
+        this.systemStandardApiService.all()
             .then(response => {
-                if (response.status === HttpRequestStatusCode.OK) {
-                    this.setState({
-                        productTypes: response.data.data as IProductTypeModel[]
-                    })
-                }
+                this.setState({
+                    systemStandards: response.data.data as ISystemStandardModel[]
+                })
             })
 
         // get size infomation
@@ -105,6 +130,8 @@ class SizeDetail extends React.Component<SizeDetailProps, SizeDetailState> {
                     this.setState({
                         size: response.data.data as ISizeModel,
                         formType: (response.data.data as ISizeModel).form_type
+                    }, () => {
+                        this.systemStandardSelectBoxHasChanged((this.state.size.system_standard as ISystemStandardModel)?._id)
                     })
                 }
             })
@@ -146,7 +173,9 @@ class SizeDetail extends React.Component<SizeDetailProps, SizeDetailState> {
         if (FrameworkUtils.validateFrom(this.sizeFormRef) && FrameworkUtils.formHasChanged(this.sizeFormRef)) {
             const sizeModel: ISizeModel = this.sizeFormRef.form.current.getValue()
             sizeModel.name = this.sizeFormRef.inputName.current.getValue()
-            sizeModel.product_type = this.sizeFormRef.selectBoxProductType.current.getValue()
+            // sizeModel.product_type = this.sizeFormRef.selectBoxProductType.current.getValue()
+            sizeModel.system_standard = this.sizeFormRef.systemStandard.current.getValue();
+            sizeModel.standard = this.sizeFormRef.standard.current.getValue()
 
             this.sizeApiService.update(this.state.size._id, sizeModel)
             .then(response => {
@@ -173,21 +202,48 @@ class SizeDetail extends React.Component<SizeDetailProps, SizeDetailState> {
         }
     }
 
+    systemStandardSelectBoxHasChanged(id: string) {
+        this.standardApiService.all({
+            system_standard: {
+                $in: [id]
+            }
+        })
+        .then(response => {
+            if (response.status === HttpRequestStatusCode.OK) {
+                this.setState({
+                    standards: response.data.data as IStandardModel[]
+                })
+            }
+        })
+    }
+
     render() {
         return <FrameworkComponents.BasePage {...{
             title: this.props.languageContext.current.getMessageString(MessageId.SIZE_DETAIL)
         }}>
             <FrameworkComponents.BaseForm>
-                {/* <FrameworkComponents.FormGroup>
+            <FrameworkComponents.FormGroup>
                     <FrameworkComponents.SelectBox
-                        ref={this.sizeFormRef.selectBoxProductType}
                         required={true}
+                        ref={this.sizeFormRef.systemStandard}
                         errorMessage={this.props.languageContext.current.getMessageString(MessageId.VALIDATE_REQUIRE)}
-                        placeHolder={this.props.languageContext.current.getMessageString(MessageId.PRODUCT_TYPE)}
-                        options={AppRenderUtils.renderProductTypeSelectBox(this.state.productTypes)}
-                        onChanged={this.onProductTypeChanged}
-                        selectedId={this.state.size.product_type ? (this.state.size.product_type as IProductTypeModel)._id : ""} />
-                </FrameworkComponents.FormGroup> */}
+                        placeHolder={this.props.languageContext.current.getMessageString(MessageId.SYSTEM_STANDARD)}
+                        options={AppRenderUtils.renderSystemStandard(this.state.systemStandards)}
+                        onChanged={this.systemStandardSelectBoxHasChanged}
+                        disable={!this.state.systemStandards.length}
+                        selectedId={(this.state.size.system_standard as ISystemStandardModel)?._id} />
+                </FrameworkComponents.FormGroup>
+                <FrameworkComponents.FormGroup>
+                    <FrameworkComponents.SelectBox
+                        required={true}
+                        ref={this.sizeFormRef.standard}
+                        errorMessage={this.props.languageContext.current.getMessageString(MessageId.VALIDATE_REQUIRE)}
+                        placeHolder={this.props.languageContext.current.getMessageString(MessageId.STANDARD)}
+                        options={AppRenderUtils.renderStandard(this.state.standards)}
+                        disable={!this.state.standards.length}
+                        selectedId={(this.state.size.standard as IStandardModel)?._id}
+                    />
+                </FrameworkComponents.FormGroup>
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.InputText
                         ref={this.sizeFormRef.inputName}
