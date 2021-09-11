@@ -233,7 +233,7 @@ class CustomersDetailPage extends React.Component<CustomersDetailPageProps, Cust
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.InputText
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.CUSTOMER_NAME)}
-                        value={this.state.customer.name}
+                        value={this.state.customer?.name}
                         validate={this.customerFormRule.name}
                         ref={this.customerFormRef.name} />
                 </FrameworkComponents.FormGroup>
@@ -241,7 +241,7 @@ class CustomersDetailPage extends React.Component<CustomersDetailPageProps, Cust
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.InputText
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.ADDRESS)}
-                        value={this.state.customer.address}
+                        value={this.state.customer?.address}
                         validate={this.customerFormRule.address}
                         ref={this.customerFormRef.address} />
                 </FrameworkComponents.FormGroup>
@@ -249,12 +249,12 @@ class CustomersDetailPage extends React.Component<CustomersDetailPageProps, Cust
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.InputText
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.TAX_CODE)}
-                        value={this.state.customer.tax}
+                        value={this.state.customer?.tax}
                         validate={this.customerFormRule.tax_code}
                         ref={this.customerFormRef.tax_code} />
                     <FrameworkComponents.InputText
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.EMAIL)}
-                        value={this.state.customer.email}
+                        value={this.state.customer?.email}
                         ref={this.customerFormRef.email}
                         validate={this.customerFormRule.email} />
                 </FrameworkComponents.FormGroup>
@@ -262,13 +262,13 @@ class CustomersDetailPage extends React.Component<CustomersDetailPageProps, Cust
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.InputText
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.PHONE_NUMBER)}
-                        value={this.state.customer.phone_number}
+                        value={this.state.customer?.phone_number}
                         validate={this.customerFormRule.phone_number}
                         ref={this.customerFormRef.phone_numner} />
                     
                     <FrameworkComponents.InputText
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.CONTACT_NAME)}
-                        value={this.state.customer.contact_name}
+                        value={this.state.customer?.contact_name}
                         validate={this.customerFormRule.contact_name}
                         ref={this.customerFormRef.contact_name} />
                 </FrameworkComponents.FormGroup>

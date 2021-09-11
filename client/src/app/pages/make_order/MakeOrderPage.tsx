@@ -173,14 +173,14 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                 }
             })
         
-        this.sizeApiService.all()
-            .then(response => {
-                if (response.status === HttpRequestStatusCode.OK) {
-                    this.setState({
-                        sizes: response.data.data as ISizeModel[]
-                    })
-                }
-            })
+        // this.sizeApiService.all()
+        //     .then(response => {
+        //         if (response.status === HttpRequestStatusCode.OK) {
+        //             this.setState({
+        //                 sizes: response.data.data as ISizeModel[]
+        //             })
+        //         }
+        //     })
     }
 
     productTypeOnChanged(productTypeId: string): void {
@@ -265,6 +265,16 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                     standardSelected: element
                 })
             }
+        })
+
+        this.sizeApiService.all({
+            system_standard: this.makeOrderForm.systemStandard.current.getValue(),
+            standard: this.makeOrderForm.standard.current.getValue(),
+        })
+        .then(response => {
+            this.setState({
+                sizes: response.data.data as ISizeModel[]
+            })
         })
     }
 

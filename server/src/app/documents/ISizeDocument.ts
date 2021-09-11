@@ -8,6 +8,9 @@ import { FormType } from "../constants/EnumConstant";
  * @author tung.nguyenvan
  */
 interface ISizeDocument extends IBaseDocument {
+    system_standard: Mongoose.Types.ObjectId;
+    standard: Mongoose.Types.ObjectId;
+
     /**
      * Size name
      */

@@ -161,11 +161,13 @@ class Form1 extends React.Component<Form1Props> implements IFormInputElement {
                 <FrameworkComponents.InputText
                     ref={this.formRef.inputMaterialPrice}
                     placeHolder={this.props.languageContext.current.getMessageString(MessageId.MATERIAL_PRICE)}
-                    validate={this.formValidate.inputMaterialPrice} />
+                    validate={this.formValidate.inputMaterialPrice}
+                    value={this.props.size?.material_price} />
                 <FrameworkComponents.InputText
                     ref={this.formRef.inputWorkPrice}
                     placeHolder={this.props.languageContext.current.getMessageString(MessageId.WORK_PRICE)}
-                    validate={this.formValidate.inputWorkPrice} />
+                    validate={this.formValidate.inputWorkPrice}
+                    value={this.props.size?.work_price} />
             </FrameworkComponents.FormGroup>
         </FrameworkComponents.BaseForm>
     }

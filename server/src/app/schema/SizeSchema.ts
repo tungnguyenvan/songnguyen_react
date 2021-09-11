@@ -6,6 +6,18 @@ import { GasketPTCShape } from "@app/framework/constants/DBEnumConstant";
 import { FormType } from "../constants/EnumConstant";
 
 const document = {
+    system_standard: {
+        type: Mongoose.Types.ObjectId,
+        require: true,
+        ref: DBNameConstant.SYSTEM_STANDARD,
+    },
+
+    standard: {
+        type: Mongoose.Types.ObjectId,
+        require: true,
+        ref: DBNameConstant.STANDARD,
+    },
+
     name: {
         require: true,
         type: String,

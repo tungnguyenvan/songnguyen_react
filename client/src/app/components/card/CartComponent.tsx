@@ -116,12 +116,12 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
             tableCell.push({
                 id: customer._id,
                 content: [
-                    customer.name,
-                    customer.address,
-                    customer.tax,
-                    customer.email,
-                    customer.phone_number,
-                    customer.contact_name
+                    customer?.name,
+                    customer?.address,
+                    customer?.tax,
+                    customer?.email,
+                    customer?.phone_number,
+                    customer?.contact_name
                 ]
             })
         }
