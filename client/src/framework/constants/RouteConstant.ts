@@ -9,6 +9,7 @@ enum RouteConstant {
     EXAMPLE = "/example",
     STORES = "/stores",
     SETTING = "/setting",
+    SETTING_WITH_PARAMS = "/setting/:id",
 
     PRODUCT_TYPE = "/product_types",
     PRODUCT_TYPE_DETAIL = "/product_types/:id",

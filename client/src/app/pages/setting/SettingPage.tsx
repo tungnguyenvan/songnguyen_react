@@ -11,6 +11,7 @@ import WithFramework from "framework/constants/WithFramework";
 import IAppDialogContext from "framework/contexts/dialog/IAppDialogContext";
 import ILanguageContext from "framework/contexts/lang/ILanguageContext";
 import IAppUrlContext from "framework/contexts/url/IAppUrlContext";
+import FrameworkUtils from "framework/utils/FrameworkUtils";
 import React from "react";
 import SettingPageSupportProductName from "./SettingPageSupportProductName";
 import SettingPageSupportProductType from "./SettingPageSupportProductType";
@@ -32,7 +33,11 @@ interface SettingPageState {
     systemStandards: ISystemStandardModel[]
     standards: IStandardModel[],
     sizes: ISizeModel[],
-    sessionSelected: String
+    sessionSelected: string
+}
+
+interface IParams {
+    id: string
 }
 
 class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
@@ -56,6 +61,7 @@ class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
             sessionSelected: ""
         }
 
+        this.handleUrl = this.handleUrl.bind(this)
         this.sizesRequestCallback = this.sizesRequestCallback.bind(this)
         this.productTypeRequestCallback = this.productTypeRequestCallback.bind(this)
         this.productNameRequestCallback = this.productNameRequestCallback.bind(this)
@@ -79,6 +85,19 @@ class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
         this.settingPageSupportSystemStandard.all()
         this.settingPageSupportStandard.all()
         this.settingPageSupportSize.all()
+
+        this.handleUrl()
+
+        this.props.appUrlContext.addCallback(this.handleUrl);
+    }
+
+    handleUrl() {
+        const path = FrameworkUtils.matchPath(window.location.pathname, RouteConstant.SETTING_WITH_PARAMS)
+        if (path) {
+            this.setState({
+                sessionSelected: (path.params as IParams).id
+            })
+        }
     }
 
     thicknessRequestCallback(thicknesses: IThicknessModel[]) {
@@ -111,7 +130,8 @@ class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
         })
     }
 
-    settingSessionOnChanged(id: String) {
+    settingSessionOnChanged(id: string) {
+        this.props.appUrlContext.redirectTo(RouteConstant.SETTING + "/" + id);
         this.setState({
             sessionSelected: id
         })
@@ -129,6 +149,7 @@ class SettingPage extends React.Component<SettingPageProps, SettingPageState> {
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.SelectBox
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.CHOOSE_SETTING_SESSION)}
+                        selectedId={this.state.sessionSelected}
                         options={[
                             {
                                 title: this.props.languageContext.current.getMessageString(MessageId.PRODUCT_TYPE),

@@ -161,7 +161,7 @@ class App extends React.Component {
                                                     />
                                                     <Route
                                                         exact
-                                                        path={RouteConstant.SETTING}
+                                                        path={[RouteConstant.SETTING, RouteConstant.SETTING_WITH_PARAMS]}
                                                         children={<SettingPage />}
                                                     />
                                                     <Route

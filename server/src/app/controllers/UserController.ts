@@ -4,7 +4,7 @@ import Logging from "@app/framework/utils/Logging";
 import IUserDocument from "@app/app/documents/IUserDocument";
 import BaseController from "@app/framework/core/BaseController";
 import UserRepository from "@app/app/repositories/UserRepository";
-import { UserStatus } from "@app/framework/constants/DBEnumConstant";
+import { UserRole, UserStatus } from "@app/framework/constants/DBEnumConstant";
 
 const NAME_SPACE = "UserController";
 
@@ -137,15 +137,20 @@ class UserController extends BaseController {
     }
 
     middlewareUpdateUser(request: Express.Request, response: Express.Response, next: Express.NextFunction): void {
-        Logging.debug(NAME_SPACE, `${NAME_SPACE}#middlewareUpdateUser START`);
+        Logging.debug(NAME_SPACE, `${NAME_SPACE}#middlewareUpdateUser START`, request.userinformation);
         (this.repository as UserRepository)
             .middlewareUpdateUser(request)
             .then((userResponse) => {
-                if (AppUtil.isObject(userResponse) && !AppUtil.isArray(userResponse) && request.userinformation._id === request.params.id) {
+                // if (AppUtil.isObject(userResponse) && !AppUtil.isArray(userResponse)) {
+                Logging.info(NAME_SPACE, `${NAME_SPACE}#middlewareUpdateUser`, userResponse);
+                if ((request.userinformation as IUserDocument).role === UserRole.ADMIN || request.userinformation._id === request.params.id) {
                     next();
                 } else {
                     this.appResponse.notFound(request, response);
                 }
+                // } else {
+                //     this.appResponse.notFound(request, response);
+                // }
             })
             .catch((error) => {
                 Logging.error(NAME_SPACE, `${NAME_SPACE}#middlewareUpdateUser`, error);
