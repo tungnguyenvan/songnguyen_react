@@ -10,7 +10,6 @@ import MessageId from "framework/constants/MessageId";
 // resources
 import { ReactComponent as HomeIcon } from "framework/resources/image/house.svg";
 import { ReactComponent as People } from "framework/resources/image/people.svg";
-import { ReactComponent as Award } from "framework/resources/image/award.svg";
 import { ReactComponent as PersonChecked } from "framework/resources/image/person-check.svg";
 import { ReactComponent as App } from "framework/resources/image/app.svg";
 import { ReactComponent as Gear } from "framework/resources/image/gear.svg";

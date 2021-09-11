@@ -11,7 +11,8 @@ interface IAppUrlProviderProps extends RouteComponentProps<any> {
 
 interface IAppUrlProviderState {
 	urlRedirectTo: string;
-	history: string[]
+	history: string[],
+	callbacks: (() => void)[]
 }
 
 class AppUrlProvider
@@ -23,12 +24,20 @@ class AppUrlProvider
 
 		this.state = {
 			urlRedirectTo: "",
-			history: []
+			history: [],
+			callbacks: []
 		};
 
 		this.back = this.back.bind(this)
 		this.redirectTo = this.redirectTo.bind(this)
 		this.isCurrentUrl = this.isCurrentUrl.bind(this)
+		this.addCallback = this.addCallback.bind(this)
+	}
+
+	addCallback(callback: () => void) {
+		this.setState({
+			callbacks: [callback, ...this.state.callbacks]
+		})
 	}
 
 	redirectTo(url: string): void {
@@ -43,6 +52,10 @@ class AppUrlProvider
 		this.setState({
 			urlRedirectTo: url,
 			history: history
+		}, () => {
+			this.state.callbacks.forEach(func => {
+				if (func) func();
+			})
 		});
 
 		window.scrollTo(0, 0);
@@ -62,6 +75,10 @@ class AppUrlProvider
 			this.setState({
 				urlRedirectTo: url,
 				history: history
+			}, () => {
+				this.state.callbacks.forEach(func => {
+					if (func) func();
+				})
 			})
 		}
 	}
