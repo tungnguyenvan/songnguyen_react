@@ -37,7 +37,7 @@ import Rule from "framework/documents/models/Rule"
 import FrameworkUtils from "framework/utils/FrameworkUtils"
 import React from "react"
 
-const OUTER_EXTRAS = 1.1
+// const OUTER_EXTRAS = 1.1
 // const MIN_INNER_DIAMETER = 115
 
 interface MakeOrderPageProps {
@@ -324,10 +324,14 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
             coreDiscount = 3.14 * Math.pow(sizeModel.inner_diameter - 5, 2) / 4
         }
 
-        let materialPrice = (3.14 * (sizeModel.outer_diameter + sizeModel.inner_diameter + 20) * 100) / amount;
-        materialPrice = parseInt(materialPrice.toFixed(1), 10);
+        let materialPrice = (3.14 * (sizeModel.outer_diameter + sizeModel.inner_diameter + 20) * 20);
+        materialPrice = parseInt(materialPrice.toFixed(0), 10);
         let unitPrice = (Math.pow(sizeModel.outer_diameter + 5, 2) - coreDiscount) / 1000000 * m2Price + materialPrice + (sizeModel.hole_count * 500)
-        unitPrice = parseInt(unitPrice.toFixed(1), 10);
+        unitPrice = parseInt(unitPrice.toFixed(0), 10);
+
+        this.makeOrderForm.form.current.setMaterialPrice(parseInt(
+            ((Math.pow(sizeModel.outer_diameter + 5, 2) - coreDiscount) / 1000000 * m2Price).toFixed(0), 10
+        ))
 
         this.setState({
             unitPrice: unitPrice
@@ -366,12 +370,12 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
         const discountPercent = parseFloat(this.makeOrderForm.percent.current.getValue())
         const discountType = this.makeOrderForm.discountType.current.getValue() as DiscountType
 
-        const dt = (sizeModel.wt * OUTER_EXTRAS) * (sizeModel.lt * OUTER_EXTRAS)
-        let dtPrice = dt * parseFloat(this.makeOrderForm.priceSquareMeter.current.getValue())
-        dtPrice = parseFloat((dtPrice / 1000).toFixed(1)) * 1000
+        const dt = sizeModel.wt * sizeModel.lt
+        let dtPrice = dt * parseFloat(this.makeOrderForm.priceSquareMeter.current.getValue()) / 1000000;
+        dtPrice = parseFloat((dtPrice / 1000).toFixed(0)) * 1000
         let totalAmount = dtPrice * parseFloat(this.makeOrderForm.amount.current.getValue())
         this.setState({
-            unitPrice: dtPrice
+            unitPrice: parseInt(dtPrice.toFixed(0), 10)
         })
 
         // calculator discount
@@ -380,6 +384,7 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
         } else if (discountType === DiscountType.INCREASE) {
             totalAmount = totalAmount + (totalAmount * discountPercent/100)
         }
+
         this.setState({
             totalAmount: totalAmount
         }, () => {
@@ -415,11 +420,14 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                 if (sizeModel.inner_diameter > 100) {
                     coreDiscount = 3.14 * Math.pow(sizeModel.inner_diameter - 5, 2) / 4
                 }
+                console.log(coreDiscount)
 
                 materialPrice = (3.14 * (sizeModel.outer_diameter + sizeModel.inner_diameter + 20) * 100) / amount;
-                materialPrice = parseInt(materialPrice.toFixed(1), 10);
+                materialPrice = parseInt(materialPrice.toFixed(0), 10);
+                console.log(materialPrice)
                 unitPrice = (Math.pow(sizeModel.outer_diameter + 5, 2) - coreDiscount) / 1000000 * m2Price + materialPrice + (sizeModel.hole_count * 500)
-                unitPrice = parseInt(unitPrice.toFixed(1), 10);
+                unitPrice = parseInt(unitPrice.toFixed(0), 10);
+                console.log(unitPrice)
                 break
             }
             case GasketPTCShape.RF_RECTANGLE:
@@ -430,9 +438,9 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                 }
 
                 materialPrice = (sizeModel.wn + sizeModel.ln + sizeModel.wt + sizeModel.lt + 20) *100 / amount
-                materialPrice = parseInt(materialPrice.toFixed(1), 10);
+                materialPrice = parseInt(materialPrice.toFixed(0), 10);
                 unitPrice = (((sizeModel.ln + 5) * (sizeModel.wn + 5) - coreDiscount) / 1000000) * m2Price + materialPrice + (sizeModel.hole_count * 500)
-                unitPrice = parseInt(unitPrice.toFixed(1), 10);
+                unitPrice = parseInt(unitPrice.toFixed(0), 10);
                 break;
             }
             case GasketPTCShape.FF_MANHOLE: {
@@ -442,9 +450,9 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                 }
 
                 materialPrice = ((sizeModel.ln + 5) + (sizeModel.wn + 5) + coreDiscount) * 100 / amount;
-                materialPrice = parseInt(materialPrice.toFixed(1), 10);
+                materialPrice = parseInt(materialPrice.toFixed(0), 10);
                 unitPrice = ((sizeModel.ln + 5) * (sizeModel.wn + 5) - (3.14 * Math.pow(sizeModel.ir, 2) + (sizeModel.ln - 2 * sizeModel.ir) * sizeModel.ir)) * m2Price + materialPrice + (sizeModel.hole_count * 500)
-                unitPrice = parseInt(unitPrice.toFixed(1), 10);
+                unitPrice = parseInt(unitPrice.toFixed(0), 10);
                 break
             }
         }

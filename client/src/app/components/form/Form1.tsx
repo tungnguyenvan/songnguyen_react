@@ -76,6 +76,7 @@ class Form1 extends React.Component<Form1Props> implements IFormInputElement {
         }
 
         this.getValue = this.getValue.bind(this);
+        this.setMaterialPrice = this.setMaterialPrice.bind(this);
     }
 
     isValid(): boolean {
@@ -84,6 +85,11 @@ class Form1 extends React.Component<Form1Props> implements IFormInputElement {
 
     setErrorMessage(errorMessage: string): void {
         FrameworkUtils.setErrorMessage(this.formRef, errorMessage)
+    }
+
+    setMaterialPrice(price: number) {
+        this.formRef.inputMaterialPrice.current.setValue(price)
+        this.formRef.inputWorkPrice.current.setValue((price * 1.1).toFixed(0))
     }
 
     getValue() {
@@ -155,13 +161,11 @@ class Form1 extends React.Component<Form1Props> implements IFormInputElement {
                 <FrameworkComponents.InputText
                     ref={this.formRef.inputMaterialPrice}
                     placeHolder={this.props.languageContext.current.getMessageString(MessageId.MATERIAL_PRICE)}
-                    validate={this.formValidate.inputMaterialPrice}
-                    value={this.props.size?.material_price} />
+                    validate={this.formValidate.inputMaterialPrice} />
                 <FrameworkComponents.InputText
                     ref={this.formRef.inputWorkPrice}
                     placeHolder={this.props.languageContext.current.getMessageString(MessageId.WORK_PRICE)}
-                    validate={this.formValidate.inputWorkPrice}
-                    value={this.props.size?.work_price} />
+                    validate={this.formValidate.inputWorkPrice} />
             </FrameworkComponents.FormGroup>
         </FrameworkComponents.BaseForm>
     }
