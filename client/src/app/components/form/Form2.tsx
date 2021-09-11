@@ -172,7 +172,9 @@ class Form2 extends React.Component<Form2Props, Form2State> implements IFormInpu
                     bl: parseFloat(this.formRef.bl.current.getValue()),
                     material_price: parseFloat(this.formRef.materialPrice.current.getValue()),
                     work_price: parseFloat(this.formRef.workPrice.current.getValue()),
-                    form_type: FormType.FORM_2
+                    form_type: FormType.FORM_2,
+                    hole_count: 0,
+                    hole_diameter: 0
                 } as ISizeModel
                 break;
             }
@@ -181,8 +183,8 @@ class Form2 extends React.Component<Form2Props, Form2State> implements IFormInpu
                     shape_type: this.state.shapeChoosed.shapeType,
                     inner_diameter: parseFloat(this.formRef.innerDiameter.current.getValue()),
                     outer_diameter: parseFloat(this.formRef.outerDiameter.current.getValue()),
-                    hole_count: parseFloat(this.formRef.holeCount.current.getValue()),
-                    hole_diameter: parseFloat(this.formRef.holeDiameter.current.getValue()),
+                    hole_count: parseFloat(this.formRef.holeCount.current.getValue()) | 0,
+                    hole_diameter: parseFloat(this.formRef.holeDiameter.current.getValue()) | 0,
                     bl: parseFloat(this.formRef.bl.current.getValue()),
                     material_price: parseFloat(this.formRef.materialPrice.current.getValue()),
                     work_price: parseFloat(this.formRef.workPrice.current.getValue()),
@@ -200,7 +202,9 @@ class Form2 extends React.Component<Form2Props, Form2State> implements IFormInpu
                     bl: parseFloat(this.formRef.bl.current.getValue()),
                     material_price: parseFloat(this.formRef.materialPrice.current.getValue()),
                     work_price: parseFloat(this.formRef.workPrice.current.getValue()),
-                    form_type: FormType.FORM_2
+                    form_type: FormType.FORM_2,
+                    hole_diameter: 0,
+                    hole_count: 0
                 } as ISizeModel
                 break;
             }
@@ -211,8 +215,8 @@ class Form2 extends React.Component<Form2Props, Form2State> implements IFormInpu
                     wt: parseFloat(this.formRef.wtDiameter.current.getValue()),
                     ln: parseFloat(this.formRef.lnDiameter.current.getValue()),
                     lt: parseFloat(this.formRef.ltDiameter.current.getValue()),
-                    hole_count: parseFloat(this.formRef.holeCount.current.getValue()),
-                    hole_diameter: parseFloat(this.formRef.holeDiameter.current.getValue()),
+                    hole_count: parseFloat(this.formRef.holeCount.current.getValue()) | 0,
+                    hole_diameter: parseFloat(this.formRef.holeDiameter.current.getValue()) | 0,
                     bl: parseFloat(this.formRef.bl.current.getValue()),
                     material_price: parseFloat(this.formRef.materialPrice.current.getValue()),
                     work_price: parseFloat(this.formRef.workPrice.current.getValue()),
@@ -227,8 +231,8 @@ class Form2 extends React.Component<Form2Props, Form2State> implements IFormInpu
                     ln: parseFloat(this.formRef.lnDiameter.current.getValue()),
                     ir: parseFloat(this.formRef.irDiameter.current.getValue()),
                     or: parseFloat(this.formRef.orDiameter.current.getValue()),
-                    hole_count: parseFloat(this.formRef.holeCount.current.getValue()),
-                    hole_diameter: parseFloat(this.formRef.holeDiameter.current.getValue()),
+                    hole_count: parseFloat(this.formRef.holeCount.current.getValue()) | 0,
+                    hole_diameter: parseFloat(this.formRef.holeDiameter.current.getValue()) | 0,
                     bl: parseFloat(this.formRef.bl.current.getValue()),
                     material_price: parseFloat(this.formRef.materialPrice.current.getValue()),
                     work_price: parseFloat(this.formRef.workPrice.current.getValue()),

@@ -76,6 +76,7 @@ class Form1 extends React.Component<Form1Props> implements IFormInputElement {
         }
 
         this.getValue = this.getValue.bind(this);
+        this.setMaterialPrice = this.setMaterialPrice.bind(this);
     }
 
     isValid(): boolean {
@@ -86,15 +87,20 @@ class Form1 extends React.Component<Form1Props> implements IFormInputElement {
         FrameworkUtils.setErrorMessage(this.formRef, errorMessage)
     }
 
+    setMaterialPrice(price: number) {
+        this.formRef.inputMaterialPrice.current.setValue(price)
+        this.formRef.inputWorkPrice.current.setValue((price * 1.1).toFixed(0))
+    }
+
     getValue() {
         const valueModel: ISizeModel = {
-            inner_diameter: this.formRef.inputInnerDiameter.current.getValue(),
-            outer_diameter: this.formRef.inputOuterDiameter.current.getValue(),
-            hole_count: this.formRef.inputHoleCount.current.getValue(),
-            hole_diameter: this.formRef.inputHoleDiameter.current.getValue(),
-            material_price: this.formRef.inputMaterialPrice.current.getValue(),
-            work_price: this.formRef.inputWorkPrice.current.getValue(),
-            form_type: FormType.FORM_1
+            inner_diameter: parseFloat(this.formRef.inputInnerDiameter.current.getValue()),
+            outer_diameter: parseFloat(this.formRef.inputOuterDiameter.current.getValue()),
+            hole_count: parseFloat(this.formRef.inputHoleCount.current.getValue()) | 0,
+            hole_diameter: parseFloat(this.formRef.inputHoleDiameter.current.getValue()) | 0,
+            material_price: parseFloat(this.formRef.inputMaterialPrice.current.getValue()),
+            work_price: parseFloat(this.formRef.inputWorkPrice.current.getValue()),
+            form_type: FormType.FORM_1,
         } as ISizeModel
 
         return valueModel
@@ -155,13 +161,11 @@ class Form1 extends React.Component<Form1Props> implements IFormInputElement {
                 <FrameworkComponents.InputText
                     ref={this.formRef.inputMaterialPrice}
                     placeHolder={this.props.languageContext.current.getMessageString(MessageId.MATERIAL_PRICE)}
-                    validate={this.formValidate.inputMaterialPrice}
-                    value={this.props.size?.material_price} />
+                    validate={this.formValidate.inputMaterialPrice} />
                 <FrameworkComponents.InputText
                     ref={this.formRef.inputWorkPrice}
                     placeHolder={this.props.languageContext.current.getMessageString(MessageId.WORK_PRICE)}
-                    validate={this.formValidate.inputWorkPrice}
-                    value={this.props.size?.work_price} />
+                    validate={this.formValidate.inputWorkPrice} />
             </FrameworkComponents.FormGroup>
         </FrameworkComponents.BaseForm>
     }
