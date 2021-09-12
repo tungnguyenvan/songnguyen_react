@@ -42,12 +42,17 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
             items: [],
         };
 
+        this.all = this.all.bind(this)
         this.tableHeader = this.tableHeader.bind(this);
         this.editWarehouse = this.editWarehouse.bind(this);
         this.deleteWarehouse = this.deleteWarehouse.bind(this);
     }
 
     componentDidMount() {
+        this.all()
+    }
+
+    all() {
         this.warehouseApiService
             .all({
                 amount: {
@@ -116,6 +121,10 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
                     delete: {
                         isAlive: this.props.userLoginContext.current.isLoggedIn() && this.props.userLoginContext.state.user.role === UserRole.ADMIN,
                         func: this.deleteWarehouse,
+                        dialog: {
+                            title: this.props.languageContext.current.getMessageString(MessageId.CONFIRM_DELETE),
+                            content: this.props.languageContext.current.getMessageString(MessageId.CONFIRM_DELETE_DETAIL)
+                        }
                     },
                 },
             });
@@ -132,7 +141,12 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
         );
     }
 
-    deleteWarehouse(id: string) {}
+    deleteWarehouse(id: string) {
+        this.warehouseApiService.delete(id)
+            .then(response => {
+                this.all()
+            })
+    }
 
     render() {
         return (

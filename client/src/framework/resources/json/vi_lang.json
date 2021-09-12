@@ -169,5 +169,10 @@
 	"NOT_ENOUGH": "Không đủ",
 	"NOT_ENOUGH_CONTENT": "Sản phẩm không đủ",
 	"CART_ITEM_DETAIL": "Chi tiết sản phẩm trong giỏ hàng",
-	"CHOOSE_SETTING_SESSION": "Chọn thành phần"
+	"CHOOSE_SETTING_SESSION": "Chọn thành phần",
+	"CAN_NOT_UPDATE_DELIVERY": "Không thể cập nhật số lượng đã giao",
+	"CAN_NOT_UPDATE_DELIVERY_CONTENT": "Khi cập nhật số lượng đã giao phải lớn hơn hoặc bằng số lượng đã giao trước đó.",
+	"SOMETHING_WRONG": "Có gì đó không đúng.",
+	"DELIVERY_MORE_AMOUNT": "Số lượng đã giao lớn hơn số lượng",
+	"DELIVERY_MORE_AMOUNT_CONTENT": "Số lượng đã giao không được lớn hơn số lượng"
 }

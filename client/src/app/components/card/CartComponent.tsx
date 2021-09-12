@@ -114,7 +114,7 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
         if (this.state.cartSelected) {
             const customer = this.state.cartSelected.customer as ICustomerModel
             tableCell.push({
-                id: customer._id,
+                id: customer?._id,
                 content: [
                     customer?.name,
                     customer?.address,
@@ -247,6 +247,12 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
                         dialog: {
                             title: this.props.languageContext.current.getMessageString(MessageId.CONFIRM_DELETE),
                             content: this.props.languageContext.current.getMessageString(MessageId.CONFIRM_DELETE_DETAIL)
+                        }
+                    },
+                    edit: {
+                        isAlive: true,
+                        func: () => {
+                            this.props.appUrlContext.redirectTo(RouteConstant.CART_ITEM + element._id)
                         }
                     }
                 }

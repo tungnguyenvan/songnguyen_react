@@ -33,8 +33,8 @@ import ITableCellModel from "framework/documents/ui/ITableCellModel";
 import FrameworkUtils from "framework/utils/FrameworkUtils";
 import React from "react";
 
-const OUTER_EXTRAS = 1.1;
-const MIN_INNER_DIAMETER = 115;
+// const OUTER_EXTRAS = 1.1;
+// const MIN_INNER_DIAMETER = 115;
 
 interface WarehouseItemProps {
     languageContext: ILanguageContext;
@@ -98,6 +98,9 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
         this.addToCart = this.addToCart.bind(this);
         this.requestApi = this.requestApi.bind(this);
         this.onCalculator = this.onCalculator.bind(this);
+        this.calculatorForm1 = this.calculatorForm1.bind(this);
+        this.calculatorForm2 = this.calculatorForm2.bind(this);
+        this.calculatorForm3 = this.calculatorForm3.bind(this);
         this.validateDiscount = this.validateDiscount.bind(this);
         this.renderTableHeader = this.renderTableHeader.bind(this);
         this.renderTableContent = this.renderTableContent.bind(this);
@@ -196,23 +199,28 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
         const discountPercent = this.warehouseItemFormRef.percent.current.getValue() as number;
         const discountType = this.warehouseItemFormRef.discountType.current.getValue() as DiscountType;
 
-        let dt = (sizeModel.outer_diameter * OUTER_EXTRAS) / 1000;
-        const dtp = dt * dt;
+        let amount = parseFloat(this.warehouseItemFormRef.amount.current.getValue());
+        let m2Price = (this.state.warehouse.thickness as IThicknessModel).price;
 
         let coreDiscount = 0;
-        if (sizeModel.inner_diameter > MIN_INNER_DIAMETER) {
-            coreDiscount = Math.PI * (Math.pow(sizeModel.inner_diameter / 1000, 2) / 4);
+        if (sizeModel.inner_diameter > 100) {
+            coreDiscount = 3.14 * Math.pow(sizeModel.inner_diameter - 5, 2) / 4
         }
 
-        dt = Math.round((dtp - coreDiscount) * 100) / 100;
-        let dtPrice = (this.state.warehouse.thickness as IThicknessModel).price * dt;
-        let tempValue = dtPrice + sizeModel.work_price + sizeModel.material_price;
-        tempValue = Math.round(tempValue / 1000) * 1000;
-        let totalAmount = tempValue * (this.warehouseItemFormRef.amount.current.getValue() as number);
-        this.setState({
-            unitPrice: tempValue,
-        });
+        let materialPrice = (3.14 * (sizeModel.outer_diameter + sizeModel.inner_diameter + 20) * 20);
+        materialPrice = parseInt(materialPrice.toFixed(0), 10);
+        let unitPrice = (Math.pow(sizeModel.outer_diameter + 5, 2) - coreDiscount) / 1000000 * m2Price + materialPrice + (sizeModel.hole_count * 500)
+        unitPrice = parseInt(unitPrice.toFixed(0), 10);
 
+        // this.warehouseItemFormRef.form.current.setMaterialPrice(parseInt(
+        //     ((Math.pow(sizeModel.outer_diameter + 5, 2) - coreDiscount) / 1000000 * m2Price).toFixed(0), 10
+        // ))
+
+        this.setState({
+            unitPrice: unitPrice
+        })
+
+        let totalAmount = unitPrice * amount;
         // calculator discount
         if (discountType === DiscountType.DISCOUNT) {
             totalAmount = totalAmount - (totalAmount * discountPercent) / 100;
@@ -248,65 +256,74 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
     calculatorForm2(sizeModel: ISizeModel) {
         const discountPercent = this.warehouseItemFormRef.percent.current.getValue() as number;
         const discountType = this.warehouseItemFormRef.discountType.current.getValue() as DiscountType;
-        let dt = 0;
-        switch (sizeModel.shape_type) {
+        let unitPrice = 0;
+        let materialPrice = 0;
+        let amount = parseFloat(this.warehouseItemFormRef.amount.current.getValue());
+        let m2Price = (this.state.warehouse.thickness as IThicknessModel).price
+
+        switch(sizeModel.shape_type) {
             case GasketPTCShape.RF_CIRCLE:
             case GasketPTCShape.FF_CIRCLE: {
-                dt = (sizeModel.outer_diameter * OUTER_EXTRAS) / 1000;
-                let dtp = dt * dt;
                 let coreDiscount = 0;
-
-                if (sizeModel.inner_diameter > MIN_INNER_DIAMETER) {
-                    coreDiscount = Math.PI * (Math.pow(sizeModel.inner_diameter / 1000, 2) / 4);
+                if (sizeModel.inner_diameter > 100) {
+                    coreDiscount = 3.14 * Math.pow(sizeModel.inner_diameter - 5, 2) / 4
                 }
 
-                dt = dtp - coreDiscount;
-                break;
+                materialPrice = (3.14 * (sizeModel.outer_diameter + sizeModel.inner_diameter + 20) * 20);
+                materialPrice = parseInt(materialPrice.toFixed(0), 10);
+                unitPrice = (Math.pow(sizeModel.outer_diameter + 5, 2) - coreDiscount) / 1000000 * m2Price + materialPrice + (sizeModel.hole_count * 500)
+                unitPrice = parseInt(unitPrice.toFixed(0), 10);
+                break
             }
             case GasketPTCShape.RF_RECTANGLE:
             case GasketPTCShape.FF_RECTANGLE: {
-                dt = sizeModel.ln * sizeModel.wn * OUTER_EXTRAS;
                 let coreDiscount = 0;
-
-                if (sizeModel.wt > MIN_INNER_DIAMETER && sizeModel.lt > MIN_INNER_DIAMETER) {
-                    coreDiscount = sizeModel.wt * sizeModel.lt * 0.9;
+                if (sizeModel.lt > 100 && sizeModel.lt > 100) {
+                    coreDiscount = (sizeModel.lt - 5) * (sizeModel.wt - 5)
                 }
 
-                dt = parseFloat((dt - coreDiscount).toFixed(2));
+                materialPrice = (sizeModel.wn + sizeModel.ln + sizeModel.wt + sizeModel.lt + 20) * 20
+                materialPrice = parseInt(materialPrice.toFixed(0), 10);
+                unitPrice = (((sizeModel.ln + 5) * (sizeModel.wn + 5) - coreDiscount) / 1000000) * m2Price + materialPrice + (sizeModel.hole_count * 500);
+                unitPrice = parseInt(unitPrice.toFixed(0), 10);
                 break;
             }
             case GasketPTCShape.FF_MANHOLE: {
-                break;
+                let coreDiscount = 0;
+                if (sizeModel.ir > 100) {
+                    coreDiscount = (2 * 3.14 * sizeModel.ir + (sizeModel.ln - 2 * sizeModel.ir) * sizeModel.ir)
+                }
+
+                materialPrice = ((sizeModel.ln + 5) + (sizeModel.wn + 5) + coreDiscount) * 20;
+                materialPrice = parseInt(materialPrice.toFixed(0), 10);
+                unitPrice = (((sizeModel.ln + 5) * (sizeModel.wn + 5) - (3.14 * Math.pow(sizeModel.ir, 2) + (sizeModel.ln - 2 * sizeModel.ir) * sizeModel.ir)) / 1000000) * m2Price + materialPrice + (sizeModel.hole_count * 500)
+                unitPrice = parseInt(unitPrice.toFixed(0), 10);
+                break
             }
         }
-
-        let dtPrice = (this.state.warehouse.thickness as IThicknessModel).price * dt;
+        console.log(unitPrice);
 
         // re-calculator in form 2
-        switch (sizeModel.shape_type) {
+        switch(sizeModel.shape_type) {
             case GasketPTCShape.RF_CIRCLE:
             case GasketPTCShape.FF_CIRCLE: {
-                sizeModel.material_price = parseFloat(dtPrice.toFixed(0));
-                break;
+                // this.warehouseItemFormRef.form.current.setMaterialPrice(parseFloat(materialPrice.toFixed(0)))
+                break
             }
             case GasketPTCShape.FF_RECTANGLE:
             case GasketPTCShape.FF_MANHOLE:
             case GasketPTCShape.RF_RECTANGLE: {
-                sizeModel.material_price = FrameworkUtils.calculatorMaterialPriceRectangle(sizeModel, this.warehouseItemFormRef.amount.current.getValue() as number);
+                // this.warehouseItemFormRef.form.current.setMaterialPrice(
+                //     parseFloat(materialPrice.toFixed(0))
+                // )
             }
         }
-        sizeModel.work_price = parseFloat((sizeModel.material_price * 1.1).toFixed(0));
 
-        this.sizeModelCalculated = sizeModel;
-
-        let tempValue = dtPrice + sizeModel.work_price + sizeModel.material_price;
-        tempValue = tempValue / 1000;
-        tempValue = parseFloat(tempValue.toFixed(1));
-        tempValue *= 1000;
-        let totalAmount = tempValue * (this.warehouseItemFormRef.amount.current.getValue() as number);
         this.setState({
-            unitPrice: tempValue,
-        });
+            unitPrice: unitPrice
+        })
+
+        let totalAmount = unitPrice * amount;
 
         // calculator discount
         if (discountType === DiscountType.DISCOUNT) {
@@ -342,13 +359,14 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
         const discountPercent = parseFloat(this.warehouseItemFormRef.percent.current.getValue());
         const discountType = this.warehouseItemFormRef.discountType.current.getValue() as DiscountType;
 
-        const dt = sizeModel.wt * OUTER_EXTRAS * (sizeModel.lt * OUTER_EXTRAS);
-        let dtPrice = dt * (this.state.warehouse.thickness as IThicknessModel).price;
-        dtPrice = parseFloat((dtPrice / 1000).toFixed(1)) * 1000;
-        let totalAmount = dtPrice * parseFloat(this.warehouseItemFormRef.amount.current.getValue());
+        const dt = sizeModel.wt * sizeModel.lt
+        let dtPrice = dt * (this.state.warehouse.thickness as IThicknessModel).price / 1000000;
+        dtPrice = parseInt(dtPrice.toFixed(0));
+        let totalAmount = dtPrice * parseFloat(this.warehouseItemFormRef.amount.current.getValue())
+
         this.setState({
-            unitPrice: dtPrice,
-        });
+            unitPrice: parseInt(dtPrice.toFixed(0), 10)
+        })
 
         // calculator discount
         if (discountType === DiscountType.DISCOUNT) {

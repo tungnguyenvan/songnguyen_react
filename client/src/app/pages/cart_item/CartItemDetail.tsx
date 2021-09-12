@@ -14,7 +14,7 @@ import AppUtils from "app/utils/AppUtils";
 import FrameworkComponents from "framework/components/FrameworkComponents";
 import IFormInputElement from "framework/components/IFormInputElement";
 import AppConstant from "framework/constants/AppConstant";
-import { CartItemStatus } from "framework/constants/AppEnumConstant";
+import { CartItemSource, CartItemStatus } from "framework/constants/AppEnumConstant";
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant";
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode";
 import MessageId from "framework/constants/MessageId";
@@ -151,19 +151,50 @@ class CartItemDetail extends React.Component<ICartItemDetailProps, ICartItemDeta
     onUpdate() {
         if (FrameworkUtils.validateFrom(this.cartItemFormRef)) {
             const warehouse: IWarehouseModel = (this.state.cartItem.warehouse as IWarehouseModel);
-            const delivered = parseFloat(this.cartItemFormRef.delivered.current.getValue());
-            if ( warehouse && delivered > warehouse.amount) {
+            let delivered = parseFloat(this.cartItemFormRef.delivered.current.getValue());
+
+            if (delivered < this.state.cartItem.delivered) {
+                this.props.appDialogContext.addDialog({
+                    title: this.props.languageContext.current.getMessageString(MessageId.CAN_NOT_UPDATE_DELIVERY),
+                    content: this.props.languageContext.current.getMessageString(MessageId.CAN_NOT_UPDATE_DELIVERY_CONTENT),
+                })
+                this.cartItemFormRef.delivered.current.setErrorMessage(
+                    this.props.languageContext.current.getMessageString(MessageId.SOMETHING_WRONG)
+                )
+                return false;
+            }
+
+            if (delivered > this.state.cartItem.amount) {
+                this.props.appDialogContext.addDialog({
+                    title: this.props.languageContext.current.getMessageString(MessageId.DELIVERY_MORE_AMOUNT),
+                    content: this.props.languageContext.current.getMessageString(MessageId.DELIVERY_MORE_AMOUNT_CONTENT)
+                })
+                this.cartItemFormRef.delivered.current.setErrorMessage(
+                    this.props.languageContext.current.getMessageString(MessageId.SOMETHING_WRONG)
+                )
+                return false;
+            }
+
+            if ( warehouse && (delivered - this.state.cartItem.delivered) > warehouse.amount) {
                 this.props.appDialogContext.addDialog({
                     title: this.props.languageContext.current.getMessageString(MessageId.NOT_ENOUGH),
                     content: this.props.languageContext.current.getMessageString(MessageId.NOT_ENOUGH_CONTENT),
                 });
             } else {
                 if (warehouse && this.cartItemFormRef.status.current.getValue() === CartItemStatus.DONE) {
+                    delivered = this.state.cartItem.amount;
+
                     this.warehouseApiService.update(warehouse._id, {
                         amount: (warehouse.amount - delivered)
                     } as IWarehouseModel)
 
                     this.cartItemFormRef.delivered.current.setValue(this.state.cartItem.delivered)
+                }
+
+                if (this.state.cartItem.source === CartItemSource.WAREHOUSE && delivered > this.state.cartItem.delivered) {
+                    this.warehouseApiService.update(warehouse._id, {
+                        amount: (warehouse.amount - (delivered - this.state.cartItem.delivered))
+                    } as IWarehouseModel)
                 }
 
                 this.cartItemApiService.update(this.state.cartItem._id,{
