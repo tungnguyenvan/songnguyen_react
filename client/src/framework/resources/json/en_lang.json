@@ -169,5 +169,10 @@
 	"NOT_ENOUGH": "Not enough",
 	"NOT_ENOUGH_CONTENT": "The products not enough",
 	"CART_ITEM_DETAIL": "Cart item detail",
-	"CHOOSE_SETTING_SESSION": "Choose setting session"
+	"CHOOSE_SETTING_SESSION": "Choose setting session",
+	"CAN_NOT_UPDATE_DELIVERY": "Cannot update delivery data",
+	"CAN_NOT_UPDATE_DELIVERY_CONTENT": "If you want update delivery data, you must input new data more than old data",
+	"SOMETHING_WRONG": "Something wrong",
+	"DELIVERY_MORE_AMOUNT": "Delivery more than amount",
+	"DELIVERY_MORE_AMOUNT_CONTENT": "Delivery cannot be more than amount"
 }

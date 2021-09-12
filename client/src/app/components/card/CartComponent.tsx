@@ -248,6 +248,12 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
                             title: this.props.languageContext.current.getMessageString(MessageId.CONFIRM_DELETE),
                             content: this.props.languageContext.current.getMessageString(MessageId.CONFIRM_DELETE_DETAIL)
                         }
+                    },
+                    edit: {
+                        isAlive: true,
+                        func: () => {
+                            this.props.appUrlContext.redirectTo(RouteConstant.CART_ITEM + element._id)
+                        }
                     }
                 }
             })
