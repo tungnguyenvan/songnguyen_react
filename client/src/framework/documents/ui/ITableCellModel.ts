@@ -1,8 +1,10 @@
+import { TableRowColor } from "framework/constants/AppEnumConstant";
 import IDialogModel from "./IDialogModel";
 
 interface ITableCellModel {
     id: string;
     content: string[];
+    color?: TableRowColor;
     action?: {
         edit?: {
             isAlive: boolean;

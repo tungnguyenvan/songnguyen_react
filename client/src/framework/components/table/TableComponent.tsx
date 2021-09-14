@@ -5,6 +5,8 @@ import ITableCellModel from "framework/documents/ui/ITableCellModel";
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant";
 import FrameworkUtils from "framework/utils/FrameworkUtils";
 import { ReactComponent as PlusIcon } from "framework/resources/image/plus-circle.svg"
+import classNames from "classnames";
+import { TableRowColor } from "framework/constants/AppEnumConstant";
 
 interface TableComponentProps {
     header: string[];
@@ -39,8 +41,24 @@ class TableComponent extends React.Component<TableComponentProps> {
                     <tbody className={Style.table__content}>
                         {
                             this.props.content && this.props.content.map(element => {
+                                let classTD = classNames();
+                                switch (element.color) {
+                                    case TableRowColor.DANGER: {
+                                        classTD = classNames([Style.DANGER]);
+                                        break;
+                                    }
+                                    case TableRowColor.WARNING: {
+                                        classTD = classNames([Style.WARNING]);
+                                        break;
+                                    }
+                                    case TableRowColor.SUCCESS: {
+                                        classTD = classNames([Style.SUCCESS]);
+                                        break;
+                                    }
+                                }
+
                                 return (
-                                <tr key={element.id}>
+                                <tr key={element.id} className={classTD}>
                                     {element.content.map(e => {return <td key={element.id + e + FrameworkUtils.generateUniqueKey()} >{e}</td>})}
                                     {element.action && 
                                         <td>

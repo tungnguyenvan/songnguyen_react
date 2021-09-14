@@ -86,6 +86,18 @@
                 & tr {
                     cursor: pointer;
                     transition: $transition-default;
+
+                    &.DANGER {
+                        background-color: #ff5131;
+                    }
+
+                    &.WARNING {
+                        background-color: #ffff8d;
+                    }
+
+                    &.SUCCESS {
+                        background-color: #76d275;
+                    }
                 }
     
                 // & tr:last-child td {
