@@ -14,7 +14,7 @@ import AppUtils from "app/utils/AppUtils";
 import FrameworkComponents from "framework/components/FrameworkComponents";
 import IFormInputElement from "framework/components/IFormInputElement";
 import AppConstant from "framework/constants/AppConstant";
-import { CartItemSource, CartItemStatus } from "framework/constants/AppEnumConstant";
+import { CartItemSource, CartItemStatus, TableRowColor } from "framework/constants/AppEnumConstant";
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant";
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode";
 import MessageId from "framework/constants/MessageId";
@@ -119,9 +119,21 @@ class CartItemDetail extends React.Component<ICartItemDetailProps, ICartItemDeta
     renderContent(): ITableCellModel[] {
         const tableCells: ITableCellModel[] = [];
         if (this.state.cartItem._id) {
+            let rowColor = TableRowColor.NONE;
+            if (this.state.cartItem.source === CartItemSource.WAREHOUSE && !this.state.cartItem.warehouse) {
+                rowColor = TableRowColor.DANGER;
+            } else if (this.state.cartItem.source === CartItemSource.WAREHOUSE && this.state.cartItem.warehouse && (this.state.cartItem.amount - this.state.cartItem.delivered) > (this.state.cartItem.warehouse as IWarehouseModel).amount) {
+                rowColor = TableRowColor.WARNING;
+            }
+            
+            if (this.state.cartItem.delivered === this.state.cartItem.amount) {
+                rowColor = TableRowColor.SUCCESS;
+            }
+
             const size = this.state.cartItem.size as ISizeModel;
             tableCells.push({
                 id: this.state.cartItem._id,
+                color: rowColor,
                 content: [
                     (this.state.cartItem.product_type as IProductTypeModel)?.name,
                     (this.state.cartItem.product_name as IProductNameModel)?.name,

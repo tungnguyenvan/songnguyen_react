@@ -222,7 +222,9 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
                 rowColor = TableRowColor.DANGER;
             } else if (element.source === CartItemSource.WAREHOUSE && element.warehouse && (element.amount - element.delivered) > (element.warehouse as IWarehouseModel).amount) {
                 rowColor = TableRowColor.WARNING;
-            } else if (element.delivered === element.amount) {
+            }
+            
+            if (element.delivered === element.amount) {
                 rowColor = TableRowColor.SUCCESS;
             }
 
