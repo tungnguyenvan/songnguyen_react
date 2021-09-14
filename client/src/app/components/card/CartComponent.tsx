@@ -11,7 +11,7 @@ import CartApiService from "app/api/CartApiService"
 import AppRenderUtils from "app/utils/AppRenderUtils"
 import IUserLoginContext from "framework/contexts/user/IUserLoginContext"
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
-import { CartStatus } from "framework/constants/AppEnumConstant"
+import { CartItemSource, CartStatus, TableRowColor } from "framework/constants/AppEnumConstant"
 import ITableCellModel from "framework/documents/ui/ITableCellModel"
 import ICustomerModel from "app/documents/ICustomerModel"
 import ICartItemModel from "app/documents/ICartItemModel"
@@ -23,6 +23,7 @@ import IProductTypeModel from "app/documents/IProductTypeModel"
 import Style from "app/resources/css/CartComponent.module.scss"
 import RouteConstant from "framework/constants/RouteConstant"
 import AppUtils from "app/utils/AppUtils"
+import IWarehouseModel from "app/documents/IWarehouseModel"
 
 interface CartComponentProps {
     languageContext: ILanguageContext;
@@ -215,8 +216,19 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
 
         (this.state.cartSelected.items as ICartItemModel[]).forEach((element: ICartItemModel) => {
             const size = element.size as ISizeModel
+
+            let rowColor = TableRowColor.NONE;
+            if (element.source === CartItemSource.WAREHOUSE && !element.warehouse) {
+                rowColor = TableRowColor.DANGER;
+            } else if (element.source === CartItemSource.WAREHOUSE && element.warehouse && (element.amount - element.delivered) > (element.warehouse as IWarehouseModel).amount) {
+                rowColor = TableRowColor.WARNING;
+            } else if (element.delivered === element.amount) {
+                rowColor = TableRowColor.SUCCESS;
+            }
+
             tableCells.push({
                 id: element._id,
+                color: rowColor,
                 content: [
                     (element.product_type as IProductTypeModel)?.name,
                     (element.product_name as IProductNameModel)?.name,

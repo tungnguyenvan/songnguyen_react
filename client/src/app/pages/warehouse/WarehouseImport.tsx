@@ -143,13 +143,13 @@ class WarehouseImport extends React.Component<WarehouseImportProps, WarehouseSta
             }
         });
 
-        this.sizeApiService.all().then((response) => {
-            if (response.status === HttpRequestStatusCode.OK) {
-                this.setState({
-                    sizes: response.data.data as ISizeModel[],
-                });
-            }
-        });
+        // this.sizeApiService.all().then((response) => {
+        //     if (response.status === HttpRequestStatusCode.OK) {
+        //         this.setState({
+        //             sizes: response.data.data as ISizeModel[],
+        //         });
+        //     }
+        // });
     }
 
     productTypeOnChanged(id: string) {
@@ -228,6 +228,16 @@ class WarehouseImport extends React.Component<WarehouseImportProps, WarehouseSta
                 });
             }
         });
+
+        this.sizeApiService.all({
+            system_standard: this.warehouseImportFormRef.systemStandard.current.getValue(),
+            standard: id,
+        })
+        .then(response => {
+            this.setState({
+                sizes: response.data.data as ISizeModel[]
+            })
+        })
     }
 
     sizeOnChanged(id: string) {

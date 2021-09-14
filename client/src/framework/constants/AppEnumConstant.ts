@@ -36,4 +36,11 @@ enum CartItemSource {
     WAREHOUSE = "WAREHOUSE",
 }
 
-export { FormType, DiscountType, GasketPTCShape, CartItemStatus, CartStatus, CartItemSource };
+enum TableRowColor {
+    NONE = "NONE",
+    DANGER = "DANGER",
+    WARNING = "WARNING",
+    SUCCESS = "SUCCESS",
+}
+
+export { FormType, DiscountType, GasketPTCShape, CartItemStatus, CartStatus, CartItemSource, TableRowColor };

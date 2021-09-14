@@ -187,6 +187,9 @@ class CartItemDetail extends React.Component<ICartItemDetailProps, ICartItemDeta
                     this.warehouseApiService.update(warehouse._id, {
                         amount: (warehouse.amount - delivered)
                     } as IWarehouseModel)
+                    .then(res => {
+                        this.props.cartContext.current.onRefresh();
+                    })
 
                     this.cartItemFormRef.delivered.current.setValue(this.state.cartItem.delivered)
                 }
@@ -202,6 +205,8 @@ class CartItemDetail extends React.Component<ICartItemDetailProps, ICartItemDeta
                     status: this.cartItemFormRef.status.current.getValue()
                 } as ICartItemModel)
                 .then(response => {
+                    this.props.cartContext.current.onRefresh();
+                    
                     if (response.status === HttpRequestStatusCode.OK) {
                         this.props.appDialogContext.addDialog({
                             title: this.props.languageContext.current.getMessageString(MessageId.UPDATE_SUCCESS),
