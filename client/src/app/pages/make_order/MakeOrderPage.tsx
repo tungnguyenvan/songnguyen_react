@@ -334,7 +334,7 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
             coreDiscount = 3.14 * Math.pow(sizeModel.inner_diameter - 5, 2) / 4
         }
 
-        let materialPrice = (3.14 * (sizeModel.outer_diameter + sizeModel.inner_diameter + 20) * 20);
+        let materialPrice = (3.14 * (sizeModel.outer_diameter + sizeModel.inner_diameter + 20) * 10);
         materialPrice = parseInt(materialPrice.toFixed(0), 10);
         let unitPrice = (Math.pow(sizeModel.outer_diameter + 5, 2) - coreDiscount) / 1000000 * m2Price + materialPrice + (sizeModel.hole_count * 500)
         unitPrice = parseInt(unitPrice.toFixed(0), 10);
@@ -432,7 +432,7 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                     coreDiscount = 3.14 * Math.pow(sizeModel.inner_diameter - 5, 2) / 4
                 }
 
-                materialPrice = (3.14 * (sizeModel.outer_diameter + sizeModel.inner_diameter + 20) * 20);
+                materialPrice = (3.14 * (sizeModel.outer_diameter + sizeModel.inner_diameter + 20) * 10);
                 materialPrice = parseInt(materialPrice.toFixed(0), 10);
                 unitPrice = (Math.pow(sizeModel.outer_diameter + 5, 2) - coreDiscount) / 1000000 * m2Price + materialPrice + (sizeModel.hole_count * 500)
                 unitPrice = parseInt(unitPrice.toFixed(0), 10);
@@ -445,7 +445,7 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                     coreDiscount = (sizeModel.lt - 5) * (sizeModel.wt - 5)
                 }
 
-                materialPrice = (sizeModel.wn + sizeModel.ln + sizeModel.wt + sizeModel.lt + 20) * 20
+                materialPrice = (sizeModel.wn + sizeModel.ln + sizeModel.wt + sizeModel.lt + 20) * 10
                 materialPrice = parseInt(materialPrice.toFixed(0), 10);
                 unitPrice = (((sizeModel.ln + 5) * (sizeModel.wn + 5) - coreDiscount) / 1000000) * m2Price + materialPrice + (sizeModel.hole_count * 500)
                 unitPrice = parseInt(unitPrice.toFixed(0), 10);
@@ -457,7 +457,7 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                     coreDiscount = (2 * 3.14 * sizeModel.ir + (sizeModel.ln - 2 * sizeModel.ir) * sizeModel.ir)
                 }
 
-                materialPrice = ((sizeModel.ln + 5) + (sizeModel.wn + 5) + coreDiscount) * 20;
+                materialPrice = ((sizeModel.ln + 5) + (sizeModel.wn + 5) + coreDiscount) * 10;
                 materialPrice = parseInt(materialPrice.toFixed(0), 10);
                 unitPrice = (((sizeModel.ln + 5) * (sizeModel.wn + 5) - (3.14 * Math.pow(sizeModel.ir, 2) + (sizeModel.ln - 2 * sizeModel.ir) * sizeModel.ir)) / 1000000) * m2Price + materialPrice + (sizeModel.hole_count * 500)
                 unitPrice = parseInt(unitPrice.toFixed(0), 10);
