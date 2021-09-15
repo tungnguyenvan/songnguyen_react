@@ -187,6 +187,14 @@ class CartItemDetail extends React.Component<ICartItemDetailProps, ICartItemDeta
                 return false;
             }
 
+            if (this.state.cartItem.source === CartItemSource.WAREHOUSE && !warehouse) {
+                this.props.appDialogContext.addDialog({
+                    title: this.props.languageContext.current.getMessageString(MessageId.CART_ITEM_SOURCE_WAREHOUSE_NOT_FOUND),
+                    content: this.props.languageContext.current.getMessageString(MessageId.CART_ITEM_SOURCE_WAREHOUSE_NOT_FOUND_CONTENT)
+                })
+                return false;
+            }
+
             if ( warehouse && (delivered - this.state.cartItem.delivered) > warehouse.amount) {
                 this.props.appDialogContext.addDialog({
                     title: this.props.languageContext.current.getMessageString(MessageId.NOT_ENOUGH),

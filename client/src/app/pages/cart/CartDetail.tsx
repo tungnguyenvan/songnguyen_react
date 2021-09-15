@@ -16,7 +16,7 @@ import IWarehouseModel from "app/documents/IWarehouseModel"
 import AppRenderUtils from "app/utils/AppRenderUtils"
 import FrameworkComponents from "framework/components/FrameworkComponents"
 import IFormInputElement from "framework/components/IFormInputElement"
-import { CartItemSource, CartItemStatus, CartStatus } from "framework/constants/AppEnumConstant"
+import { CartItemSource, CartItemStatus, CartStatus, TableRowColor } from "framework/constants/AppEnumConstant"
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant"
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
 import MessageId from "framework/constants/MessageId"
@@ -112,12 +112,12 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
             tableCell.push({
                 id: customer._id,
                 content: [
-                    customer.name,
-                    customer.address,
-                    customer.tax,
-                    customer.email,
-                    customer.phone_number,
-                    customer.contact_name
+                    customer?.name,
+                    customer?.address,
+                    customer?.tax,
+                    customer?.email,
+                    customer?.phone_number,
+                    customer?.contact_name
                 ]
             })
         }
@@ -138,12 +138,24 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
 
     renderCartItems() {
         let tableCells: ITableCellModel[] = [];
-
         if (this.state.cartModel.items) {
+
             (this.state.cartModel.items as ICartItemModel[]).forEach((element: ICartItemModel) => {
                 const size = element.size as ISizeModel
+                let rowColor = TableRowColor.NONE;
+                if (element.source === CartItemSource.WAREHOUSE && !element.warehouse) {
+                    rowColor = TableRowColor.DANGER;
+                } else if (element.source === CartItemSource.WAREHOUSE && element.warehouse && (element.amount - element.delivered) > (element.warehouse as IWarehouseModel).amount) {
+                    rowColor = TableRowColor.WARNING;
+                }
+                
+                if (element.delivered === element.amount) {
+                    rowColor = TableRowColor.SUCCESS;
+                }
+
                 tableCells.push({
                     id: element._id,
+                    color: rowColor,
                     content: [
                         (element.product_type as IProductTypeModel)?.name,
                         (element.product_name as IProductNameModel)?.name,
@@ -346,14 +358,14 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                         this.props.languageContext.current.getMessageString(MessageId.ACTION)
                     ]
                 }} />
-            <FrameworkComponents.FormGroup>
+            {/* <FrameworkComponents.FormGroup>
                 <FrameworkComponents.SelectBox
                     placeHolder={this.props.languageContext.current.getMessageString(MessageId.CART_STATUS)}
                     options={AppRenderUtils.renderCartStatusSelectBox(this.props.languageContext)}
                     selectedId={this.state.cartModel.status}
                     onChanged={this.cartStatusOnChange}
                     ref={this.cartStatusRef} />
-            </FrameworkComponents.FormGroup>
+            </FrameworkComponents.FormGroup> */}
             <FrameworkComponents.FormGroup>
                 <FrameworkComponents.Button
                     type={ButtonTypeConstant.DANGER}
