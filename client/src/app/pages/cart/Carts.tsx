@@ -39,6 +39,7 @@ class Carts extends React.Component<CartsProps, CartsState> {
         }
         this.renderCartTable = this.renderCartTable.bind(this)
         this.deleteCart = this.deleteCart.bind(this)
+        this.editCart = this.editCart.bind(this)
         this.requestCartsApi = this.requestCartsApi.bind(this)
     }
 
@@ -69,8 +70,8 @@ class Carts extends React.Component<CartsProps, CartsState> {
             tableCells.push({
                 id: element._id,
                 content: [
-                    (element.customer as ICustomerModel).name + " - " + FrameworkUtils.generateDate(element.createdAt),
-                    (element.customer as ICustomerModel).name,
+                    (element?.customer as ICustomerModel)?.name + " - " + FrameworkUtils.generateDate(element.createdAt),
+                    (element?.customer as ICustomerModel)?.name,
                     FrameworkUtils.getDisplayNameCartStatus(element.status, this.props.languageContext),
                     FrameworkUtils.generateDate(element.createdAt)
                 ],
@@ -82,11 +83,19 @@ class Carts extends React.Component<CartsProps, CartsState> {
                             title: this.props.languageContext.current.getMessageString(MessageId.CONFIRM_DELETE),
                             content: this.props.languageContext.current.getMessageString(MessageId.CONFIRM_DELETE_DETAIL)
                         }
+                    },
+                    edit: {
+                        isAlive: true,
+                        func: this.editCart
                     }
                 }
             })
         })
         return tableCells
+    }
+
+    editCart(id: string) {
+        this.props.appUrlContext.redirectTo(RouteConstant.CARTS + id)
     }
 
     deleteCart(id: string) {
