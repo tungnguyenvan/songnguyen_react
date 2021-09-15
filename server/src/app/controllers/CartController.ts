@@ -164,6 +164,9 @@ class CartController extends BaseController {
                 value.push(element.unit_price.toString());
                 value.push(element.total_price.toString());
                 totalPrice = totalPrice + element.total_price;
+            } else {
+                value.push(element.delivered.toString());
+                value.push((element.amount - element.delivered).toString());
             }
 
             workSheet.insertRow(23 + index, value);
