@@ -4,6 +4,7 @@ import IProductTypeModel from "app/documents/IProductTypeModel";
 import ISizeModel from "app/documents/ISizeModel";
 import IStandardModel from "app/documents/IStandardModel";
 import ISystemStandardModel from "app/documents/ISystemStandardModel";
+import IThicknessModel from "app/documents/IThicknessModel";
 import IWarehouseModel from "app/documents/IWarehouseModel";
 import FrameworkComponents from "framework/components/FrameworkComponents";
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant";
@@ -72,6 +73,10 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
         return [
             this.props.languageContext.current.getMessageString(MessageId.PRODUCT_TYPE),
             this.props.languageContext.current.getMessageString(MessageId.PRODUCT_NAME),
+            this.props.languageContext.current.getMessageString(MessageId.THICKNESS),
+            this.props.languageContext.current.getMessageString(MessageId.SYSTEM_STANDARD),
+            this.props.languageContext.current.getMessageString(MessageId.STANDARD),
+            this.props.languageContext.current.getMessageString(MessageId.SIZE),
             this.props.languageContext.current.getMessageString(MessageId.INNER_DIAMETER),
             this.props.languageContext.current.getMessageString(MessageId.OUTER_DIAMETER),
             this.props.languageContext.current.getMessageString(MessageId.WN_DIAMETER),
@@ -82,8 +87,6 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
             this.props.languageContext.current.getMessageString(MessageId.OR_DIAMETER),
             this.props.languageContext.current.getMessageString(MessageId.HOLE_COUNT),
             this.props.languageContext.current.getMessageString(MessageId.HOLE_DIAMETER),
-            this.props.languageContext.current.getMessageString(MessageId.SYSTEM_STANDARD),
-            this.props.languageContext.current.getMessageString(MessageId.STANDARD),
             this.props.languageContext.current.getMessageString(MessageId.AMOUNT),
             this.props.languageContext.current.getMessageString(MessageId.ACTION),
         ];
@@ -99,6 +102,10 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
                 content: [
                     (element.product_type as IProductTypeModel)?.name,
                     (element.product_name as IProductNameModel)?.name,
+                    (element.thickness as IThicknessModel)?.name,
+                    (element.system_standard as ISystemStandardModel)?.name,
+                    (element.standard as IStandardModel)?.name,
+                    size?.name,
                     size?.inner_diameter?.toString(),
                     size?.outer_diameter?.toString(),
                     size?.wn?.toString(),
@@ -109,8 +116,6 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
                     size?.or?.toString(),
                     size?.hole_count?.toString(),
                     size?.hole_diameter?.toString(),
-                    (element.system_standard as ISystemStandardModel)?.name,
-                    (element.standard as IStandardModel)?.name,
                     element.amount?.toString(),
                 ],
                 action: {
