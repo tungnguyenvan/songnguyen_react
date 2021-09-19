@@ -4,75 +4,157 @@ import FrameworkComponents from "../FrameworkComponents";
 import ITableCellModel from "framework/documents/ui/ITableCellModel";
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant";
 import FrameworkUtils from "framework/utils/FrameworkUtils";
-import { ReactComponent as PlusIcon } from "framework/resources/image/plus-circle.svg"
+import { ReactComponent as PlusIcon } from "framework/resources/image/plus-circle.svg";
 import classNames from "classnames";
 import { TableRowColor } from "framework/constants/AppEnumConstant";
+import IFormInputElement from "../IFormInputElement";
 
 interface TableComponentProps {
     header: string[];
     content: ITableCellModel[];
-    title?: string
+    title?: string;
     commonButton?: () => void;
-    isDisableSearchComponent?: boolean
+    isDisableSearchComponent?: boolean;
 }
 
-class TableComponent extends React.Component<TableComponentProps> {
+interface TableComponentState {
+    searchText: string;
+}
+
+class TableComponent extends React.Component<TableComponentProps, TableComponentState> {
+    private searchTextRef: React.RefObject<any>
+
+    constructor(props: TableComponentProps) {
+        super(props);
+
+        this.state = {
+            searchText: ""
+        }
+
+        this.searchTextRef = React.createRef<IFormInputElement>();
+
+        this.renderTableRow = this.renderTableRow.bind(this);
+        this.searchTextHasChanged = this.searchTextHasChanged.bind(this);
+    }
+
+    searchTextHasChanged() {
+        this.setState({
+            searchText: this.searchTextRef.current.getValue()
+        })
+    }
+
+    renderTableRow(tableContent: ITableCellModel) {
+        // search handle
+        if (!FrameworkUtils.isBlank(this.state.searchText)) {
+            let canShow = false;
+
+            tableContent.content.forEach(content => {
+                if (content.includes(this.state.searchText)) {
+                    canShow = true;
+                }
+            })
+
+            if (!canShow) {
+                return undefined;
+            }
+        }
+
+        let classTD = classNames();
+        switch (tableContent.color) {
+            case TableRowColor.DANGER: {
+                classTD = classNames([Style.DANGER]);
+                break;
+            }
+            case TableRowColor.WARNING: {
+                classTD = classNames([Style.WARNING]);
+                break;
+            }
+            case TableRowColor.SUCCESS: {
+                classTD = classNames([Style.SUCCESS]);
+                break;
+            }
+        }
+
+        return (
+            <tr key={tableContent.id} className={classTD}>
+                {tableContent.content.map((e) => {
+                    return <td key={tableContent.id + e + FrameworkUtils.generateUniqueKey()}>{e}</td>;
+                })}
+                {tableContent.action && (
+                    <td>
+                        <div className={Style.action}>
+                            {tableContent.action.edit && (
+                                <FrameworkComponents.Button
+                                    disable={!tableContent.action.edit.isAlive}
+                                    type={ButtonTypeConstant.WARNING}
+                                    isForTableCell={true}
+                                    onClick={() => {
+                                        tableContent.action!.edit!.func(tableContent.id);
+                                    }}
+                                >
+                                    &#x270E;
+                                </FrameworkComponents.Button>
+                            )}
+                            {tableContent.action.delete && (
+                                <FrameworkComponents.Button
+                                    disable={!tableContent.action.delete.isAlive}
+                                    dialogModel={tableContent.action.delete?.dialog}
+                                    type={ButtonTypeConstant.DANGER}
+                                    isForTableCell={true}
+                                    onClick={() => {
+                                        tableContent.action!.delete?.func(tableContent.id);
+                                    }}
+                                >
+                                    &#x2715;
+                                </FrameworkComponents.Button>
+                            )}
+                        </div>
+                    </td>
+                )}
+            </tr>
+        );
+    }
+
     render() {
         return (
             <div className={Style.table__component__container}>
                 <h2>{this.props.title}</h2>
                 <FrameworkComponents.FormGroup>
-                    { this.props.commonButton && <FrameworkComponents.Button onClick={this.props.commonButton} type={ButtonTypeConstant.FLAT} isForTableCell={true} ><PlusIcon className={Style.table__common__button} /></FrameworkComponents.Button>}
+                    {this.props.commonButton && (
+                        <FrameworkComponents.Button onClick={this.props.commonButton} type={ButtonTypeConstant.FLAT} isForTableCell={true}>
+                            <PlusIcon className={Style.table__common__button} />
+                        </FrameworkComponents.Button>
+                    )}
                 </FrameworkComponents.FormGroup>
-                
+
                 <FrameworkComponents.FormGroup>
-                    {/* {!this.props.isDisableSearchComponent && <FrameworkComponents.InputText placeHolder={this.props.languageContext.current.getMessageString(MessageId.SEARCH)} />} */}
+                    {!this.props.isDisableSearchComponent && 
+                    <FrameworkComponents.InputText
+                        ref={this.searchTextRef}
+                        onChange={this.searchTextHasChanged}
+                        placeHolder='Search' />}
                 </FrameworkComponents.FormGroup>
 
                 <div className={Style.table__component__table}>
-                <table>
-                    <thead>
-                        <tr>
-                            {this.props.header.map((element, index) => {
-                                return <th key={index} className={Style.table__header__cell}>{element}</th>
-                            })}
-                        </tr>
-                    </thead>
-                    <tbody className={Style.table__content}>
-                        {
-                            this.props.content && this.props.content.map(element => {
-                                let classTD = classNames();
-                                switch (element.color) {
-                                    case TableRowColor.DANGER: {
-                                        classTD = classNames([Style.DANGER]);
-                                        break;
-                                    }
-                                    case TableRowColor.WARNING: {
-                                        classTD = classNames([Style.WARNING]);
-                                        break;
-                                    }
-                                    case TableRowColor.SUCCESS: {
-                                        classTD = classNames([Style.SUCCESS]);
-                                        break;
-                                    }
-                                }
-
-                                return (
-                                <tr key={element.id} className={classTD}>
-                                    {element.content.map(e => {return <td key={element.id + e + FrameworkUtils.generateUniqueKey()} >{e}</td>})}
-                                    {element.action && 
-                                        <td>
-                                            <div className={Style.action}>
-                                                { element.action.edit && <FrameworkComponents.Button disable={!element.action.edit.isAlive} type={ButtonTypeConstant.WARNING} isForTableCell={true} onClick={() => {element.action!.edit!.func(element.id)}}>&#x270E;</FrameworkComponents.Button>}
-                                                { element.action.delete && <FrameworkComponents.Button disable={!element.action.delete.isAlive} dialogModel={element.action.delete?.dialog} type={ButtonTypeConstant.DANGER} isForTableCell={true} onClick={() => {element.action!.delete?.func(element.id)}}>&#x2715;</FrameworkComponents.Button>}
-                                            </div>
-                                        </td>
-                                    }
-                                </tr>)
-                            })
-                        }
-                    </tbody>
-                </table>
+                    <table>
+                        <thead>
+                            <tr>
+                                {this.props.header.map((element, index) => {
+                                    return (
+                                        <th key={index} className={Style.table__header__cell}>
+                                            {element}
+                                        </th>
+                                    );
+                                })}
+                            </tr>
+                        </thead>
+                        <tbody className={Style.table__content}>
+                            {this.props.content &&
+                                this.props.content.map((element) => {
+                                    return this.renderTableRow(element);
+                                })}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         );
