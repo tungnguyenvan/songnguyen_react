@@ -176,5 +176,6 @@
 	"DELIVERY_MORE_AMOUNT": "Số lượng đã giao lớn hơn số lượng",
 	"DELIVERY_MORE_AMOUNT_CONTENT": "Số lượng đã giao không được lớn hơn số lượng",
 	"CART_ITEM_SOURCE_WAREHOUSE_NOT_FOUND": "Sản phẩm trong kho không tồn tại",
-	"CART_ITEM_SOURCE_WAREHOUSE_NOT_FOUND_CONTENT": "Không thể thực hiện vì sản phẩm trong kho không tồn tại"
+	"CART_ITEM_SOURCE_WAREHOUSE_NOT_FOUND_CONTENT": "Không thể thực hiện vì sản phẩm trong kho không tồn tại",
+	"NEED_CHOOSE_CUSTOMER": "Cần chọnn khách hàng trước khi thực hiện hành động này"
 }

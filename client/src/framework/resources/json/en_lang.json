@@ -176,5 +176,6 @@
 	"DELIVERY_MORE_AMOUNT": "Delivery more than amount",
 	"DELIVERY_MORE_AMOUNT_CONTENT": "Delivery cannot be more than amount",
 	"CART_ITEM_SOURCE_WAREHOUSE_NOT_FOUND": "Warehouse item not found",
-	"CART_ITEM_SOURCE_WAREHOUSE_NOT_FOUND_CONTENT": "Cannot process because warehouse item not found"
+	"CART_ITEM_SOURCE_WAREHOUSE_NOT_FOUND_CONTENT": "Cannot process because warehouse item not found",
+	"NEED_CHOOSE_CUSTOMER": "Need choose a customer!"
 }

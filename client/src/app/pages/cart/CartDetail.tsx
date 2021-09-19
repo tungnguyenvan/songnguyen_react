@@ -226,6 +226,7 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                         content: this.props.languageContext.current.getMessageString(MessageId.DELETE_SUCCESS_DETAIL)
                     })
                     this.props.appUrlContext.back()
+                    this.props.cartContext.current.onRefresh()
                 } else {
                     this.props.appDialogContext.addDialog({
                         title: this.props.languageContext.current.getMessageString(MessageId.CANNOT_DELETE),

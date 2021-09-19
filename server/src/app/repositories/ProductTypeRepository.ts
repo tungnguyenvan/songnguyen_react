@@ -12,7 +12,12 @@ class ProductTypeRepository extends BaseRepository {
     }
 
     populate(object: any) {
-        return AppUtil.populateUpdatedBy(AppUtil.populateCreatedBy(object)).select("-__v");
+        return AppUtil.populateUpdatedBy(AppUtil.populateCreatedBy(object))
+            .populate({
+                path: "createdBy",
+                select: "_id lastName firstName",
+            })
+            .select("-__v");
     }
 }
 
