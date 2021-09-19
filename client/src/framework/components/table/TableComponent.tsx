@@ -108,6 +108,16 @@ class TableComponent extends React.Component<TableComponentProps, TableComponent
                                     &#x2715;
                                 </FrameworkComponents.Button>
                             )}
+                            {tableContent.action.choose && (
+                                <FrameworkComponents.Button
+                                    disable={!tableContent.action.choose.isAlive}
+                                    dialogModel={tableContent.action.choose?.dialog}
+                                    isForTableCell={true}
+                                    onClick={() => {
+                                        tableContent.action!.choose?.func(tableContent.id);
+                                    }}
+                                    type={ButtonTypeConstant.PRIMARY}>&#x2611;</FrameworkComponents.Button>
+                            )}
                         </div>
                     </td>
                 )}

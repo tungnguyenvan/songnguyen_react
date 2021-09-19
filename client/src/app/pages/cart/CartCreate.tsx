@@ -4,9 +4,8 @@ import ICartContext from "app/context/cart/ICartContext"
 import WithCart from "app/context/cart/WithCart"
 import ICartModel from "app/documents/ICartModel"
 import ICustomerModel from "app/documents/ICustomerModel"
-import AppRenderUtils from "app/utils/AppRenderUtils"
 import FrameworkComponents from "framework/components/FrameworkComponents"
-import { CartStatus } from "framework/constants/AppEnumConstant"
+import { CartStatus, TableRowColor } from "framework/constants/AppEnumConstant"
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant"
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
 import MessageId from "framework/constants/MessageId"
@@ -16,6 +15,7 @@ import IAppDialogContext from "framework/contexts/dialog/IAppDialogContext"
 import ILanguageContext from "framework/contexts/lang/ILanguageContext"
 import IAppUrlContext from "framework/contexts/url/IAppUrlContext"
 import IUserLoginContext from "framework/contexts/user/IUserLoginContext"
+import ITableCellModel from "framework/documents/ui/ITableCellModel"
 import FrameworkUtils from "framework/utils/FrameworkUtils"
 import React from "react"
 
@@ -28,7 +28,8 @@ interface CartCreateProps {
 }
 
 interface CartCreateState {
-    customers: ICustomerModel[]
+    customers: ICustomerModel[],
+    customerSelected: string
 }
 
 interface ICartCreateFormRef {
@@ -49,11 +50,14 @@ class CartCreate extends React.Component<CartCreateProps, CartCreateState> {
         this.customerApiService = new CustomerApiService()
         this.cartApiService = new CartApiService()
         this.state = {
-            customers: []
+            customers: [],
+            customerSelected: ''
         }
 
         this.onCancel = this.onCancel.bind(this)
         this.onRegistration = this.onRegistration.bind(this)
+        this.tableContent = this.tableContent.bind(this)
+        this.chooseCustomer = this.chooseCustomer.bind(this)
     }
 
     componentDidMount() {
@@ -68,9 +72,9 @@ class CartCreate extends React.Component<CartCreateProps, CartCreateState> {
     }
 
     onRegistration() {
-        if (FrameworkUtils.validateFrom(this.cartCreateFormRef)) {
+        if (!FrameworkUtils.isBlank(this.state.customerSelected)) {
             const cartModel: ICartModel = {
-                customer: this.cartCreateFormRef.customerSelectBox.current.getValue(),
+                customer: this.state.customerSelected,
                 items: [] as string[],
                 status: CartStatus.DISCUSS
             } as ICartModel
@@ -98,6 +102,11 @@ class CartCreate extends React.Component<CartCreateProps, CartCreateState> {
                         content: this.props.languageContext.current.getMessageString(MessageId.SERVER_ERROR_CONTENT)
                     })
                 })
+        } else {
+            this.props.appDialogContext.addDialog({
+                title: this.props.languageContext.current.getMessageString(MessageId.CUSTOMERS),
+                content: this.props.languageContext.current.getMessageString(MessageId.NEED_CHOOSE_CUSTOMER)
+            })
         }
     }
 
@@ -105,19 +114,79 @@ class CartCreate extends React.Component<CartCreateProps, CartCreateState> {
         FrameworkUtils.formClear(this.cartCreateFormRef)
     }
 
+    tableContent(): ITableCellModel[] {
+        let tableContents: ITableCellModel[] = [];
+
+        this.state.customers.forEach(element => {
+            let rowColor: TableRowColor = TableRowColor.NONE;
+
+            if (this.state.customerSelected === element._id) {
+                rowColor = TableRowColor.SUCCESS;
+            }
+
+			tableContents.push({
+				id: element._id,
+                color: rowColor,
+				content: [
+					element.name,
+					element.address,
+					element.tax,
+					element.email,
+					element.phone_number,
+					element.contact_name,
+					FrameworkUtils.userName(element.createdBy)
+				],
+				action: {
+					choose: {
+                        isAlive: true,
+                        func: this.chooseCustomer
+                    }
+				}
+			})
+		})
+
+        return tableContents;
+    }
+
+    chooseCustomer(id: string) {
+        if (!FrameworkUtils.isBlank(this.state.customerSelected) && this.state.customerSelected === id) {
+            this.setState({
+                customerSelected: ''
+            })
+        } else {
+            this.setState({
+                customerSelected: id
+            })
+        }
+    }
+
     render() {
         return <FrameworkComponents.BasePage {...{
             title: this.props.languageContext.current.getMessageString(MessageId.CART_CREATE)
         }}>
+            <FrameworkComponents.Table 
+                title={this.props.languageContext.current.getMessageString(MessageId.CHOOSE_CUSTOMER)}
+                header={[
+                    this.props.languageContext.current.getMessageString(MessageId.NAME),
+                    this.props.languageContext.current.getMessageString(MessageId.ADDRESS),
+                    this.props.languageContext.current.getMessageString(MessageId.TAX_CODE),
+                    this.props.languageContext.current.getMessageString(MessageId.EMAIL),
+                    this.props.languageContext.current.getMessageString(MessageId.PHONE_NUMBER),
+                    this.props.languageContext.current.getMessageString(MessageId.CONTACT_NAME),
+                    this.props.languageContext.current.getMessageString(MessageId.EMPLOYEE),
+                    this.props.languageContext.current.getMessageString(MessageId.ACTION)
+                ]}
+                content={this.tableContent()}
+            />
             <FrameworkComponents.BaseForm>
-                <FrameworkComponents.FormGroup>
+                {/* <FrameworkComponents.FormGroup>
                     <FrameworkComponents.SelectBox
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.CHOOSE_CUSTOMER)}
                         options={AppRenderUtils.renderCustomerSelectBox(this.state.customers)}
                         required={true}
                         ref={this.cartCreateFormRef.customerSelectBox}
                         errorMessage={this.props.languageContext.current.getMessageString(MessageId.VALIDATE_REQUIRE)} />
-                </FrameworkComponents.FormGroup>
+                </FrameworkComponents.FormGroup> */}
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.Button
                         type={ButtonTypeConstant.FLAT}

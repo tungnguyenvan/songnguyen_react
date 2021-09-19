@@ -17,6 +17,12 @@ interface ITableCellModel {
             dialog?: IDialogModel;
             func: (id: string) => void;
         };
+
+        choose?: {
+            isAlive: boolean;
+            dialog?: IDialogModel;
+            func: (id: string) => void;
+        };
     };
 }
 

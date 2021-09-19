@@ -106,6 +106,18 @@
     
                 & tr:hover {
                     background-color: $base-bg-color-hover;
+
+                    &.DANGER {
+                        background-color: #9b0000;
+                    }
+
+                    &.WARNING {
+                        background-color: #c7a500;
+                    }
+
+                    &.SUCCESS {
+                        background-color: #009624;
+                    }
                 }
             }
         }
