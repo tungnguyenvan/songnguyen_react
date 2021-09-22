@@ -140,34 +140,57 @@ class UserController extends BaseController {
     changePassword(request: Express.Request, response: Express.Response, next: Express.NextFunction): void {
         try {
             Logging.debug(NAME_SPACE, `${NAME_SPACE}#changePassword START`);
-            (this.repository as UserRepository).middlewareChangePassword(request).then((findResponse) => {
-                if (findResponse._id) {
-                    AppUtil.bcryptCompare(request.body.current_password, findResponse.password, (err: any, res: any) => {
-                        if (err || !res) {
-                            this.appResponse.notFound(request, response);
-                        } else {
-                            AppUtil.endcodePassword(request.body.current_password)
-                                .then((newPasswordEncrypt) => {
-                                    request.body.password = newPasswordEncrypt;
-                                    this.repository
-                                        .updateOne(request)
-                                        .then((updateResponse) => {
-                                            this.appResponse.ok(request, response, updateResponse);
-                                        })
-                                        .catch((error) => {
-                                            Logging.error(NAME_SPACE, `${NAME_SPACE}#changePassword`, error);
-                                            this.appResponse.internalServerError(request, response);
-                                        });
-                                })
-                                .catch((error) => {
-                                    Logging.error(NAME_SPACE, `${NAME_SPACE}#prepareSaveUserInformation endcodePassword`, error);
+            if (request.userinformation.role === UserRole.ADMIN) {
+                Logging.debug(NAME_SPACE, `${NAME_SPACE}#changePassword by ADMIN START`);
+                AppUtil.endcodePassword(request.body.new_password)
+                    .then((newPasswordEncrypt) => {
+                        request.body.password = newPasswordEncrypt;
+                        this.repository
+                            .updateOne(request)
+                            .then((updateResponse) => {
+                                this.appResponse.ok(request, response, updateResponse);
+                            })
+                            .catch((error) => {
+                                Logging.error(NAME_SPACE, `${NAME_SPACE}#changePassword`, error);
+                                this.appResponse.internalServerError(request, response);
+                            });
+                    })
+                    .catch((error) => {
+                        Logging.error(NAME_SPACE, `${NAME_SPACE}#prepareSaveUserInformation endcodePassword`, error);
 
-                                    this.appResponse.internalServerError(request, response);
-                                });
-                        }
+                        this.appResponse.internalServerError(request, response);
                     });
-                }
-            });
+            } else {
+                Logging.debug(NAME_SPACE, `${NAME_SPACE}#changePassword by User START`);
+                (this.repository as UserRepository).middlewareChangePassword(request).then((findResponse) => {
+                    if (findResponse._id) {
+                        AppUtil.bcryptCompare(request.body.current_password, findResponse.password, (err: any, res: any) => {
+                            if (err || !res) {
+                                this.appResponse.notFound(request, response);
+                            } else {
+                                AppUtil.endcodePassword(request.body.new_password)
+                                    .then((newPasswordEncrypt) => {
+                                        request.body.password = newPasswordEncrypt;
+                                        this.repository
+                                            .updateOne(request)
+                                            .then((updateResponse) => {
+                                                this.appResponse.ok(request, response, updateResponse);
+                                            })
+                                            .catch((error) => {
+                                                Logging.error(NAME_SPACE, `${NAME_SPACE}#changePassword`, error);
+                                                this.appResponse.internalServerError(request, response);
+                                            });
+                                    })
+                                    .catch((error) => {
+                                        Logging.error(NAME_SPACE, `${NAME_SPACE}#prepareSaveUserInformation endcodePassword`, error);
+
+                                        this.appResponse.internalServerError(request, response);
+                                    });
+                            }
+                        });
+                    }
+                });
+            }
         } finally {
             Logging.debug(NAME_SPACE, `${NAME_SPACE}#changePassword END`);
         }
