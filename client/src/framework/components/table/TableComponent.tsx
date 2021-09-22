@@ -35,6 +35,7 @@ class TableComponent extends React.Component<TableComponentProps, TableComponent
 
         this.renderTableRow = this.renderTableRow.bind(this);
         this.searchTextHasChanged = this.searchTextHasChanged.bind(this);
+        this.renderActionHeader = this.renderActionHeader.bind(this);
     }
 
     searchTextHasChanged() {
@@ -77,9 +78,6 @@ class TableComponent extends React.Component<TableComponentProps, TableComponent
 
         return (
             <tr key={tableContent.id} className={classTD}>
-                {tableContent.content.map((e) => {
-                    return <td key={tableContent.id + e + FrameworkUtils.generateUniqueKey()}>{e}</td>;
-                })}
                 {tableContent.action && (
                     <td>
                         <div className={Style.action}>
@@ -121,8 +119,25 @@ class TableComponent extends React.Component<TableComponentProps, TableComponent
                         </div>
                     </td>
                 )}
+                {tableContent.content.map((e) => {
+                    return <td key={tableContent.id + e + FrameworkUtils.generateUniqueKey()}>{e}</td>;
+                })}
             </tr>
         );
+    }
+
+    renderActionHeader() {
+        if (this.props.header.includes("Action")) {
+            const index = this.props.header.indexOf("Action")
+            return <th key={index} className={Style.table__header__cell}>{this.props.header[index]}</th>
+        }
+
+        if (this.props.header.includes("Hành động")) {
+            const index = this.props.header.indexOf("Hành động")
+            return <th key={index} className={Style.table__header__cell}>{this.props.header[index]}</th>
+        }
+
+        return undefined;
     }
 
     render() {
@@ -149,12 +164,19 @@ class TableComponent extends React.Component<TableComponentProps, TableComponent
                     <table>
                         <thead>
                             <tr>
+                                {
+                                    this.renderActionHeader()
+                                }
                                 {this.props.header.map((element, index) => {
-                                    return (
-                                        <th key={index} className={Style.table__header__cell}>
-                                            {element}
-                                        </th>
-                                    );
+                                    if (element !== "Action" && element !== "Hành động") {
+                                        return (
+                                            <th key={index} className={Style.table__header__cell}>
+                                                {element}
+                                            </th>
+                                        );
+                                    } else {
+                                        return undefined;
+                                    }
                                 })}
                             </tr>
                         </thead>
