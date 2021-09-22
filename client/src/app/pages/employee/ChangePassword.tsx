@@ -6,6 +6,7 @@ import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
 import MessageId from "framework/constants/MessageId"
 import RouteConstant from "framework/constants/RouteConstant"
 import RuleConstant from "framework/constants/RuleConstant"
+import { UserRole } from "framework/constants/UserEnumConstant"
 import WithFramework from "framework/constants/WithFramework"
 import IAppDialogContext from "framework/contexts/dialog/IAppDialogContext"
 import ILanguageContext from "framework/contexts/lang/ILanguageContext"
@@ -91,7 +92,15 @@ class ChangePassword extends React.Component<ChangePasswordProps, ChangePassword
                             title: this.props.languageContext.current.getMessageString(MessageId.UPDATE_SUCCESS),
                             content: this.props.languageContext.current.getMessageString(MessageId.UPDATE_SUCCESS_DETAIL)
                         })
-                        this.props.userLoginContext.current.logout();
+                        if (this.props.appUrlContext.canBack()) {
+                            this.props.appUrlContext.back();
+                        } else {
+                            this.props.appUrlContext.redirectTo(RouteConstant.DASHBOARD)
+                        }
+
+                        if (this.props.userLoginContext.state.user?.role !== UserRole.ADMIN || this.props.userLoginContext.state.user?._id === this.state.userId) {
+                            this.props.userLoginContext.current.logout();
+                        }
                     } else {
                         this.props.appDialogContext.addDialog({
                             title: this.props.languageContext.current.getMessageString(MessageId.CANNOT_UPDATE),
@@ -115,7 +124,7 @@ class ChangePassword extends React.Component<ChangePasswordProps, ChangePassword
     }
 
     isShowInput(): boolean {
-        return FrameworkUtils.isBlank(this.state.userId) && this.props.userLoginContext.state?.user?._id === this.state.userId
+        return FrameworkUtils.isBlank(this.state.userId) && (this.props.userLoginContext.state?.user?._id === this.state.userId || this.props.userLoginContext.state.user?.role === UserRole.ADMIN)
     }
 
     render() {
@@ -129,7 +138,7 @@ class ChangePassword extends React.Component<ChangePasswordProps, ChangePassword
                         ref={this.changePasswordFormRef.currentPassword}
                         validate={this.changePasswordFormRule.currentPassword}
                         type="password"
-                        readOnly={this.isShowInput()} />
+                        readOnly={this.isShowInput() || this.props.userLoginContext.state.user?.role === UserRole.ADMIN} />
                 </FrameworkComponents.FormGroup>
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.InputText

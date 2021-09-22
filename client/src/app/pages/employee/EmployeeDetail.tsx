@@ -93,7 +93,7 @@ class EmployeeDetail extends React.Component<EmployeeDetailProps, EmployeeDetail
     }
 
     onDelete() {
-        this.userApiService.delete(this.state.user._id)
+        this.userApiService.delete(this.state.user?._id)
             .then(response => {
                 if (response.status === HttpRequestStatusCode.OK) {
                     this.props.appDialogContext.addDialog({
@@ -123,14 +123,14 @@ class EmployeeDetail extends React.Component<EmployeeDetailProps, EmployeeDetail
                 role: this.formRef.role.current.getValue()
             } as IUserModel
 
-            this.userApiService.update(this.state.user._id, userModel)
+            this.userApiService.update(this.state.user?._id, userModel)
                 .then(response => {
                     if (response.status === HttpRequestStatusCode.OK) {
                         this.props.appDialogContext.addDialog({
                             title: this.props.languageContext.current.getMessageString(MessageId.UPDATE_SUCCESS),
                             content: this.props.languageContext.current.getMessageString(MessageId.UPDATE_SUCCESS_DETAIL)
                         })
-                        this.requestApi(this.state.user._id)
+                        this.requestApi(this.state.user?._id)
                     } else {
                         this.props.appDialogContext.addDialog({
                             title: this.props.languageContext.current.getMessageString(MessageId.CANNOT_UPDATE),
@@ -202,7 +202,7 @@ class EmployeeDetail extends React.Component<EmployeeDetailProps, EmployeeDetail
                     </FrameworkComponents.FormGroup>
                     <FrameworkComponents.FormGroup>
                         <FrameworkComponents.Button type={ButtonTypeConstant.FLAT}
-                        disable={!(this.props.userLoginContext.state.user._id === this.state.user._id)}
+                        disable={!(this.props.userLoginContext.state.user?._id === this.state.user._id || this.props.userLoginContext.state.user?.role === UserRole.ADMIN)}
                         onClick={()=> {
                             this.props.appUrlContext.redirectTo(RouteConstant.CHANGE_PASSWORD + this.state.user._id)
                         }}>
