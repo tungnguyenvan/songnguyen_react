@@ -177,5 +177,9 @@
 	"DELIVERY_MORE_AMOUNT_CONTENT": "Số lượng đã giao không được lớn hơn số lượng",
 	"CART_ITEM_SOURCE_WAREHOUSE_NOT_FOUND": "Sản phẩm trong kho không tồn tại",
 	"CART_ITEM_SOURCE_WAREHOUSE_NOT_FOUND_CONTENT": "Không thể thực hiện vì sản phẩm trong kho không tồn tại",
-	"NEED_CHOOSE_CUSTOMER": "Cần chọnn khách hàng trước khi thực hiện hành động này"
+	"NEED_CHOOSE_CUSTOMER": "Cần chọnn khách hàng trước khi thực hiện hành động này",
+	"CHANGE_PASSWORD": "Đổi mật khẩu",
+	"CURRENT_PASSWORD": "Mật khẩu hiện tại",
+	"NEW_PASSWORD": "Mật khẩu mới",
+	"PASSWORD_FAILED": "Mật khẩu không đúng"
 }

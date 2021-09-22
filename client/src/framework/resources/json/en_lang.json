@@ -177,5 +177,9 @@
 	"DELIVERY_MORE_AMOUNT_CONTENT": "Delivery cannot be more than amount",
 	"CART_ITEM_SOURCE_WAREHOUSE_NOT_FOUND": "Warehouse item not found",
 	"CART_ITEM_SOURCE_WAREHOUSE_NOT_FOUND_CONTENT": "Cannot process because warehouse item not found",
-	"NEED_CHOOSE_CUSTOMER": "Need choose a customer!"
+	"NEED_CHOOSE_CUSTOMER": "Need choose a customer!",
+	"CHANGE_PASSWORD": "Change password",
+	"CURRENT_PASSWORD": "Current password",
+	"NEW_PASSWORD": "New password",
+	"PASSWORD_FAILED": "Incorrect password"
 }

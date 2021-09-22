@@ -10,25 +10,26 @@ const NAME_SPACE = "UserModel";
  * @author tung.nguyenvan
  */
 class UserModel extends BaseModel {
-	constructor() {
-		super(UserSchema);
-	}
+    constructor() {
+        super(UserSchema);
+    }
 
-	login(loginRequest: IUserDocument): any {
-		return this.schema.findOne({ email: loginRequest.email });
-	}
+    login(loginRequest: IUserDocument): any {
+        Logging.info(NAME_SPACE, `${NAME_SPACE}#login`, loginRequest);
+        return this.schema.findOne({ email: loginRequest.email });
+    }
 
-	updateToken(id: string, token: string) {
-		Logging.debug(NAME_SPACE, `${NAME_SPACE}#updateToken`, { id, token });
-		this.schema
-			.updateOne({ _id: id }, { token })
-			.then((response) => {
-				Logging.debug(NAME_SPACE, `${NAME_SPACE}#updateToken response`, response);
-			})
-			.catch((error) => {
-				Logging.debug(NAME_SPACE, `${NAME_SPACE}#updateToken error`, error);
-			});
-	}
+    updateToken(id: string, token: string) {
+        Logging.debug(NAME_SPACE, `${NAME_SPACE}#updateToken`, { id, token });
+        this.schema
+            .updateOne({ _id: id }, { token })
+            .then((response) => {
+                Logging.debug(NAME_SPACE, `${NAME_SPACE}#updateToken response`, response);
+            })
+            .catch((error) => {
+                Logging.debug(NAME_SPACE, `${NAME_SPACE}#updateToken error`, error);
+            });
+    }
 }
 
 export default UserModel;

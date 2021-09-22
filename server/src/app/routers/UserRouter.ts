@@ -14,9 +14,19 @@ class UserRouter extends BaseRouter {
         super(new UserController());
 
         // Login router
-        this.router.post("/login", [new BaseValidation(UserValidateDocument.login, RequestFieldConstant.BODY).validate, (this.controller as UserController).endcodingRequestPassword], (this.controller as UserController).login);
+        this.router.post(
+            "/login",
+            [new BaseValidation(UserValidateDocument.login, RequestFieldConstant.BODY).validate], // (this.controller as UserController).endcodingRequestPassword],
+            (this.controller as UserController).login
+        );
 
         this.router.get("/info/me", [AppMiddleware.auth], (this.controller as UserController).me);
+        this.router.put("/change_password/:id", [
+            AppMiddleware.auth,
+            // (this.controller as UserController).prepareSaveUserInformation,
+            (this.controller as UserController).middlewareUpdateUser,
+            (this.controller as UserController).changePassword,
+        ]);
 
         // biding
         this.initializeMiddleware = this.initializeMiddleware.bind(this);
@@ -31,9 +41,13 @@ class UserRouter extends BaseRouter {
     protected initializeMiddleware(): void {
         super.initializeMiddleware();
 
-        this.baseRouterMiddleware.save.push(...[new BaseValidation(UserValidateDocument.save, RequestFieldConstant.BODY).validate, (this.controller as UserController).prepareSaveUserInformation]);
+        this.baseRouterMiddleware.save.push(
+            ...[new BaseValidation(UserValidateDocument.save, RequestFieldConstant.BODY).validate, (this.controller as UserController).prepareSaveUserInformation]
+        );
 
-        this.baseRouterMiddleware.updateOne.push(...[AppMiddleware.auth, (this.controller as UserController).middlewareUpdateUser, (this.controller as UserController).endcodingRequestPassword]);
+        this.baseRouterMiddleware.updateOne.push(
+            ...[AppMiddleware.auth, (this.controller as UserController).middlewareUpdateUser, (this.controller as UserController).endcodingRequestPassword]
+        );
     }
 }
 

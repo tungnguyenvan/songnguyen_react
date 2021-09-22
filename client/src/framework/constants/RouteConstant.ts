@@ -52,6 +52,8 @@ enum RouteConstant {
     WAREHOUSE_IMPORT = "/warehouse/import",
     WAREHOUSE_IMPORT_EXCEL_FILE = "/warehouse/import/excel",
     WAREHOUSE_ITEM_DETAIL = "/warehouse/item/:id",
+    CHANGE_PASSWORD = "/change_password/",
+    CHANGE_PASSWORD_ID = "/change_password/:id",
 }
 
 export default RouteConstant;

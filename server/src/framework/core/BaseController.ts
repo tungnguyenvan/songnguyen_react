@@ -44,10 +44,15 @@ abstract class BaseController implements IBaseController {
 
     updateOne(request: Express.Request, response: Express.Response): void {
         try {
-            this.repository.updateOne(request).then((responseData) => {
-                if (responseData) this.get(request, response);
-                else this.appResponse.notFound(request, response);
-            });
+            this.repository
+                .updateOne(request)
+                .then((responseData) => {
+                    if (responseData) this.get(request, response);
+                    else this.appResponse.notFound(request, response);
+                })
+                .catch((error) => {
+                    this.catchError(request, response, error);
+                });
         } catch (error) {
             this.catchError(request, response, error);
         }
