@@ -5,6 +5,7 @@ import IUserDocument from "@app/app/documents/IUserDocument";
 import BaseController from "@app/framework/core/BaseController";
 import UserRepository from "@app/app/repositories/UserRepository";
 import { UserRole, UserStatus } from "@app/framework/constants/DBEnumConstant";
+import IBaseModel from "@app/framework/interfaces/IBaseModel";
 
 const NAME_SPACE = "UserController";
 
@@ -17,6 +18,7 @@ class UserController extends BaseController {
         this.login = this.login.bind(this);
         this.middlewareUpdateUser = this.middlewareUpdateUser.bind(this);
         this.prepareSaveUserInformation = this.prepareSaveUserInformation.bind(this);
+        this.changePassword = this.changePassword.bind(this);
     }
 
     public me(request: Express.Request, response: Express.Response, next: Express.NextFunction) {
@@ -80,7 +82,7 @@ class UserController extends BaseController {
             });
     }
 
-    login(request: Express.Request, response: Express.Response) {
+    async login(request: Express.Request, response: Express.Response) {
         try {
             (this.repository as UserRepository)
                 .login(request)
@@ -88,20 +90,34 @@ class UserController extends BaseController {
                     Logging.success(NAME_SPACE, `${NAME_SPACE}#login`, loginResult);
 
                     if (AppUtil.isObject(loginResult)) {
-                        // generate token
-                        const token = AppUtil.generateToken({
-                            _id: loginResult._id,
-                            email: loginResult.email,
-                            role: loginResult.role,
-                            status: loginResult.status,
+                        AppUtil.bcryptCompare(request.body.password, loginResult.password, (err: any, res: any) => {
+                            Logging.debug(NAME_SPACE, `${NAME_SPACE}#Login|bcryptCompare ${err}`);
+                            Logging.debug(NAME_SPACE, `${NAME_SPACE}#Login|bcryptCompare ${res} | ${request.body.password} | ${loginResult.password}`);
+                            if (err) {
+                                return this.appResponse.notFound(request, response);
+                            }
+
+                            if (!res) {
+                                this.appResponse.notFound(request, response);
+                            } else {
+                                loginResult.password = undefined;
+
+                                // generate token
+                                const token = AppUtil.generateToken({
+                                    _id: loginResult._id,
+                                    email: loginResult.email,
+                                    role: loginResult.role,
+                                    status: loginResult.status,
+                                });
+
+                                this.updateToken(loginResult._id, token);
+
+                                // set token
+                                loginResult.token = token;
+
+                                this.appResponse.ok(request, response, loginResult);
+                            }
                         });
-
-                        this.updateToken(loginResult._id, token);
-
-                        // set token
-                        loginResult.token = token;
-
-                        this.appResponse.ok(request, response, loginResult);
                     } else {
                         // login failed
                         this.appResponse.notFound(request, response);
@@ -119,6 +135,42 @@ class UserController extends BaseController {
 
     updateToken(id: string, token: string) {
         (this.repository as UserRepository).updateToken(id, token);
+    }
+
+    changePassword(request: Express.Request, response: Express.Response, next: Express.NextFunction): void {
+        try {
+            Logging.debug(NAME_SPACE, `${NAME_SPACE}#changePassword START`);
+            (this.repository as UserRepository).middlewareChangePassword(request).then((findResponse) => {
+                if (findResponse._id) {
+                    AppUtil.bcryptCompare(request.body.current_password, findResponse.password, (err: any, res: any) => {
+                        if (err || !res) {
+                            this.appResponse.notFound(request, response);
+                        } else {
+                            AppUtil.endcodePassword(request.body.current_password)
+                                .then((newPasswordEncrypt) => {
+                                    request.body.password = newPasswordEncrypt;
+                                    this.repository
+                                        .updateOne(request)
+                                        .then((updateResponse) => {
+                                            this.appResponse.ok(request, response, updateResponse);
+                                        })
+                                        .catch((error) => {
+                                            Logging.error(NAME_SPACE, `${NAME_SPACE}#changePassword`, error);
+                                            this.appResponse.internalServerError(request, response);
+                                        });
+                                })
+                                .catch((error) => {
+                                    Logging.error(NAME_SPACE, `${NAME_SPACE}#prepareSaveUserInformation endcodePassword`, error);
+
+                                    this.appResponse.internalServerError(request, response);
+                                });
+                        }
+                    });
+                }
+            });
+        } finally {
+            Logging.debug(NAME_SPACE, `${NAME_SPACE}#changePassword END`);
+        }
     }
 
     endcodingRequestPassword(request: Express.Request, response: Express.Response, next: Express.NextFunction): void {

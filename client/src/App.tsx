@@ -52,6 +52,7 @@ import WarehouseImport from "app/pages/warehouse/WarehouseImport";
 import WarehouseImportByExcelFile from "app/pages/warehouse/WarehouseImportByExcelFile";
 import WarehouseItem from "app/pages/warehouse/WarehouseItem";
 import CartItemDetail from "app/pages/cart_item/CartItemDetail";
+import ChangePassword from "app/pages/employee/ChangePassword";
 
 class App extends React.Component {
     private appLoadingContext!: IAppLoadingContext;
@@ -276,6 +277,7 @@ class App extends React.Component {
                                                         path={RouteConstant.REGISTRATION}
                                                         children={<RegistrationPage />}
                                                     />
+                                                    <Route exact path={RouteConstant.CHANGE_PASSWORD_ID} children={<ChangePassword />} />
                                                     </CartProvider>
                                                 </NavigationProvider>
                                             </Switch>

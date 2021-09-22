@@ -49,7 +49,7 @@ class Employees extends React.Component<EmployeesProps, EmployeesState> {
     requestApi() {
         this.userApiService.all({
             role: {
-                $in: [UserRole.ACCOUNTANT, UserRole.SELLER]
+                $in: [UserRole.ACCOUNTANT, UserRole.SELLER, UserRole.ADMIN]
             }
         })
         .then(response => {

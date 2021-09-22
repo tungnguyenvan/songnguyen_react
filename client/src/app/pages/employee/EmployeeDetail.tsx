@@ -201,6 +201,15 @@ class EmployeeDetail extends React.Component<EmployeeDetailProps, EmployeeDetail
                             errorMessage={this.props.languageContext.current.getMessageString(MessageId.VALIDATE_REQUIRE)} />
                     </FrameworkComponents.FormGroup>
                     <FrameworkComponents.FormGroup>
+                        <FrameworkComponents.Button type={ButtonTypeConstant.FLAT}
+                        disable={!(this.props.userLoginContext.state.user._id === this.state.user._id)}
+                        onClick={()=> {
+                            this.props.appUrlContext.redirectTo(RouteConstant.CHANGE_PASSWORD + this.state.user._id)
+                        }}>
+                            {this.props.languageContext.current.getMessageString(MessageId.CHANGE_PASSWORD)}
+                        </FrameworkComponents.Button>
+                    </FrameworkComponents.FormGroup>
+                    <FrameworkComponents.FormGroup>
                         <FrameworkComponents.Button type={ButtonTypeConstant.DANGER}
                             dialogModel={{
                                 title: this.props.languageContext.current.getMessageString(MessageId.CONFIRM_DELETE),

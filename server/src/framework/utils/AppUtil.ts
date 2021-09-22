@@ -106,6 +106,10 @@ class AppUtil {
             select: "_id lastName firstName",
         });
     }
+
+    public static bcryptCompare(password: string, userPassword: string, func: any) {
+        return Bcrypt.compare(password, userPassword, func);
+    }
 }
 
 export default AppUtil;
