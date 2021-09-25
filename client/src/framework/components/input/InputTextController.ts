@@ -1,3 +1,4 @@
+import RuleConstant from "framework/constants/RuleConstant";
 import ILanguageContext from "framework/contexts/lang/ILanguageContext";
 import Rule from "framework/documents/models/Rule";
 import BaseValidation from "framework/utils/BaseValidation";
@@ -20,6 +21,7 @@ class InputTextController {
         this.getInputRef = this.getInputRef.bind(this);
         this.onInputBlur = this.onInputBlur.bind(this);
         this.onInputFocus = this.onInputFocus.bind(this);
+        this.isRequireRule = this.isRequireRule.bind(this);
     }
 
     setErrorMessage(errorMessage: string): void {
@@ -73,14 +75,34 @@ class InputTextController {
         const baseValidation = new BaseValidation();
 
         for (const rule of rules) {
-            if (!baseValidation.validate(rule, this.getValue())) {
-                this.setErrorMessage(this.languageContext.current.getMessageString(rule.getMessageError()));
-                isValid = false;
-                break;
+            if (this.isRequireRule(rules)) {
+                if (!baseValidation.validate(rule, this.getValue())) {
+                    this.setErrorMessage(this.languageContext.current.getMessageString(rule.getMessageError()));
+                    isValid = false;
+                    break;
+                }
+            } else {
+                if (this.getValue() && !baseValidation.validate(rule, this.getValue())) {
+                    this.setErrorMessage(this.languageContext.current.getMessageString(rule.getMessageError()));
+                    isValid = false;
+                    break;
+                }
             }
         }
 
         return isValid;
+    }
+
+    isRequireRule(rules: Rule[]) {
+        let isRequireRule = false;
+
+        rules.forEach((e) => {
+            if (e.getRuleConstant() === RuleConstant.REQUIRED) {
+                isRequireRule = true;
+            }
+        });
+
+        return isRequireRule;
     }
 }
 
