@@ -96,7 +96,7 @@ class AppUtil {
     public static populateCreatedBy(obj: any): any {
         return obj.populate({
             path: "createdBy",
-            select: "_id lastName firstName",
+            select: "_id lastName firstName phoneNumber email",
         });
     }
 
