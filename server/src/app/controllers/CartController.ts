@@ -15,8 +15,7 @@ import fs from "fs";
 import Https from "https";
 
 const NAME_SPACE = "CartController";
-const ORDER_FILE_INTERNET_DIR =
-    "https://firebasestorage.googleapis.com/v0/b/songnguyen.appspot.com/o/Song%20Nguyen%20Gasket%20-%20Ba%CC%81o%20gia%CC%81.xlsx?alt=media&token=fb2dd341-ae65-4f9f-8159-b6004d17d463";
+const ORDER_FILE_INTERNET_DIR = "https://firebasestorage.googleapis.com/v0/b/songnguyen.appspot.com/o/bao_gia_gasket.xlsx?alt=media&token=fdf4a0e5-6cfe-4019-854d-c271f2c86a44";
 const ORDER_FILE_RESOURCE_DIR = __dirname + "/../../resource/Song Nguyen Gasket - Báo giá.xlsx";
 
 /**
@@ -38,10 +37,8 @@ class CartController extends BaseController {
                 Logging.debug(NAME_SPACE, `${NAME_SPACE}#download#Https.get`, file);
 
                 file.on("finish", () => {
+                    Logging.debug(NAME_SPACE, `${NAME_SPACE}#file.on Finished`);
                     this.execDownloadOrderFile(request, response, responseData);
-                    setTimeout(() => {
-                        // fs.unlinkSync(ORDER_FILE_RESOURCE_DIR)
-                    }, 12000);
                 });
                 file.on("error", (error) => {
                     // fs.unlinkSync(ORDER_FILE_RESOURCE_DIR)
@@ -64,7 +61,9 @@ class CartController extends BaseController {
         workbook.xlsx.readFile(ORDER_FILE_RESOURCE_DIR).then(() => {
             let workSheet = workbook.getWorksheet(1);
             try {
+                Logging.debug(NAME_SPACE, `${NAME_SPACE}#readFile workbook`, workbook.worksheets);
                 // write data for sheet 1
+                this.writeUser((responseData as ICartDocument).createdBy, workSheet);
                 this.writeCustomer((responseData as ICartDocument).customer as unknown as ICustomerDocument, workSheet);
                 this.writeCartItems((responseData as ICartDocument).items as unknown as ICartItemDocument[], workSheet, true);
 
@@ -77,14 +76,13 @@ class CartController extends BaseController {
                 this.appResponse.internalServerError(request, response);
             }
 
+            Logging.debug(NAME_SPACE, `${NAME_SPACE}#execDownloadOrderFile Start save file`);
             workbook.xlsx
                 .writeFile(URL_PATH + fileName)
                 .then((status) => {
-                    setTimeout(() => {
-                        // fs.unlinkSync(URL_PATH + fileName);
-                    }, 1200000);
+                    Logging.debug(NAME_SPACE, `${NAME_SPACE}#execDownloadOrderFile save file status`, status);
                     this.appResponse.ok(request, response, {
-                        url: "https://" + request.get("host") + "/resources/" + fileName,
+                        url: "http://" + request.get("host") + "/resources/" + fileName,
                     });
                 })
                 .catch((error) => {
@@ -96,14 +94,14 @@ class CartController extends BaseController {
     writeCartItems(cartItems: ICartItemDocument[], workSheet: ExcelJS.Worksheet, isOrderSheet: boolean = false) {
         Logging.debug(NAME_SPACE, `${NAME_SPACE}#writeCartItems START`);
         let totalPrice = 0;
+        let totalAmount = 0;
+        let totalDelivery = 0;
 
         cartItems.forEach((element, index) => {
             const size: ISizeDocument = element.size as unknown as ISizeDocument;
             const value: string[] = [
                 (index + 1).toString(),
                 (element.product_name as unknown as IProductNameDocument).name,
-                "",
-                "",
                 (element.thickness as unknown as IThicknessDocument).name,
             ];
 
@@ -159,6 +157,7 @@ class CartController extends BaseController {
             value.push("");
 
             value.push(element.amount.toString());
+            totalAmount = totalAmount + element.amount;
 
             if (isOrderSheet) {
                 value.push(element.unit_price.toString());
@@ -167,20 +166,24 @@ class CartController extends BaseController {
             } else {
                 value.push(element.delivered.toString());
                 value.push((element.amount - element.delivered).toString());
+                totalDelivery = totalDelivery + element.delivered;
             }
 
-            workSheet.insertRow(23 + index, value);
+            workSheet.insertRow(21 + index, value);
         });
 
         if (isOrderSheet) {
-            workSheet.getCell("R" + (24 + cartItems.length)).value = totalPrice;
-            workSheet.getCell("R" + (25 + cartItems.length)).value = (totalPrice * 10) / 100;
-            workSheet.getCell("R" + (26 + cartItems.length)).value = totalPrice + (totalPrice * 10) / 100;
+            workSheet.getCell("P" + (22 + cartItems.length)).value = totalPrice;
+            workSheet.getCell("P" + (23 + cartItems.length)).value = (totalPrice * 10) / 100;
+            workSheet.getCell("P" + (24 + cartItems.length)).value = totalPrice + (totalPrice * 10) / 100;
+        } else {
+            workSheet.getCell("O" + (21 + cartItems.length)).value = totalDelivery;
+            workSheet.getCell("P" + (21 + cartItems.length)).value = totalAmount - totalDelivery;
         }
 
         cartItems.forEach((e, index) => {
-            for (let num = 1; num < 20; num++) {
-                workSheet.getRow(23 + index).getCell(num).border = {
+            for (let num = 1; num < 18; num++) {
+                workSheet.getRow(21 + index).getCell(num).border = {
                     top: { style: "thin" },
                     left: { style: "thin" },
                     bottom: { style: "thin" },
@@ -194,11 +197,20 @@ class CartController extends BaseController {
 
     writeCustomer(customer: ICustomerDocument, workSheet: ExcelJS.Worksheet) {
         Logging.debug(NAME_SPACE, `${NAME_SPACE}#writeCustomer START`);
-        workSheet.getCell("C15").value = customer.name;
-        workSheet.getCell("C16").value = customer.address;
-        workSheet.getCell("C17").value = customer.contact_name;
-        workSheet.getCell("C18").value = customer.email;
-        workSheet.getCell("C19").value = customer.tax;
+        workSheet.getCell("C12").value = customer.name;
+        workSheet.getCell("C13").value = customer.address;
+        workSheet.getCell("C14").value = customer.tax;
+        workSheet.getCell("C15").value = customer.contact_name;
+        workSheet.getCell("C16").value = customer.email;
+        workSheet.getCell("C17").value = customer.phone_number;
+        Logging.debug(NAME_SPACE, `${NAME_SPACE}#writeCustomer END`);
+    }
+
+    writeUser(user: any, worksheet: ExcelJS.Worksheet) {
+        Logging.debug(NAME_SPACE, `${NAME_SPACE}#writeCustomer START`, user);
+        worksheet.getCell("O8").value = `${user.firstName} ${user.lastName}`;
+        worksheet.getCell("O9").value = user.phoneNumber;
+        worksheet.getCell("O10").value = user.email;
         Logging.debug(NAME_SPACE, `${NAME_SPACE}#writeCustomer END`);
     }
 }
