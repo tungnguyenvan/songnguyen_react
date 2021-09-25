@@ -325,6 +325,7 @@ class WarehouseImport extends React.Component<WarehouseImportProps, WarehouseSta
             .then(response => {
                 if (response.status === HttpRequestStatusCode.OK) {
                     window.location.assign(response.data.data.url)
+                    // window.open(response.data.data.url)
                 }
             })
     }

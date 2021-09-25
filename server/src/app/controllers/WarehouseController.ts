@@ -175,7 +175,7 @@ class WarehouseController extends BaseController {
                                     // fs.unlinkSync(URL_PATH + fileName);
                                 }, 120000);
                                 this.appResponse.ok(request, response, {
-                                    url: request.protocol + "://" + request.get("host") + "/resources/" + fileName,
+                                    url: "https://" + request.get("host") + "/resources/" + fileName,
                                 });
                             })
                             .catch((error) => {
@@ -240,6 +240,7 @@ class WarehouseController extends BaseController {
                 value.push(thickness[i].name);
                 value.push(thickness[i].price);
             } else {
+                value.push(null);
                 value.push(null);
             }
             value.push(null);

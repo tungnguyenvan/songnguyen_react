@@ -84,7 +84,7 @@ class CartController extends BaseController {
                         // fs.unlinkSync(URL_PATH + fileName);
                     }, 1200000);
                     this.appResponse.ok(request, response, {
-                        url: request.protocol + "://" + request.get("host") + "/resources/" + fileName,
+                        url: "https://" + request.get("host") + "/resources/" + fileName,
                     });
                 })
                 .catch((error) => {
