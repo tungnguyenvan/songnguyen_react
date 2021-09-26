@@ -183,6 +183,7 @@ enum MessageId {
     CURRENT_PASSWORD = "CURRENT_PASSWORD",
     NEW_PASSWORD = "NEW_PASSWORD",
     PASSWORD_FAILED = "PASSWORD_FAILED",
+    UNIT = "UNIT",
 }
 
 export default MessageId;

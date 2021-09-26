@@ -49,6 +49,7 @@ class SettingPageSupportProductType implements ISettingPageSupport<IProductTypeM
     renderHeader(): string[] {
         return [
             this.languageContext.current.getMessageString(MessageId.PRODUCT_TYPE),
+            this.languageContext.current.getMessageString(MessageId.UNIT),
             this.languageContext.current.getMessageString(MessageId.FORM_TYPE),
             this.languageContext.current.getMessageString(MessageId.EMPLOYEE),
             this.languageContext.current.getMessageString(MessageId.CREATED_TIME),
@@ -67,6 +68,8 @@ class SettingPageSupportProductType implements ISettingPageSupport<IProductTypeM
                 content: [
                     // name
                     element.name,
+
+                    element.unit,
 
                     AppUtils.formTitle(element.form_type),
 

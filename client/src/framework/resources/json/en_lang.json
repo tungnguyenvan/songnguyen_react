@@ -181,5 +181,6 @@
 	"CHANGE_PASSWORD": "Change password",
 	"CURRENT_PASSWORD": "Current password",
 	"NEW_PASSWORD": "New password",
-	"PASSWORD_FAILED": "Incorrect password"
+	"PASSWORD_FAILED": "Incorrect password",
+	"UNIT": "unit"
 }
