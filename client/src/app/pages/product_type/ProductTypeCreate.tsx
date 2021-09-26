@@ -34,11 +34,13 @@ class ProductTypeCreate extends React.Component<ProductTypeDetailProps> {
         this.productTypeApiService = new ProductTypeApiService();
         this.productTypeFormRef = {
             inputName: React.createRef<IFormInputElement>(),
-            formTypeSelectBox: React.createRef<IFormInputElement>()
+            formTypeSelectBox: React.createRef<IFormInputElement>(),
+            unit: React.createRef<IFormInputElement>()
         }
         this.productTypeFormValidate = {
             inputName: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE)],
-            formTypeSelectBox: []
+            formTypeSelectBox: [],
+            unit: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE)],
         }
 
         this.onCancel = this.onCancel.bind(this)
@@ -53,7 +55,8 @@ class ProductTypeCreate extends React.Component<ProductTypeDetailProps> {
         if (FrameworkUtils.validateFrom(this.productTypeFormRef)) {
             const model: IProductTypeModel = {
                 name: this.productTypeFormRef.inputName.current.getValue(),
-                form_type: this.productTypeFormRef.formTypeSelectBox.current.getValue()
+                form_type: this.productTypeFormRef.formTypeSelectBox.current.getValue(),
+                unit: this.productTypeFormRef.unit.current.getValue()
             } as IProductTypeModel
 
             this.productTypeApiService.save(model)
@@ -90,6 +93,12 @@ class ProductTypeCreate extends React.Component<ProductTypeDetailProps> {
                         ref={this.productTypeFormRef.inputName}
                         validate={this.productTypeFormValidate.inputName}
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.NAME)} />
+                </FrameworkComponents.FormGroup>
+                <FrameworkComponents.FormGroup>
+                    <FrameworkComponents.InputText
+                        ref={this.productTypeFormRef.unit}
+                        placeHolder={this.props.languageContext.current.getMessageString(MessageId.UNIT)}
+                        validate={this.productTypeFormValidate.unit} />
                 </FrameworkComponents.FormGroup>
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.SelectBox

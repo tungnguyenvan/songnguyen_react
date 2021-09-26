@@ -13,6 +13,7 @@ import ISizeDocument from "../documents/ISizeDocument";
 import { FormType } from "../constants/EnumConstant";
 import fs from "fs";
 import Https from "https";
+import IProductTypeDocument from "../documents/IProductTypeDocument";
 
 const NAME_SPACE = "CartController";
 const ORDER_FILE_INTERNET_DIR = "https://firebasestorage.googleapis.com/v0/b/songnguyen.appspot.com/o/bao_gia_gasket.xlsx?alt=media&token=fdf4a0e5-6cfe-4019-854d-c271f2c86a44";
@@ -82,7 +83,7 @@ class CartController extends BaseController {
                 .then((status) => {
                     Logging.debug(NAME_SPACE, `${NAME_SPACE}#execDownloadOrderFile save file status`, status);
                     this.appResponse.ok(request, response, {
-                        url: "http://" + request.get("host") + "/resources/" + fileName,
+                        url: "https://" + request.get("host") + "/resources/" + fileName,
                     });
                 })
                 .catch((error) => {
@@ -154,7 +155,12 @@ class CartController extends BaseController {
             } else {
                 value.push("");
             }
-            value.push("");
+
+            if (element.product_type && (element.product_type as unknown as IProductTypeDocument).unit) {
+                value.push((element.product_type as unknown as IProductTypeDocument).unit);
+            } else {
+                value.push("");
+            }
 
             value.push(element.amount.toString());
             totalAmount = totalAmount + element.amount;

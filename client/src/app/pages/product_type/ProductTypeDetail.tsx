@@ -46,11 +46,13 @@ class ProductTypeDetail extends React.Component<ProductTypeDetailProps, ProductT
         }
         this.productTypeFormRef = {
             inputName: React.createRef<IFormInputElement>(),
-            formTypeSelectBox: React.createRef<IFormInputElement>()
+            formTypeSelectBox: React.createRef<IFormInputElement>(),
+            unit: React.createRef<IFormInputElement>()
         }
         this.productTypeFormValidate = {
             inputName: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE)],
-            formTypeSelectBox: []
+            formTypeSelectBox: [],
+            unit: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE)]
         }
 
         this.onUpdate = this.onUpdate.bind(this)
@@ -112,7 +114,8 @@ class ProductTypeDetail extends React.Component<ProductTypeDetailProps, ProductT
         if (FrameworkUtils.validateFrom(this.productTypeFormRef) && FrameworkUtils.formHasChanged(this.productTypeFormRef)) {
             const model: IProductTypeModel = {
                 name: this.productTypeFormRef.inputName.current.getValue(),
-                form_type: this.productTypeFormRef.formTypeSelectBox.current.getValue()
+                form_type: this.productTypeFormRef.formTypeSelectBox.current.getValue(),
+                unit: this.productTypeFormRef.unit.current.getValue()
             } as IProductTypeModel
 
             this.productTypeApiService.update(this.state.productType._id, model)
@@ -151,6 +154,13 @@ class ProductTypeDetail extends React.Component<ProductTypeDetailProps, ProductT
                         validate={this.productTypeFormValidate.inputName}
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.NAME)}
                         value={this.state.productType.name} />
+                </FrameworkComponents.FormGroup>
+                <FrameworkComponents.FormGroup>
+                    <FrameworkComponents.InputText
+                        ref={this.productTypeFormRef.unit}
+                        placeHolder={this.props.languageContext.current.getMessageString(MessageId.UNIT)}
+                        validate={this.productTypeFormValidate.unit}
+                        value={this.state.productType.unit} />
                 </FrameworkComponents.FormGroup>
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.SelectBox

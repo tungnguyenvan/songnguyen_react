@@ -16,6 +16,11 @@ const document = {
         enum: FormType,
     },
 
+    unit: {
+        type: String,
+        require: true,
+    },
+
     createdAt: {
         require: true,
         type: Number,
