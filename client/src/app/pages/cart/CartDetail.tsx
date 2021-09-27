@@ -359,14 +359,14 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                         this.props.languageContext.current.getMessageString(MessageId.ACTION)
                     ]
                 }} />
-            {/* <FrameworkComponents.FormGroup>
+            <FrameworkComponents.FormGroup>
                 <FrameworkComponents.SelectBox
                     placeHolder={this.props.languageContext.current.getMessageString(MessageId.CART_STATUS)}
                     options={AppRenderUtils.renderCartStatusSelectBox(this.props.languageContext)}
                     selectedId={this.state.cartModel.status}
                     onChanged={this.cartStatusOnChange}
                     ref={this.cartStatusRef} />
-            </FrameworkComponents.FormGroup> */}
+            </FrameworkComponents.FormGroup>
             <FrameworkComponents.FormGroup>
                 <FrameworkComponents.Button
                     type={ButtonTypeConstant.DANGER}
