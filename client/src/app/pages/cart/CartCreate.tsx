@@ -10,14 +10,18 @@ import ButtonTypeConstant from "framework/constants/ButtonTypeConstant"
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
 import MessageId from "framework/constants/MessageId"
 import RouteConstant from "framework/constants/RouteConstant"
+import { UserRole } from "framework/constants/UserEnumConstant"
 import WithFramework from "framework/constants/WithFramework"
 import IAppDialogContext from "framework/contexts/dialog/IAppDialogContext"
 import ILanguageContext from "framework/contexts/lang/ILanguageContext"
 import IAppUrlContext from "framework/contexts/url/IAppUrlContext"
 import IUserLoginContext from "framework/contexts/user/IUserLoginContext"
+import IUserModel from "framework/documents/models/IUserModel"
 import ITableCellModel from "framework/documents/ui/ITableCellModel"
 import FrameworkUtils from "framework/utils/FrameworkUtils"
 import React from "react"
+
+const HIDEN_TEXT = "***************"
 
 interface CartCreateProps {
     languageContext: ILanguageContext;
@@ -58,6 +62,7 @@ class CartCreate extends React.Component<CartCreateProps, CartCreateState> {
         this.onRegistration = this.onRegistration.bind(this)
         this.tableContent = this.tableContent.bind(this)
         this.chooseCustomer = this.chooseCustomer.bind(this)
+        this.canShowInfo = this.canShowInfo.bind(this)
     }
 
     componentDidMount() {
@@ -124,21 +129,23 @@ class CartCreate extends React.Component<CartCreateProps, CartCreateState> {
                 rowColor = TableRowColor.SUCCESS;
             }
 
+            const createdById = (element.createdBy as IUserModel)._id;
+
 			tableContents.push({
 				id: element._id,
                 color: rowColor,
 				content: [
 					element.name,
 					element.address,
-					element.tax,
-					element.email,
-					element.phone_number,
-					element.contact_name,
+					this.canShowInfo(createdById) ? element.tax : HIDEN_TEXT,
+					this.canShowInfo(createdById) ? element.email : HIDEN_TEXT,
+					this.canShowInfo(createdById) ? element.phone_number : HIDEN_TEXT,
+					this.canShowInfo(createdById) ? element.contact_name : HIDEN_TEXT,
 					FrameworkUtils.userName(element.createdBy)
 				],
 				action: {
 					choose: {
-                        isAlive: true,
+                        isAlive: this.canShowInfo(createdById),
                         func: this.chooseCustomer
                     }
 				}
@@ -147,6 +154,10 @@ class CartCreate extends React.Component<CartCreateProps, CartCreateState> {
 
         return tableContents;
     }
+
+    canShowInfo(userId: string) {
+		return userId === this.props.userLoginContext.state.user?._id || this.props.userLoginContext.state.user?.role === UserRole.ADMIN;
+	}
 
     chooseCustomer(id: string) {
         if (!FrameworkUtils.isBlank(this.state.customerSelected) && this.state.customerSelected === id) {

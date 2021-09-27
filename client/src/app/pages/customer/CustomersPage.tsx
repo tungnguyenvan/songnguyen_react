@@ -14,6 +14,9 @@ import ButtonTypeConstant from "framework/constants/ButtonTypeConstant";
 import IAppDialogContext from "framework/contexts/dialog/IAppDialogContext";
 import IUserLoginContext from "framework/contexts/user/IUserLoginContext";
 import { UserRole } from "framework/constants/UserEnumConstant";
+import IUserModel from "framework/documents/models/IUserModel";
+
+const HIDEN_TEXT = "***************"
 
 interface CustomersPageProvider {
 	languageContext: ILanguageContext;
@@ -41,6 +44,7 @@ class CustomersPage extends React.Component<CustomersPageProvider, CustomersPage
 		this.onRequestApi = this.onRequestApi.bind(this);
 		this.onEditCustomer = this.onEditCustomer.bind(this);
 		this.onDeleteCustomer = this.onDeleteCustomer.bind(this);
+		this.canShowInfo = this.canShowInfo.bind(this);
 	}
 
 	componentDidMount() {
@@ -80,24 +84,25 @@ class CustomersPage extends React.Component<CustomersPageProvider, CustomersPage
 		let tableContents: ITableCellModel[] = [];
 
 		this.state.customers.forEach(element => {
+			const createdById = (element.createdBy as IUserModel)._id;
 			tableContents.push({
 				id: element._id,
 				content: [
 					element.name,
 					element.address,
-					element.tax,
-					element.email,
-					element.phone_number,
-					element.contact_name,
+					this.canShowInfo(createdById) ? element.tax : HIDEN_TEXT,
+					this.canShowInfo(createdById) ? element.email : HIDEN_TEXT,
+					this.canShowInfo(createdById) ? element.phone_number : HIDEN_TEXT,
+					this.canShowInfo(createdById) ? element.contact_name : HIDEN_TEXT,
 					FrameworkUtils.userName(element.createdBy)
 				],
 				action: {
 					edit: {
-						isAlive: this.props.userLoginContext.state.user?.role === UserRole.ADMIN,
+						isAlive: this.canShowInfo(createdById),
 						func: this.onEditCustomer
 					},
 					delete: {
-						isAlive: this.props.userLoginContext.state.user?.role === UserRole.ADMIN,
+						isAlive: this.canShowInfo(createdById),
 						func: this.onDeleteCustomer,
 						dialog: {
 							title: this.props.languageContext.current.getMessageString(MessageId.CONFIRM_DELETE),
@@ -110,6 +115,10 @@ class CustomersPage extends React.Component<CustomersPageProvider, CustomersPage
 
 
 		return tableContents;
+	}
+
+	canShowInfo(userId: string) {
+		return userId === this.props.userLoginContext.state.user?._id || this.props.userLoginContext.state.user?.role === UserRole.ADMIN;
 	}
 
 	render() {
