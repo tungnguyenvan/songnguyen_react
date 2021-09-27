@@ -218,6 +218,7 @@ class WarehouseController extends BaseController {
         if (maxLength < standards.length) maxLength = standards.length;
         if (maxLength < sizes.length) maxLength = sizes.length;
         let index = 1;
+        const gasketPTCShape = ["RF_CIRCLE", "FF_CIRCLE", "RF_RECTANGLE", "FF_RECTANGLE", "FF_MANHOLE"];
 
         for (let i = 0; i < maxLength; i++) {
             const value = [];
@@ -270,6 +271,13 @@ class WarehouseController extends BaseController {
                 value.push(null);
                 value.push(null);
                 value.push(null);
+                value.push(null);
+            }
+            value.push(null);
+
+            if (i < gasketPTCShape.length) {
+                value.push(gasketPTCShape[i]);
+            } else {
                 value.push(null);
             }
 

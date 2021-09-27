@@ -16,6 +16,7 @@ import ISystemStandardModel from "app/documents/ISystemStandardModel";
 import IThicknessModel from "app/documents/IThicknessModel";
 import IWarehouseModel from "app/documents/IWarehouseModel";
 import AppRenderUtils from "app/utils/AppRenderUtils";
+import AppUtils from "app/utils/AppUtils";
 import FrameworkComponents from "framework/components/FrameworkComponents";
 import IFormInputElement from "framework/components/IFormInputElement";
 import AppConstant from "framework/constants/AppConstant";
@@ -284,11 +285,49 @@ class WarehouseImport extends React.Component<WarehouseImportProps, WarehouseSta
                 this.onImportProductToWarehouse(warehouseItem)
             } else {
                 const size = this.warehouseImportFormRef.form.current.getValue()
-                this.sizeApiService.save(size)
+                this.warehouseApiService.all({
+                    product_type: warehouseItem.product_type,
+                    product_name: warehouseItem.product_name,
+                    thickness: warehouseItem.thickness
+                } as IWarehouseModel)
                     .then(response => {
-                        if (response.status === HttpRequestStatusCode.CREATED) {
-                            warehouseItem.size = (response.data.data as ISizeModel)._id
-                            this.onImportProductToWarehouse(warehouseItem)
+                        if (response.status === HttpRequestStatusCode.OK) {
+                            const dataResponse = response.data.data as IWarehouseModel[];
+
+                            if (dataResponse.length > 0) {
+                                dataResponse.forEach(element => {
+                                    const sizeElement = element.size as ISizeModel;
+                                    console.log(sizeElement, size);
+    
+                                    if (AppUtils.compare2Size(size, sizeElement)) {
+                                            warehouseItem.size = sizeElement._id
+                                        }
+                                })
+                                if (warehouseItem.size) {
+                                    this.onImportProductToWarehouse(warehouseItem)
+                                } else {
+                                    this.sizeApiService.save(size)
+                                        .then(response => {
+                                            if (response.status === HttpRequestStatusCode.CREATED) {
+                                                warehouseItem.size = (response.data.data as ISizeModel)._id
+                                                this.onImportProductToWarehouse(warehouseItem)
+                                            }
+                                        })
+                                }
+                            } else {
+                                this.sizeApiService.save(size)
+                                    .then(response => {
+                                        if (response.status === HttpRequestStatusCode.CREATED) {
+                                            warehouseItem.size = (response.data.data as ISizeModel)._id
+                                            this.onImportProductToWarehouse(warehouseItem)
+                                        }
+                                    })
+                            }
+                        } else {
+                            this.props.appDialogContext.addDialog({
+                                title: this.props.languageContext.current.getMessageString(MessageId.IMPORT_WAREHOUSE_FAILED),
+                                content: this.props.languageContext.current.getMessageString(MessageId.IMPORT_WAREHOUSE_FAILED_DETAIL)
+                            })
                         }
                     })
             }
@@ -303,7 +342,8 @@ class WarehouseImport extends React.Component<WarehouseImportProps, WarehouseSta
                         title: this.props.languageContext.current.getMessageString(MessageId.IMPORT_WAREHOUSE_SUCCESS),
                         content: this.props.languageContext.current.getMessageString(MessageId.IMPORT_WAREHOUSE_SUCCESS_DETAIL)
                     })
-                    this.onCancel()
+                    // this.onCancel()
+                    this.props.appUrlContext.redirectTo(RouteConstant.WAREHOUSE);
                 } else {
                     this.props.appDialogContext.addDialog({
                         title: this.props.languageContext.current.getMessageString(MessageId.IMPORT_WAREHOUSE_FAILED),

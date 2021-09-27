@@ -119,7 +119,7 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
                     element.amount?.toString(),
                 ],
                 action: {
-                    edit: {
+                    choose: {
                         isAlive: true,
                         func: this.editWarehouse,
                     },

@@ -27,6 +27,7 @@ import FrameworkUtils from "framework/utils/FrameworkUtils";
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant";
 import WarehouseApiService from "app/api/WarehouseApiService";
 import RouteConstant from "framework/constants/RouteConstant";
+import AppUtils from "app/utils/AppUtils";
 
 const FORM_SHEET_NUM: number = 2;
 const PRODUCT_TYPE_HEADER_DEF = "Loại sản phẩm";
@@ -413,42 +414,68 @@ class WarehouseImportByExcelFile extends React.Component<WarehouseImportByExcelF
                         this.saveWarehouse(index + 1);
                     });
             } else {
-                this.sizeApiService.all(element.size).then(response => {
-                    if (response.status === HttpRequestStatusCode.OK) {
-                        const sizeResponse: ISizeModel[] = response.data.data as ISizeModel[];
+                const warehouseItem: IWarehouseModel = {
+                    product_name: (element.product_name as IProductNameModel)._id,
+                    product_type: (element.product_type as IProductTypeModel)._id,
+                    thickness: (element.thickness as IThicknessModel)._id,
+                    amount: element.amount
+                } as IWarehouseModel
 
-                        if (sizeResponse.length > 0) {
-                            this.warehouseApiService
-                                .save({
-                                    product_type: (element.product_type as IProductTypeModel)._id,
-                                    product_name: (element.product_name as IProductNameModel)._id,
-                                    thickness: (element.thickness as IThicknessModel)._id,
-                                    size: sizeResponse[0]._id,
-                                    amount: element.amount,
-                                } as IWarehouseModel)
-                                .then((response) => {
-                                    this.saveWarehouse(index + 1);
-                                });
-                        } else {
-                            this.sizeApiService.save(element.size as ISizeModel)
-                                .then(r => {
-                                    if (r.status === HttpRequestStatusCode.CREATED) {
-                                        this.warehouseApiService
-                                            .save({
-                                                product_type: (element.product_type as IProductTypeModel)._id,
-                                                product_name: (element.product_name as IProductNameModel)._id,
-                                                thickness: (element.thickness as IThicknessModel)._id,
-                                                size: (r.data.data as ISizeModel)._id,
-                                                amount: element.amount,
-                                            } as IWarehouseModel)
-                                            .then((response) => {
-                                                this.saveWarehouse(index + 1);
-                                            });
+                const size = element.size as ISizeModel;
+                this.warehouseApiService.all({
+                    product_type: warehouseItem.product_type,
+                    product_name: warehouseItem.product_name,
+                    thickness: warehouseItem.thickness
+                } as IWarehouseModel)
+                    .then(response => {
+                        if (response.status === HttpRequestStatusCode.OK) {
+                            const dataResponse = response.data.data as IWarehouseModel[];
+                            if (dataResponse.length > 0) {
+                                console.log("> 0");
+                                
+                                dataResponse.forEach(element => {
+                                    const sizeElement = element.size as ISizeModel;
+    
+                                    if (AppUtils.compare2Size(size, sizeElement)) {
+                                            warehouseItem.size = sizeElement._id
                                     }
                                 })
+
+                                if (warehouseItem.size) {
+                                    console.log("No save size")
+                                    this.warehouseApiService.save(warehouseItem)
+                                        .then((response) => {
+                                            this.saveWarehouse(index + 1);
+                                        });
+                                } else {
+                                    console.log("Save size")
+                                    this.sizeApiService.save(size)
+                                        .then(response => {
+                                            if (response.status === HttpRequestStatusCode.CREATED) {
+                                                warehouseItem.size = (response.data.data as ISizeModel)._id
+                                                this.warehouseApiService.save(warehouseItem)
+                                                    .then((response) => {
+                                                        this.saveWarehouse(index + 1);
+                                                    });
+                                            }
+                                        })
+                                }
+                            } else {
+                                console.log("== 0");
+                                console.log("size size")
+                                this.sizeApiService.save(size)
+                                    .then(response => {
+                                        if (response.status === HttpRequestStatusCode.CREATED) {
+                                            warehouseItem.size = (response.data.data as ISizeModel)._id
+                                            this.warehouseApiService.save(warehouseItem)
+                                                .then((response) => {
+                                                    this.saveWarehouse(index + 1);
+                                                });
+                                        }
+                                    })
+                            }
                         }
-                    }
-                })
+                    })
             }
         } else if (index > 0 && index >= this.state.warehouses.length) {
             this.props.appDialogContext.addDialog({
