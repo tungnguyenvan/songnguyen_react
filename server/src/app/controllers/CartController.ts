@@ -16,7 +16,8 @@ import Https from "https";
 import IProductTypeDocument from "../documents/IProductTypeDocument";
 
 const NAME_SPACE = "CartController";
-const ORDER_FILE_INTERNET_DIR = "https://firebasestorage.googleapis.com/v0/b/songnguyen.appspot.com/o/bao_gia_gasket.xlsx?alt=media&token=fdf4a0e5-6cfe-4019-854d-c271f2c86a44";
+const ORDER_FILE_INTERNET_DIR =
+    "https://firebasestorage.googleapis.com/v0/b/songnguyen.appspot.com/o/Ma%CC%82%CC%83u-ba%CC%81o-gia%CC%81-co%CC%81-mo%CC%A3%CC%82c-cty.xlsx?alt=media&token=fb426ed4-a2c1-4f66-a525-9135ff956691";
 const ORDER_FILE_RESOURCE_DIR = __dirname + "/../../resource/Song Nguyen Gasket - Báo giá.xlsx";
 
 /**
@@ -195,6 +196,10 @@ class CartController extends BaseController {
                     bottom: { style: "thin" },
                     right: { style: "thin" },
                 };
+                workSheet.getCell("O" + (21 + index)).value = Number(workSheet.getCell("O" + (21 + index)).value);
+                workSheet.getCell("O" + (21 + index)).numFmt = "#,##0";
+                workSheet.getCell("P" + (21 + index)).value = Number(workSheet.getCell("P" + (21 + index)).value);
+                workSheet.getCell("P" + (21 + index)).numFmt = "#,##0";
             }
         });
 
