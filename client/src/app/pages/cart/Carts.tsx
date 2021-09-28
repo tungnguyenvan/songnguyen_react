@@ -4,6 +4,7 @@ import WithCart from "app/context/cart/WithCart"
 import ICartModel from "app/documents/ICartModel"
 import ICustomerModel from "app/documents/ICustomerModel"
 import FrameworkComponents from "framework/components/FrameworkComponents"
+import { CartStatus, TableRowColor } from "framework/constants/AppEnumConstant"
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
 import MessageId from "framework/constants/MessageId"
 import RouteConstant from "framework/constants/RouteConstant"
@@ -69,6 +70,7 @@ class Carts extends React.Component<CartsProps, CartsState> {
         cartModels.forEach(element => {
             tableCells.push({
                 id: element._id,
+                color: element.status === CartStatus.DONE ? TableRowColor.SUCCESS : TableRowColor.NONE,
                 content: [
                     (element?.customer as ICustomerModel)?.name + " - " + FrameworkUtils.generateDate(element.createdAt),
                     (element?.customer as ICustomerModel)?.name,
