@@ -18,7 +18,7 @@ class BaseModel implements IBaseModel {
      * @author tung.nguyenvan
      */
     all(query: any): any {
-        return this.schema.find(query);
+        return this.schema.find(query).sort({ createdAt: -1 });
     }
 
     /**
