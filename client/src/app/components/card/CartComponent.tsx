@@ -11,7 +11,7 @@ import CartApiService from "app/api/CartApiService"
 import AppRenderUtils from "app/utils/AppRenderUtils"
 import IUserLoginContext from "framework/contexts/user/IUserLoginContext"
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
-import { CartItemSource, CartStatus, TableRowColor } from "framework/constants/AppEnumConstant"
+import { CartItemSource, CartItemStatus, CartStatus, TableRowColor } from "framework/constants/AppEnumConstant"
 import ITableCellModel from "framework/documents/ui/ITableCellModel"
 import ICustomerModel from "app/documents/ICustomerModel"
 import ICartItemModel from "app/documents/ICartItemModel"
@@ -224,7 +224,7 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
                 rowColor = TableRowColor.WARNING;
             }
             
-            if (element.delivered === element.amount) {
+            if (element.delivered === element.amount || element.status === CartItemStatus.DONE) {
                 rowColor = TableRowColor.SUCCESS;
             }
 
