@@ -73,6 +73,8 @@ class AppUtils {
                 } else {
                     return false;
                 }
+            } else if (firstSize.form_type === FormType.FORM_3) {
+                return firstSize.wt === secondSize.wt && firstSize.lt === secondSize.lt;
             }
         }
         return false;
