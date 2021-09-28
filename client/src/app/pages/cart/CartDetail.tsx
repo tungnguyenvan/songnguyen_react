@@ -21,11 +21,13 @@ import ButtonTypeConstant from "framework/constants/ButtonTypeConstant"
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
 import MessageId from "framework/constants/MessageId"
 import RouteConstant from "framework/constants/RouteConstant"
+import { UserRole } from "framework/constants/UserEnumConstant"
 import WithFramework from "framework/constants/WithFramework"
 import IAppDialogContext from "framework/contexts/dialog/IAppDialogContext"
 import ILanguageContext from "framework/contexts/lang/ILanguageContext"
 import IAppUrlContext from "framework/contexts/url/IAppUrlContext"
 import IUserLoginContext from "framework/contexts/user/IUserLoginContext"
+import IUserModel from "framework/documents/models/IUserModel"
 import ITableCellModel from "framework/documents/ui/ITableCellModel"
 import FrameworkUtils from "framework/utils/FrameworkUtils"
 import React from "react"
@@ -40,7 +42,8 @@ interface CartDetailProps {
 
 interface CartDetailState {
     cartModel: ICartModel
-    customers: ICustomerModel[]
+    customers: ICustomerModel[],
+    isDone: boolean
 }
 
 interface IParams {
@@ -65,7 +68,8 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
 
         this.state = {
             cartModel: {} as ICartModel,
-            customers: []
+            customers: [],
+            isDone: true
         }
 
         this.onUpdateCart = this.onUpdateCart.bind(this)
@@ -76,6 +80,7 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
         this.cartStatusOnChange = this.cartStatusOnChange.bind(this)
         this.renderCustomerTable = this.renderCustomerTable.bind(this)
         this.onChangeCustomer = this.onChangeCustomer.bind(this)
+        this.isDisableButtons = this.isDisableButtons.bind(this)
     }
 
     componentDidMount() {
@@ -99,7 +104,8 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
             .then(response => {
                 if (response.status === HttpRequestStatusCode.OK) {
                     this.setState({
-                        cartModel: response.data.data as ICartModel
+                        cartModel: response.data.data as ICartModel,
+                        isDone: (response.data.data as ICartModel).status === CartStatus.DONE
                     })
                 }
             })
@@ -149,7 +155,7 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                     rowColor = TableRowColor.WARNING;
                 }
                 
-                if (element.delivered === element.amount) {
+                if (element.delivered === element.amount || element.status === CartItemStatus.DONE) {
                     rowColor = TableRowColor.SUCCESS;
                 }
 
@@ -243,18 +249,20 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
     }
 
     onUpdateCart() {
+        let canUpdateCart = true;
         if (this.cartStatusRef.current.getValue() === CartItemStatus.DONE) {
-            let isCannotUpdate = false;
+            let canUpdate = true;
 
             (this.state.cartModel.items as ICartItemModel[]).forEach(element => {
                 if (element.source === CartItemSource.WAREHOUSE) {
-                    if (element.delivered > (element.warehouse as IWarehouseModel).amount && element.status !== CartItemStatus.DONE) {
-                        isCannotUpdate = true;
+                    if (!element.warehouse || element.delivered < (element.warehouse as IWarehouseModel)?.amount) {
+                        canUpdate = false;
+                        canUpdateCart = false;
                     }
                 }
             })
 
-            if (!isCannotUpdate) {
+            if (canUpdate) {
                 (this.state.cartModel.items as ICartItemModel[]).forEach(element => {
                     if (element.status !== CartItemStatus.DONE) {
                         this.cartItemApiService.update(element._id, {
@@ -274,6 +282,10 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                     content: this.props.languageContext.current.getMessageString(MessageId.NOT_ENOUGH_CONTENT),
                 });
             }
+        }
+
+        if (!canUpdateCart) {
+            return;
         }
 
         this.cartApiService.update(this.state.cartModel._id, this.state.cartModel)
@@ -306,6 +318,14 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
         this.setState({
             cartModel: cartModel
         })
+    }
+
+    isDisableButtons() : boolean {
+        if (this.state.isDone) {
+            return true;
+        }
+        
+        return !((this.state.cartModel.createdBy as IUserModel)?._id === this.props.userLoginContext.state.user?._id || this.props.userLoginContext.state.user?.role === UserRole.ADMIN)
     }
 
     render() {
@@ -374,6 +394,7 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                         title: this.props.languageContext.current.getMessageString(MessageId.CONFIRM_DELETE),
                         content: this.props.languageContext.current.getMessageString(MessageId.CONFIRM_DELETE_DETAIL)
                     }}
+                    disable={this.isDisableButtons()}
                     onClick={this.onDeleteCart}>
                     {this.props.languageContext.current.getMessageString(MessageId.DELETE)}
                 </FrameworkComponents.Button>
@@ -383,7 +404,8 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                         title: this.props.languageContext.current.getMessageString(MessageId.CONFIRM_UPDATE),
                         content: this.props.languageContext.current.getMessageString(MessageId.CONFIRM_UPDATE_DETAIL)
                     }}
-                    onClick={this.onUpdateCart}>
+                    onClick={this.onUpdateCart}
+                    disable={this.isDisableButtons()}>
                     {this.props.languageContext.current.getMessageString(MessageId.UPDATE)}
                 </FrameworkComponents.Button>
             </FrameworkComponents.FormGroup>
