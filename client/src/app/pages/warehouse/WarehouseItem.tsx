@@ -23,6 +23,7 @@ import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode";
 import MessageId from "framework/constants/MessageId";
 import RouteConstant from "framework/constants/RouteConstant";
 import RuleConstant from "framework/constants/RuleConstant";
+import { UserRole } from "framework/constants/UserEnumConstant";
 import WithFramework from "framework/constants/WithFramework";
 import IAppDialogContext from "framework/contexts/dialog/IAppDialogContext";
 import ILanguageContext from "framework/contexts/lang/ILanguageContext";
@@ -58,6 +59,10 @@ interface IWarehouseItemFormRef {
     totalAmount: React.RefObject<any>;
 }
 
+interface IExportWarehouseFormRef {
+    amount: React.RefObject<any>;
+}
+
 interface IParams {
     id: string;
 }
@@ -70,6 +75,7 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
     private cartApiService: CartApiService;
     private sizeModelCalculated: ISizeModel;
     private sizeApiService: SizeApiService;
+    private exportWarehouseFormRef: IExportWarehouseFormRef;
 
     constructor(props: WarehouseItemProps) {
         super(props);
@@ -81,6 +87,10 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
             unitPrice: React.createRef<IFormInputElement>(),
             totalAmount: React.createRef<IFormInputElement>(),
         };
+
+        this.exportWarehouseFormRef = {
+            amount: React.createRef<IFormInputElement>()
+        }
 
         this.cartItemCalculated = undefined as unknown as ICartItemModel;
         this.sizeModelCalculated = undefined as unknown as ISizeModel;
@@ -103,6 +113,7 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
         this.calculatorForm3 = this.calculatorForm3.bind(this);
         this.validateDiscount = this.validateDiscount.bind(this);
         this.renderTableHeader = this.renderTableHeader.bind(this);
+        this.onExportWarehouse = this.onExportWarehouse.bind(this);
         this.renderTableContent = this.renderTableContent.bind(this);
     }
 
@@ -506,6 +517,46 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
             });
     }
 
+    onExportWarehouse() {
+        if (FrameworkUtils.validateFrom(this.exportWarehouseFormRef)) {
+            if (Number(this.exportWarehouseFormRef.amount.current.getValue()) <= this.state.warehouse.amount) {
+                this.warehouseApiService.update(this.state.warehouse._id, {
+                    amount: (this.state.warehouse.amount - Number(this.exportWarehouseFormRef.amount.current.getValue()))
+                } as IWarehouseModel)
+                    .then(response => {
+                        if (response.status === HttpRequestStatusCode.OK) {
+                            this.props.appDialogContext.addDialog({
+                                title: this.props.languageContext.current.getMessageString(MessageId.UPDATE_SUCCESS),
+                                content: this.props.languageContext.current.getMessageString(MessageId.UPDATE_SUCCESS_DETAIL)
+                            })
+
+                            this.requestApi(this.state.warehouse._id);
+                        } else {
+                            this.props.appDialogContext.addDialog({
+                                title: this.props.languageContext.current.getMessageString(MessageId.CANNOT_UPDATE),
+                                content: this.props.languageContext.current.getMessageString(MessageId.CANNOT_UPDATE_DETAIL)
+                            })    
+                        }
+                    })
+                    .catch(error => {
+                        this.props.appDialogContext.addDialog({
+                            title: this.props.languageContext.current.getMessageString(MessageId.CANNOT_UPDATE),
+                            content: this.props.languageContext.current.getMessageString(MessageId.CANNOT_UPDATE_DETAIL)
+                        })
+                    })
+            } else {
+                this.props.appDialogContext.addDialog({
+                    title: this.props.languageContext.current.getMessageString(MessageId.NOT_ENOUGH),
+                    content: this.props.languageContext.current.getMessageString(MessageId.NOT_ENOUGH_CONTENT)
+                })
+
+                this.exportWarehouseFormRef.amount.current.setErrorMessage(
+                    this.props.languageContext.current.getMessageString(MessageId.NOT_ENOUGH)
+                )
+            }
+        }
+    }
+
     render() {
         return (
             <FrameworkComponents.BasePage
@@ -514,6 +565,27 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
                 }}
             >
                 <FrameworkComponents.Table header={this.renderTableHeader()} content={this.renderTableContent()} />
+
+                {this.props.userLoginContext.state.user?.role === UserRole.ADMIN && (
+                    <FrameworkComponents.BaseForm title={this.props.languageContext.current.getMessageString(MessageId.EXPORT_WAREHOUSE)}>
+                        <FrameworkComponents.FormGroup>
+                            <FrameworkComponents.InputText
+                                placeHolder={this.props.languageContext.current.getMessageString(MessageId.AMOUNT)}
+                                ref={this.exportWarehouseFormRef.amount}
+                                validate={[new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE), new Rule(RuleConstant.REGEXP, MessageId.VALIDATE_ONLY_NUMBER, AppConstant.ONLY_NUMBER_REGEXP)]}
+                            />
+                        </FrameworkComponents.FormGroup>
+                        <FrameworkComponents.FormGroup>
+                            <FrameworkComponents.Button
+                                dialogModel={{
+                                    title: this.props.languageContext.current.getMessageString(MessageId.CONFIRM_UPDATE),
+                                    content: this.props.languageContext.current.getMessageString(MessageId.CONFIRM_UPDATE_DETAIL)
+                                }}
+                                onClick={this.onExportWarehouse}
+                                type={ButtonTypeConstant.PRIMARY}>{this.props.languageContext.current.getMessageString(MessageId.EXPORT_WAREHOUSE)}</FrameworkComponents.Button>
+                        </FrameworkComponents.FormGroup>
+                    </FrameworkComponents.BaseForm>
+                )}
 
                 <FrameworkComponents.BaseForm title={this.props.languageContext.current.getMessageString(MessageId.ADD_TO_CART)}>
                     <FrameworkComponents.FormGroup>
