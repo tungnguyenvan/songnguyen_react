@@ -81,7 +81,12 @@ class CartCreate extends React.Component<CartCreateProps, CartCreateState> {
             const cartModel: ICartModel = {
                 customer: this.state.customerSelected,
                 items: [] as string[],
-                status: CartStatus.DISCUSS
+                status: CartStatus.DISCUSS,
+                history: [{
+                    to: CartStatus.DISCUSS,
+                    date: Date.now(),
+                    by: this.props.userLoginContext.state.user?._id
+                }]
             } as ICartModel
 
             this.cartApiService.save(cartModel)

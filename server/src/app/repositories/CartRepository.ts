@@ -45,6 +45,13 @@ class CartRepository extends BaseRepository {
                     },
                 ],
             })
+            .populate({
+                path: "history",
+                populate: {
+                    path: "by",
+                    select: "_id lastName firstName phoneNumber email",
+                },
+            })
             .select("-__v");
     }
 }

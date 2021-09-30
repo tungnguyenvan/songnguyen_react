@@ -1,3 +1,5 @@
+import IUserModel from "framework/documents/models/IUserModel";
+
 enum FormType {
     FORM_1 = "FORM_1",
     FORM_2 = "FORM_2",
@@ -43,4 +45,13 @@ enum TableRowColor {
     SUCCESS = "SUCCESS",
 }
 
+interface CartStatusHistoryItem {
+    _id: string;
+    from: CartStatus;
+    to: CartStatus;
+    date: number;
+    by: string | IUserModel;
+}
+
 export { FormType, DiscountType, GasketPTCShape, CartItemStatus, CartStatus, CartItemSource, TableRowColor };
+export type { CartStatusHistoryItem };

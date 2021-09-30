@@ -35,4 +35,11 @@ enum CartItemSource {
     WAREHOUSE = "WAREHOUSE",
 }
 
-export { GasketType, FormType, DiscountType, CartItemStatus, CartStatus, CartItemSource };
+interface CartStatusHistoryItem {
+    from: CartStatus;
+    to: CartStatus;
+    date: number;
+    by: string;
+}
+
+export { GasketType, FormType, DiscountType, CartItemStatus, CartStatus, CartItemSource, CartStatusHistoryItem };
