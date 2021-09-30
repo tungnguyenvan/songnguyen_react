@@ -68,9 +68,17 @@ class Carts extends React.Component<CartsProps, CartsState> {
     renderCartTable(cartModels: ICartModel[]): ITableCellModel[] {
         const tableCells: ITableCellModel[] = []
         cartModels.forEach(element => {
+            let rowColor = TableRowColor.NONE;
+
+            if (element.status === CartStatus.CONFIRM || element.status === CartStatus.DOING) {
+                rowColor = TableRowColor.WARNING;
+            } else if (element.status === CartStatus.DONE) {
+                rowColor = TableRowColor.SUCCESS;
+            }
+
             tableCells.push({
                 id: element._id,
-                color: element.status === CartStatus.DONE ? TableRowColor.SUCCESS : TableRowColor.NONE,
+                color: rowColor,
                 content: [
                     (element?.customer as ICustomerModel)?.name + " - " + FrameworkUtils.generateDate(element.createdAt),
                     (element?.customer as ICustomerModel)?.name,
