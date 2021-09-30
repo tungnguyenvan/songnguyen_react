@@ -16,7 +16,7 @@ import IWarehouseModel from "app/documents/IWarehouseModel"
 import AppRenderUtils from "app/utils/AppRenderUtils"
 import FrameworkComponents from "framework/components/FrameworkComponents"
 import IFormInputElement from "framework/components/IFormInputElement"
-import { CartItemSource, CartItemStatus, CartStatus, TableRowColor } from "framework/constants/AppEnumConstant"
+import { CartItemSource, CartItemStatus, CartStatus, CartStatusHistoryItem, TableRowColor } from "framework/constants/AppEnumConstant"
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant"
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
 import MessageId from "framework/constants/MessageId"
@@ -43,7 +43,8 @@ interface CartDetailProps {
 interface CartDetailState {
     cartModel: ICartModel
     customers: ICustomerModel[],
-    isDone: boolean
+    isDone: boolean,
+    oldCartStatus: CartStatus
 }
 
 interface IParams {
@@ -69,7 +70,8 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
         this.state = {
             cartModel: {} as ICartModel,
             customers: [],
-            isDone: true
+            isDone: true,
+            oldCartStatus: CartStatus.DISCUSS
         }
 
         this.onUpdateCart = this.onUpdateCart.bind(this)
@@ -105,7 +107,8 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                 if (response.status === HttpRequestStatusCode.OK) {
                     this.setState({
                         cartModel: response.data.data as ICartModel,
-                        isDone: (response.data.data as ICartModel).status === CartStatus.DONE
+                        isDone: (response.data.data as ICartModel).status === CartStatus.DONE,
+                        oldCartStatus: (response.data.data as ICartModel).status
                     })
                 }
             })
@@ -231,8 +234,13 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                         title: this.props.languageContext.current.getMessageString(MessageId.DELETE_SUCCESS),
                         content: this.props.languageContext.current.getMessageString(MessageId.DELETE_SUCCESS_DETAIL)
                     })
-                    this.props.appUrlContext.back()
-                    this.props.cartContext.current.onRefresh()
+
+                    if (this.props.appUrlContext.canBack()) {
+                        this.props.appUrlContext.back()
+                        this.props.cartContext.current.onRefresh()
+                    } else {
+                        this.props.appUrlContext.redirectTo(RouteConstant.CARTS)
+                    }
                 } else {
                     this.props.appDialogContext.addDialog({
                         title: this.props.languageContext.current.getMessageString(MessageId.CANNOT_DELETE),
@@ -288,6 +296,16 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
             return;
         }
 
+
+        if (this.state.cartModel.status !== this.state.oldCartStatus) {
+            this.state.cartModel.history.push({
+                from: this.state.oldCartStatus,
+                to: this.state.cartModel.status,
+                date: Date.now(),
+                by: this.props.userLoginContext.state.user?._id
+            } as CartStatusHistoryItem)
+        }
+
         this.cartApiService.update(this.state.cartModel._id, this.state.cartModel)
             .then(response => {
                 if (response.status === HttpRequestStatusCode.OK) {
@@ -328,10 +346,57 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
         return !((this.state.cartModel.createdBy as IUserModel)?._id === this.props.userLoginContext.state.user?._id || this.props.userLoginContext.state.user?.role === UserRole.ADMIN)
     }
 
+    renderHistory(): ITableCellModel[] {
+        const tableCells : ITableCellModel[] = []
+
+        this.state.cartModel.history?.forEach(element => {
+            let color = TableRowColor.NONE;
+            if (element.to === CartStatus.CONFIRM || element.to === CartStatus.DOING) {
+                color = TableRowColor.WARNING;
+            } else if (element.to === CartStatus.DONE) {
+                color = TableRowColor.SUCCESS
+            }
+
+            tableCells.push({
+                id: element._id,
+                color: color,
+                content: [
+                    this.cartStatusName(element.from),
+                    this.cartStatusName(element.to),
+                    FrameworkUtils.generateDate(element.date),
+                    FrameworkUtils.userName(element.by as IUserModel)
+                ]
+            })
+        })
+
+        return tableCells;
+    }
+
+    cartStatusName(status: CartStatus) {
+        switch (status) {
+            case CartStatus.DISCUSS: {
+                return this.props.languageContext.current.getMessageString(MessageId.DISCUSS)
+            }
+            case CartStatus.CONFIRM: {
+                return this.props.languageContext.current.getMessageString(MessageId.CONFIRM)
+            }
+            case CartStatus.DOING: {
+                return this.props.languageContext.current.getMessageString(MessageId.DOING)
+            }
+            case CartStatus.DONE: {
+                return this.props.languageContext.current.getMessageString(MessageId.DONE)
+            }
+            default: {
+                return "*"
+            }
+        }
+    }
+
     render() {
         return <FrameworkComponents.BasePage {...{
             title: this.props.languageContext.current.getMessageString(MessageId.CART_DETAIL)
         }}>
+            <FrameworkComponents.BaseForm>
             <FrameworkComponents.FormGroup>
                 <FrameworkComponents.SelectBox
                     placeHolder={this.props.languageContext.current.getMessageString(MessageId.CHANGE_CUSTOMER)}
@@ -409,6 +474,20 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                     {this.props.languageContext.current.getMessageString(MessageId.UPDATE)}
                 </FrameworkComponents.Button>
             </FrameworkComponents.FormGroup>
+            </FrameworkComponents.BaseForm>
+            <FrameworkComponents.BaseForm title={this.props.languageContext.current.getMessageString(MessageId.CART_STATUS_HISTORY)}>
+                <FrameworkComponents.FormGroup>
+                    <FrameworkComponents.Table
+                        header={[
+                            this.props.languageContext.current.getMessageString(MessageId.OLD_STATUS),
+                            this.props.languageContext.current.getMessageString(MessageId.NEW_STATUS),
+                            this.props.languageContext.current.getMessageString(MessageId.CHANGE_DATE),
+                            this.props.languageContext.current.getMessageString(MessageId.EMPLOYEE)
+                        ]}
+                        content={this.renderHistory()}
+                        isDisableSearchComponent={true} />
+                </FrameworkComponents.FormGroup>
+            </FrameworkComponents.BaseForm>
         </FrameworkComponents.BasePage>
     }
 }

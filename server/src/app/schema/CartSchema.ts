@@ -2,7 +2,7 @@ import Mongoose from "mongoose";
 import BaseSchema from "@app/framework/core/BaseSchema";
 import ICartDocument from "@app/app/documents/ICartDocument";
 import DBNameConstant from "@app/framework/constants/DBNameConstant";
-import { CartStatus } from "../constants/EnumConstant";
+import { CartStatus, CartStatusHistoryItem } from "../constants/EnumConstant";
 
 const document = {
     customer: {
@@ -22,6 +22,28 @@ const document = {
         require: true,
         enum: CartStatus,
         default: CartStatus.DISCUSS,
+    },
+
+    history: {
+        type: [
+            {
+                from: {
+                    type: String,
+                    enum: CartStatus,
+                    require: true,
+                },
+                to: {
+                    type: String,
+                    enum: CartStatus,
+                    require: true,
+                },
+                date: Number,
+                by: {
+                    type: Mongoose.Types.ObjectId,
+                    ref: DBNameConstant.USER,
+                },
+            },
+        ],
     },
 
     createdAt: {

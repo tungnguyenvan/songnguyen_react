@@ -164,7 +164,8 @@ class FrameworkUtils {
     }
 
     public static generateDate(dateStamp: number): string {
-        return new Date(dateStamp).toDateString();
+        const date = new Date(dateStamp);
+        return date.toLocaleDateString() + " " + date.toLocaleTimeString();
     }
 
     public static generateUniqueKey(): string {

@@ -182,5 +182,9 @@
 	"CURRENT_PASSWORD": "Mật khẩu hiện tại",
 	"NEW_PASSWORD": "Mật khẩu mới",
 	"PASSWORD_FAILED": "Mật khẩu không đúng",
-	"UNIT": "Đơn vị"
+	"UNIT": "Đơn vị",
+	"CART_STATUS_HISTORY": "Lịch sử đơn hàng",
+	"OLD_STATUS": "Trạng thái cũ",
+	"NEW_STATUS": "Trạng thái mới",
+	"CHANGE_DATE": "Ngày thay đổi"
 }

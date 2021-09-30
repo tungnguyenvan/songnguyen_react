@@ -182,5 +182,9 @@
 	"CURRENT_PASSWORD": "Current password",
 	"NEW_PASSWORD": "New password",
 	"PASSWORD_FAILED": "Incorrect password",
-	"UNIT": "unit"
+	"UNIT": "unit",
+	"CART_STATUS_HISTORY": "Cart history",
+	"OLD_STATUS": "Old status",
+	"NEW_STATUS": "new status",
+	"CHANGE_DATE": "Changed date"
 }
