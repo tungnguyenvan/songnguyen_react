@@ -475,9 +475,8 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                 </FrameworkComponents.Button>
             </FrameworkComponents.FormGroup>
             </FrameworkComponents.BaseForm>
-            <FrameworkComponents.BaseForm title={this.props.languageContext.current.getMessageString(MessageId.CART_STATUS_HISTORY)}>
-                <FrameworkComponents.FormGroup>
                     <FrameworkComponents.Table
+                        title={this.props.languageContext.current.getMessageString(MessageId.CART_STATUS_HISTORY)}
                         header={[
                             this.props.languageContext.current.getMessageString(MessageId.OLD_STATUS),
                             this.props.languageContext.current.getMessageString(MessageId.NEW_STATUS),
@@ -486,8 +485,6 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                         ]}
                         content={this.renderHistory()}
                         isDisableSearchComponent={true} />
-                </FrameworkComponents.FormGroup>
-            </FrameworkComponents.BaseForm>
         </FrameworkComponents.BasePage>
     }
 }
