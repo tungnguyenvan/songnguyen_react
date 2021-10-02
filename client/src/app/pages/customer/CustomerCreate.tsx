@@ -45,9 +45,10 @@ class CustomerCreate extends React.Component<CustomerCreateProps> {
             address: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE)],
             
             tax_code: [//new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE),
-                new Rule(RuleConstant.REGEXP, MessageId.VALIDATE_ONLY_NUMBER, new RegExp(/^[0-9]*$/gm)),
-                new Rule(RuleConstant.MIN, MessageId.VALIDATE_TAX_CODE, 10),
-                new Rule(RuleConstant.MAX, MessageId.VALIDATE_TAX_CODE, 13)],
+                // new Rule(RuleConstant.REGEXP, MessageId.VALIDATE_ONLY_NUMBER, new RegExp(/^[0-9]*$/gm)),
+                // new Rule(RuleConstant.MIN, MessageId.VALIDATE_TAX_CODE, 10),
+                // new Rule(RuleConstant.MAX, MessageId.VALIDATE_TAX_CODE, 13)
+            ],
 
             email: [//new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE),
                 new Rule(RuleConstant.REGEXP, MessageId.VALIDATE_EMAIL, AppConstant.EMAIL_REGEXP)
