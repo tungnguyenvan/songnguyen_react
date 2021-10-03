@@ -193,6 +193,13 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
             }
         })
 
+        this.setState({
+            thicknesses: [],
+            thicknessSelected: {} as IThicknessModel
+        }, () => {
+            this.makeOrderForm.priceSquareMeter.current.setValue("")
+        })
+
         // get data of product name
         this.productNameApiService.all({
             product_type: {
@@ -245,6 +252,11 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
                     standards: response.data.data as IStandardModel[]
                 })
             }
+        })
+
+        this.setState({
+            sizes: [],
+            sizeSelected: {} as ISizeModel
         })
     }
 
