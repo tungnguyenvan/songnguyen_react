@@ -50,7 +50,7 @@ class TableComponent extends React.Component<TableComponentProps, TableComponent
             let canShow = false;
 
             tableContent.content.forEach(content => {
-                if (content.includes(this.state.searchText)) {
+                if (content && content.toLowerCase().includes(this.state.searchText.toLowerCase())) {
                     canShow = true;
                 }
             })
