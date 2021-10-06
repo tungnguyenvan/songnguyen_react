@@ -158,6 +158,7 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
             this.props.languageContext.current.getMessageString(MessageId.OR_DIAMETER),
             this.props.languageContext.current.getMessageString(MessageId.HOLE_COUNT),
             this.props.languageContext.current.getMessageString(MessageId.HOLE_DIAMETER),
+            this.props.languageContext.current.getMessageString(MessageId.PRICE)
         ];
     }
 
@@ -186,6 +187,7 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
                     size?.or?.toString(),
                     size?.hole_count?.toString(),
                     size?.hole_diameter?.toString(),
+                    this.state.warehouse.price?.toLocaleString()
                 ],
             });
         }
@@ -195,20 +197,59 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
 
     onCalculator() {
         if (FrameworkUtils.validateFrom(this.warehouseItemFormRef) && this.validateDiscount()) {
-            const sizeModel: ISizeModel = this.state.warehouse.size as ISizeModel;
-            if (sizeModel) {
-                switch (sizeModel.form_type) {
-                    case FormType.FORM_1: {
-                        this.calculatorForm1(sizeModel);
-                        break;
-                    }
-                    case FormType.FORM_2: {
-                        this.calculatorForm2(sizeModel);
-                        break;
-                    }
-                    case FormType.FORM_3: {
-                        this.calculatorForm3(sizeModel);
-                        break;
+            if (this.state.warehouse.price > 0) {
+                const discountPercent = this.warehouseItemFormRef.percent.current.getValue() as number;
+                const discountType = this.warehouseItemFormRef.discountType.current.getValue() as DiscountType;
+
+                let totalAmount = (this.state.warehouse.price * this.warehouseItemFormRef.amount.current.getValue())
+                if (discountType === DiscountType.DISCOUNT) {
+                    totalAmount = totalAmount - (totalAmount * discountPercent) / 100;
+                } else if (discountType === DiscountType.INCREASE) {
+                    totalAmount = totalAmount + (totalAmount * discountPercent) / 100;
+                }
+
+                this.sizeModelCalculated = this.state.warehouse.size as ISizeModel
+
+                this.setState({
+                    unitPrice: this.state.warehouse.price,
+                    totalAmount: totalAmount
+                }, () => {
+                    this.cartItemCalculated = {
+                        product_name: (this.state.warehouse.product_name as IProductNameModel)._id,
+                        product_type: (this.state.warehouse.product_type as IProductTypeModel)._id,
+                        thickness: (this.state.warehouse.thickness as IThicknessModel)?._id,
+                        system_standard: (this.state.warehouse.system_standard as ISystemStandardModel)?._id,
+                        standard: (this.state.warehouse.standard as IStandardModel)?._id,
+                        size: (this.state.warehouse.size as ISizeModel)?._id,
+                        delivered: 0,
+                        source: CartItemSource.WAREHOUSE,
+                        status: CartItemStatus.DISCUSS,
+                        warehouse: this.state.warehouse._id,
+                        amount: parseFloat(this.warehouseItemFormRef.amount.current.getValue()),
+                        unit_price: parseFloat(this.warehouseItemFormRef.unitPrice.current.getValue()),
+                        total_price: parseFloat(this.warehouseItemFormRef.totalAmount.current.getValue()),
+                        discount_type: this.warehouseItemFormRef.discountType.current.getValue(),
+                        discount_percent: parseFloat(this.warehouseItemFormRef.percent.current.getValue()),
+                    } as ICartItemModel;
+                })
+
+                
+            } else {
+                const sizeModel: ISizeModel = this.state.warehouse.size as ISizeModel;
+                if (sizeModel) {
+                    switch (sizeModel.form_type) {
+                        case FormType.FORM_1: {
+                            this.calculatorForm1(sizeModel);
+                            break;
+                        }
+                        case FormType.FORM_2: {
+                            this.calculatorForm2(sizeModel);
+                            break;
+                        }
+                        case FormType.FORM_3: {
+                            this.calculatorForm3(sizeModel);
+                            break;
+                        }
                     }
                 }
             }
@@ -452,7 +493,10 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
                 if (formType === FormType.FORM_1) {
                     this.saveCartItem(this.cartItemCalculated)
                 } else {
-                    this.sizeModelCalculated._id = undefined as unknown as string;
+                    if (this.sizeModelCalculated._id) {
+                        this.sizeModelCalculated._id = undefined as unknown as string;
+                    }
+
                     this.sizeApiService.save(this.sizeModelCalculated)
                     .then(response => {
                         if (response.status === HttpRequestStatusCode.CREATED) {

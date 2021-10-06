@@ -14,6 +14,7 @@ interface IWarehouseModel extends IBaseModel {
     standard: string | IStandardModel;
     size: string | ISizeModel;
     amount: number;
+    price: number;
 }
 
 export default IWarehouseModel;

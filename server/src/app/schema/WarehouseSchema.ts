@@ -44,6 +44,11 @@ const document = {
         default: 0,
     },
 
+    price: {
+        type: Number,
+        default: 0,
+    },
+
     createdAt: {
         require: true,
         type: Number,

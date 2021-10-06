@@ -24,6 +24,7 @@ import Style from "app/resources/css/CartComponent.module.scss"
 import RouteConstant from "framework/constants/RouteConstant"
 import AppUtils from "app/utils/AppUtils"
 import IWarehouseModel from "app/documents/IWarehouseModel"
+import IThicknessModel from "app/documents/IThicknessModel"
 
 interface CartComponentProps {
     languageContext: ILanguageContext;
@@ -234,6 +235,9 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
                 content: [
                     (element.product_type as IProductTypeModel)?.name,
                     (element.product_name as IProductNameModel)?.name,
+                    (element.system_standard as ISystemStandardModel)?.name,
+                    (element.standard as IStandardModel)?.name,
+                    (element.thickness as IThicknessModel)?.name,
                     size?.inner_diameter?.toString(),
                     size?.outer_diameter?.toString(),
                     size?.wn?.toString(),
@@ -244,8 +248,6 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
                     size?.or?.toString(),
                     size?.hole_count?.toString(),
                     size?.hole_diameter?.toString(),
-                    (element.system_standard as ISystemStandardModel)?.name,
-                    (element.standard as IStandardModel)?.name,
                     element.amount?.toString(),
                     element.unit_price?.toLocaleString(),
                     FrameworkUtils.getDisplayNameDiscountType(element.discount_type, this.props.languageContext),
@@ -352,6 +354,9 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
                     header: [
                         this.props.languageContext.current.getMessageString(MessageId.PRODUCT_TYPE),
                         this.props.languageContext.current.getMessageString(MessageId.PRODUCT_NAME),
+                        this.props.languageContext.current.getMessageString(MessageId.SYSTEM_STANDARD),
+                        this.props.languageContext.current.getMessageString(MessageId.STANDARD),
+                        this.props.languageContext.current.getMessageString(MessageId.THICKNESS),
                         this.props.languageContext.current.getMessageString(MessageId.INNER_DIAMETER),
                         this.props.languageContext.current.getMessageString(MessageId.OUTER_DIAMETER),
                         this.props.languageContext.current.getMessageString(MessageId.WN_DIAMETER),
@@ -362,8 +367,6 @@ class CartComponent extends React.Component<CartComponentProps, CartComponentSta
                         this.props.languageContext.current.getMessageString(MessageId.OR_DIAMETER),
                         this.props.languageContext.current.getMessageString(MessageId.HOLE_COUNT),
                         this.props.languageContext.current.getMessageString(MessageId.HOLE_DIAMETER),
-                        this.props.languageContext.current.getMessageString(MessageId.SYSTEM_STANDARD),
-                        this.props.languageContext.current.getMessageString(MessageId.STANDARD),
                         this.props.languageContext.current.getMessageString(MessageId.AMOUNT),
                         this.props.languageContext.current.getMessageString(MessageId.UNIT_PRICE),
                         this.props.languageContext.current.getMessageString(MessageId.DISCOUNT_TYPE),
