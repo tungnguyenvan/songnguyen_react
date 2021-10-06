@@ -74,6 +74,7 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
             this.props.languageContext.current.getMessageString(MessageId.PRODUCT_TYPE),
             this.props.languageContext.current.getMessageString(MessageId.PRODUCT_NAME),
             this.props.languageContext.current.getMessageString(MessageId.THICKNESS),
+            this.props.languageContext.current.getMessageString(MessageId.AMOUNT),
             this.props.languageContext.current.getMessageString(MessageId.SYSTEM_STANDARD),
             this.props.languageContext.current.getMessageString(MessageId.STANDARD),
             this.props.languageContext.current.getMessageString(MessageId.SIZE),
@@ -87,7 +88,6 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
             this.props.languageContext.current.getMessageString(MessageId.OR_DIAMETER),
             this.props.languageContext.current.getMessageString(MessageId.HOLE_COUNT),
             this.props.languageContext.current.getMessageString(MessageId.HOLE_DIAMETER),
-            this.props.languageContext.current.getMessageString(MessageId.AMOUNT),
             this.props.languageContext.current.getMessageString(MessageId.ACTION),
         ];
     }
@@ -103,6 +103,7 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
                     (element.product_type as IProductTypeModel)?.name,
                     (element.product_name as IProductNameModel)?.name,
                     (element.thickness as IThicknessModel)?.name,
+                    element.amount?.toString(),
                     (element.system_standard as ISystemStandardModel)?.name,
                     (element.standard as IStandardModel)?.name,
                     size?.name,
@@ -116,7 +117,6 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
                     size?.or?.toString(),
                     size?.hole_count?.toString(),
                     size?.hole_diameter?.toString(),
-                    element.amount?.toString(),
                 ],
                 action: {
                     choose: {
