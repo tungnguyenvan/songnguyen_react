@@ -40,6 +40,7 @@ interface CartStatusHistoryItem {
     to: CartStatus;
     date: number;
     by: string;
+    note: string;
 }
 
 export { GasketType, FormType, DiscountType, CartItemStatus, CartStatus, CartItemSource, CartStatusHistoryItem };

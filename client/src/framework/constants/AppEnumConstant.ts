@@ -51,6 +51,7 @@ interface CartStatusHistoryItem {
     to: CartStatus;
     date: number;
     by: string | IUserModel;
+    note: string;
 }
 
 export { FormType, DiscountType, GasketPTCShape, CartItemStatus, CartStatus, CartItemSource, TableRowColor };

@@ -54,10 +54,12 @@ class CustomerCreate extends React.Component<CustomerCreateProps> {
                 new Rule(RuleConstant.REGEXP, MessageId.VALIDATE_EMAIL, AppConstant.EMAIL_REGEXP)
             ],
 
-            phone_number: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE),
+            phone_number: [
+                new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE),
                 new Rule(RuleConstant.REGEXP, MessageId.VALIDATE_ONLY_NUMBER, new RegExp(/^[0-9]*$/gm)),
-                new Rule(RuleConstant.MIN, MessageId.VALIDATE_PHONE_NUMBER, 10),
-                new Rule(RuleConstant.MAX, MessageId.VALIDATE_PHONE_NUMBER, 10)],
+                // new Rule(RuleConstant.MIN, MessageId.VALIDATE_PHONE_NUMBER, 10),
+                // new Rule(RuleConstant.MAX, MessageId.VALIDATE_PHONE_NUMBER, 10)
+            ],
 
             contact_name: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE)]
         }

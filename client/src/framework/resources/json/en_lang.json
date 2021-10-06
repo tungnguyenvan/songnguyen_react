@@ -186,5 +186,6 @@
 	"CART_STATUS_HISTORY": "Cart history",
 	"OLD_STATUS": "Old status",
 	"NEW_STATUS": "new status",
-	"CHANGE_DATE": "Changed date"
+	"CHANGE_DATE": "Changed date",
+	"NOTE": "Note"
 }

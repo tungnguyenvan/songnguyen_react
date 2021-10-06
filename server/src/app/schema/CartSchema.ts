@@ -42,6 +42,7 @@ const document = {
                     type: Mongoose.Types.ObjectId,
                     ref: DBNameConstant.USER,
                 },
+                note: String,
             },
         ],
     },
