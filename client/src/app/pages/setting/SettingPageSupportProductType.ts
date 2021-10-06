@@ -50,6 +50,7 @@ class SettingPageSupportProductType implements ISettingPageSupport<IProductTypeM
         return [
             this.languageContext.current.getMessageString(MessageId.PRODUCT_TYPE),
             this.languageContext.current.getMessageString(MessageId.UNIT),
+            this.languageContext.current.getMessageString(MessageId.MIN_AMOUNT),
             this.languageContext.current.getMessageString(MessageId.FORM_TYPE),
             this.languageContext.current.getMessageString(MessageId.EMPLOYEE),
             this.languageContext.current.getMessageString(MessageId.CREATED_TIME),
@@ -70,6 +71,8 @@ class SettingPageSupportProductType implements ISettingPageSupport<IProductTypeM
                     element.name,
 
                     element.unit,
+
+                    element.min_amount?.toString(),
 
                     AppUtils.formTitle(element.form_type),
 

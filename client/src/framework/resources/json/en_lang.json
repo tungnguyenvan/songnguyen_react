@@ -187,5 +187,8 @@
 	"OLD_STATUS": "Old status",
 	"NEW_STATUS": "new status",
 	"CHANGE_DATE": "Changed date",
-	"NOTE": "Note"
+	"NOTE": "Note",
+	"MIN_AMOUNT": "Số lượng thấp nhất",
+	"WAREHOUSE_RUNNING_OUT": "Warehouse product running out",
+	"EIDT_CART_HISTORY": "Edit cart history"
 }

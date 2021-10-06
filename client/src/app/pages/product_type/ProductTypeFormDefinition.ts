@@ -4,6 +4,7 @@ interface IProductTypeFormRef {
     inputName: React.RefObject<any>;
     formTypeSelectBox: React.RefObject<any>;
     unit: React.RefObject<any>;
+    inputMinAmount: React.RefObject<any>;
 }
 
 interface IProductTypeFormValidate {

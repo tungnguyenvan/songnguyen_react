@@ -144,6 +144,7 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
             this.props.languageContext.current.getMessageString(MessageId.PRODUCT_TYPE),
             this.props.languageContext.current.getMessageString(MessageId.PRODUCT_NAME),
             this.props.languageContext.current.getMessageString(MessageId.THICKNESS),
+            this.props.languageContext.current.getMessageString(MessageId.AMOUNT),
             this.props.languageContext.current.getMessageString(MessageId.SYSTEM_STANDARD),
             this.props.languageContext.current.getMessageString(MessageId.STANDARD),
             this.props.languageContext.current.getMessageString(MessageId.SIZE),
@@ -157,7 +158,6 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
             this.props.languageContext.current.getMessageString(MessageId.OR_DIAMETER),
             this.props.languageContext.current.getMessageString(MessageId.HOLE_COUNT),
             this.props.languageContext.current.getMessageString(MessageId.HOLE_DIAMETER),
-            this.props.languageContext.current.getMessageString(MessageId.AMOUNT),
         ];
     }
 
@@ -172,6 +172,7 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
                     (this.state.warehouse.product_type as IProductTypeModel)?.name,
                     (this.state.warehouse.product_name as IProductNameModel)?.name,
                     (this.state.warehouse.thickness as IThicknessModel)?.name,
+                    this.state.warehouse.amount?.toString(),
                     (this.state.warehouse.system_standard as ISystemStandardModel)?.name,
                     (this.state.warehouse.standard as IStandardModel)?.name,
                     size?.name,
@@ -185,7 +186,6 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
                     size?.or?.toString(),
                     size?.hole_count?.toString(),
                     size?.hole_diameter?.toString(),
-                    this.state.warehouse.amount?.toString(),
                 ],
             });
         }

@@ -370,7 +370,15 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                     element.note,
                     FrameworkUtils.generateDate(element.date),
                     FrameworkUtils.userName(element.by as IUserModel)
-                ]
+                ],
+                action: {
+                    edit: {
+                        isAlive: true,
+                        func: (id: string) => {
+                            this.props.appUrlContext.redirectTo("/cart_history/" + this.state.cartModel._id + "/" + id)
+                        }
+                    }
+                }
             })
         })
 
@@ -488,6 +496,7 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                     <FrameworkComponents.Table
                         title={this.props.languageContext.current.getMessageString(MessageId.CART_STATUS_HISTORY)}
                         header={[
+                            this.props.languageContext.current.getMessageString(MessageId.ACTION),
                             this.props.languageContext.current.getMessageString(MessageId.OLD_STATUS),
                             this.props.languageContext.current.getMessageString(MessageId.NEW_STATUS),
                             this.props.languageContext.current.getMessageString(MessageId.NOTE),

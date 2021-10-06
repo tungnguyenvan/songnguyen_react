@@ -21,6 +21,11 @@ const document = {
         require: true,
     },
 
+    min_amount: {
+        type: Number,
+        require: true,
+    },
+
     createdAt: {
         require: true,
         type: Number,

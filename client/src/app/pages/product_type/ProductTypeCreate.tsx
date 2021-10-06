@@ -3,6 +3,7 @@ import IProductTypeModel from "app/documents/IProductTypeModel"
 import AppRenderUtils from "app/utils/AppRenderUtils"
 import FrameworkComponents from "framework/components/FrameworkComponents"
 import IFormInputElement from "framework/components/IFormInputElement"
+import AppConstant from "framework/constants/AppConstant"
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant"
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode"
 import MessageId from "framework/constants/MessageId"
@@ -35,7 +36,8 @@ class ProductTypeCreate extends React.Component<ProductTypeDetailProps> {
         this.productTypeFormRef = {
             inputName: React.createRef<IFormInputElement>(),
             formTypeSelectBox: React.createRef<IFormInputElement>(),
-            unit: React.createRef<IFormInputElement>()
+            unit: React.createRef<IFormInputElement>(),
+            inputMinAmount: React.createRef<IFormInputElement>()
         }
         this.productTypeFormValidate = {
             inputName: [new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE)],
@@ -56,7 +58,8 @@ class ProductTypeCreate extends React.Component<ProductTypeDetailProps> {
             const model: IProductTypeModel = {
                 name: this.productTypeFormRef.inputName.current.getValue(),
                 form_type: this.productTypeFormRef.formTypeSelectBox.current.getValue(),
-                unit: this.productTypeFormRef.unit.current.getValue()
+                unit: this.productTypeFormRef.unit.current.getValue(),
+                min_amount: this.productTypeFormRef.inputMinAmount.current.getValue()
             } as IProductTypeModel
 
             this.productTypeApiService.save(model)
@@ -99,6 +102,10 @@ class ProductTypeCreate extends React.Component<ProductTypeDetailProps> {
                         ref={this.productTypeFormRef.unit}
                         placeHolder={this.props.languageContext.current.getMessageString(MessageId.UNIT)}
                         validate={this.productTypeFormValidate.unit} />
+                    <FrameworkComponents.InputText
+                        ref={this.productTypeFormRef.inputMinAmount}
+                        placeHolder={this.props.languageContext.current.getMessageString(MessageId.MIN_AMOUNT)}
+                        validate={[new Rule(RuleConstant.REQUIRED, MessageId.VALIDATE_REQUIRE), new Rule(RuleConstant.REGEXP, MessageId.VALIDATE_ONLY_NUMBER, AppConstant.ONLY_NUMBER_REGEXP)]} />
                 </FrameworkComponents.FormGroup>
                 <FrameworkComponents.FormGroup>
                     <FrameworkComponents.SelectBox
