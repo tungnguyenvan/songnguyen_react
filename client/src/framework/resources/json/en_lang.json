@@ -187,5 +187,6 @@
 	"OLD_STATUS": "Old status",
 	"NEW_STATUS": "new status",
 	"CHANGE_DATE": "Changed date",
-	"NOTE": "Note"
+	"NOTE": "Note",
+	"MIN_AMOUNT": "Số lượng thấp nhất"
 }

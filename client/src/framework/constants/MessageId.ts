@@ -189,6 +189,7 @@ enum MessageId {
     NEW_STATUS = "NEW_STATUS",
     CHANGE_DATE = "CHANGE_DATE",
     NOTE = "NOTE",
+    MIN_AMOUNT = "MIN_AMOUNT",
 }
 
 export default MessageId;

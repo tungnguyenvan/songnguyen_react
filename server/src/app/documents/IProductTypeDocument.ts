@@ -14,6 +14,8 @@ interface IProductTypeDocument extends IBaseDocument {
     form_type: FormType;
 
     unit: string;
+
+    min_amount: number;
 }
 
 export default IProductTypeDocument;
