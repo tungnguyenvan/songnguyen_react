@@ -189,5 +189,6 @@
 	"CHANGE_DATE": "Ngày thay đổi",
 	"NOTE": "Ghi chú",
 	"MIN_AMOUNT": "Số lượng thấp nhất",
-	"WAREHOUSE_RUNNING_OUT": "Sản phẩm kho sắp hết"
+	"WAREHOUSE_RUNNING_OUT": "Sản phẩm kho sắp hết",
+	"EIDT_CART_HISTORY": "Chỉnh sửa lịch sử giỏ hàng"
 }

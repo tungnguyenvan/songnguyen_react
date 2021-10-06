@@ -54,6 +54,7 @@ enum RouteConstant {
     WAREHOUSE_ITEM_DETAIL = "/warehouse/item/:id",
     CHANGE_PASSWORD = "/change_password/",
     CHANGE_PASSWORD_ID = "/change_password/:id",
+    CART_HISTORY_EDIT = "/cart_history/:cart_id/:history_id",
 }
 
 export default RouteConstant;

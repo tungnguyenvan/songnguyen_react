@@ -191,6 +191,7 @@ enum MessageId {
     NOTE = "NOTE",
     MIN_AMOUNT = "MIN_AMOUNT",
     WAREHOUSE_RUNNING_OUT = "WAREHOUSE_RUNNING_OUT",
+    EIDT_CART_HISTORY = "EIDT_CART_HISTORY",
 }
 
 export default MessageId;
