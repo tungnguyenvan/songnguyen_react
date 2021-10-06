@@ -190,6 +190,7 @@ enum MessageId {
     CHANGE_DATE = "CHANGE_DATE",
     NOTE = "NOTE",
     MIN_AMOUNT = "MIN_AMOUNT",
+    WAREHOUSE_RUNNING_OUT = "WAREHOUSE_RUNNING_OUT",
 }
 
 export default MessageId;

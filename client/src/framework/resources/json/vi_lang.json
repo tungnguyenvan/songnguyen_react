@@ -188,5 +188,6 @@
 	"NEW_STATUS": "Trạng thái mới",
 	"CHANGE_DATE": "Ngày thay đổi",
 	"NOTE": "Ghi chú",
-	"MIN_AMOUNT": "Số lượng thấp nhất"
+	"MIN_AMOUNT": "Số lượng thấp nhất",
+	"WAREHOUSE_RUNNING_OUT": "Sản phẩm kho sắp hết"
 }
