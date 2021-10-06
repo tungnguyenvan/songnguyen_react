@@ -13,6 +13,7 @@ interface IWarehouseDocument extends IBaseDocument {
     standard: Mongoose.Types.ObjectId;
     size: Mongoose.Types.ObjectId;
     amount: number;
+    price: number;
 }
 
 export default IWarehouseDocument;

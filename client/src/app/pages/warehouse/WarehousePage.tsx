@@ -71,6 +71,7 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
 
     tableHeader(): string[] {
         return [
+            this.props.languageContext.current.getMessageString(MessageId.ACTION),
             this.props.languageContext.current.getMessageString(MessageId.PRODUCT_TYPE),
             this.props.languageContext.current.getMessageString(MessageId.PRODUCT_NAME),
             this.props.languageContext.current.getMessageString(MessageId.THICKNESS),
@@ -88,7 +89,7 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
             this.props.languageContext.current.getMessageString(MessageId.OR_DIAMETER),
             this.props.languageContext.current.getMessageString(MessageId.HOLE_COUNT),
             this.props.languageContext.current.getMessageString(MessageId.HOLE_DIAMETER),
-            this.props.languageContext.current.getMessageString(MessageId.ACTION),
+            this.props.languageContext.current.getMessageString(MessageId.PRICE)
         ];
     }
 
@@ -117,6 +118,7 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
                     size?.or?.toString(),
                     size?.hole_count?.toString(),
                     size?.hole_diameter?.toString(),
+                    element.price?.toLocaleString()
                 ],
                 action: {
                     choose: {

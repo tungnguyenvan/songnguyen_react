@@ -63,6 +63,7 @@ interface IWarehouseImportFormRef {
     size: React.RefObject<any>;
     form: React.RefObject<any>;
     amount: React.RefObject<any>;
+    price: React.RefObject<any>;
 }
 
 class WarehouseImport extends React.Component<WarehouseImportProps, WarehouseState> {
@@ -108,6 +109,7 @@ class WarehouseImport extends React.Component<WarehouseImportProps, WarehouseSta
             size: React.createRef<IFormInputElement>(),
             form: React.createRef<IFormInputElement>(),
             amount: React.createRef<IFormInputElement>(),
+            price: React.createRef<IFormInputElement>(),
         };
 
         this.productTypeOnChanged = this.productTypeOnChanged.bind(this);
@@ -275,7 +277,8 @@ class WarehouseImport extends React.Component<WarehouseImportProps, WarehouseSta
                 product_name: this.warehouseImportFormRef.productName.current.getValue(),
                 product_type: this.warehouseImportFormRef.productType.current.getValue(),
                 thickness: this.warehouseImportFormRef.thickness.current.getValue(),
-                amount: parseFloat(this.warehouseImportFormRef.amount.current.getValue())
+                amount: parseFloat(this.warehouseImportFormRef.amount.current.getValue()),
+                price: this.warehouseImportFormRef.price.current.getValue()
             } as IWarehouseModel
 
             if (this.state.formType === FormType.FORM_1) {
@@ -288,7 +291,8 @@ class WarehouseImport extends React.Component<WarehouseImportProps, WarehouseSta
                 this.warehouseApiService.all({
                     product_type: warehouseItem.product_type,
                     product_name: warehouseItem.product_name,
-                    thickness: warehouseItem.thickness
+                    thickness: warehouseItem.thickness,
+                    price: this.warehouseImportFormRef.price.current.getValue() ? this.warehouseImportFormRef.price.current.getValue() : 0
                 } as IWarehouseModel)
                     .then(response => {
                         if (response.status === HttpRequestStatusCode.OK) {
@@ -491,6 +495,12 @@ class WarehouseImport extends React.Component<WarehouseImportProps, WarehouseSta
                 )}
 
                 <FrameworkComponents.BaseForm>
+                    <FrameworkComponents.FormGroup>
+                        <FrameworkComponents.InputText
+                            placeHolder={this.props.languageContext.current.getMessageString(MessageId.PRICE)}
+                            ref={this.warehouseImportFormRef.price}
+                            validate={[new Rule(RuleConstant.REGEXP, MessageId.VALIDATE_ONLY_NUMBER, AppConstant.ONLY_NUMBER_REGEXP)]} />
+                    </FrameworkComponents.FormGroup>
                     <FrameworkComponents.FormGroup>
                         <FrameworkComponents.InputText
                             placeHolder={this.props.languageContext.current.getMessageString(MessageId.AMOUNT)}
