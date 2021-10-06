@@ -57,6 +57,7 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
     private cartStatusRef: React.RefObject<any>;
     private cartItemApiService: CartItemApiService;
     private warehouseApiService: WarehouseApiService;
+    private noteTextAreaRef: React.RefObject<any>;
 
     constructor(props: CartDetailProps) {
         super(props)
@@ -65,7 +66,8 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
         this.customerApiService = new CustomerApiService()
         this.cartItemApiService = new CartItemApiService();
         this.warehouseApiService = new WarehouseApiService();
-        this.cartStatusRef = React.createRef<IFormInputElement>()
+        this.cartStatusRef = React.createRef<IFormInputElement>();
+        this.noteTextAreaRef = React.createRef<any>();
 
         this.state = {
             cartModel: {} as ICartModel,
@@ -302,7 +304,8 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                 from: this.state.oldCartStatus,
                 to: this.state.cartModel.status,
                 date: Date.now(),
-                by: this.props.userLoginContext.state.user?._id
+                by: this.props.userLoginContext.state.user?._id,
+                note: this.noteTextAreaRef.current.getValue()
             } as CartStatusHistoryItem)
         }
 
@@ -315,6 +318,7 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                     })
                     this.requestApi(this.state.cartModel._id)
                     this.props.cartContext.current.onRefresh()
+                    this.noteTextAreaRef.current.clear();
                 } else {
                     this.props.appDialogContext.addDialog({
                         title: this.props.languageContext.current.getMessageString(MessageId.CANNOT_UPDATE),
@@ -363,6 +367,7 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                 content: [
                     this.cartStatusName(element.from),
                     this.cartStatusName(element.to),
+                    element.note,
                     FrameworkUtils.generateDate(element.date),
                     FrameworkUtils.userName(element.by as IUserModel)
                 ]
@@ -453,6 +458,11 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                     ref={this.cartStatusRef} />
             </FrameworkComponents.FormGroup>
             <FrameworkComponents.FormGroup>
+                <FrameworkComponents.InputText
+                    placeHolder={this.props.languageContext.current.getMessageString(MessageId.NOTE)}
+                    ref={this.noteTextAreaRef} />
+            </FrameworkComponents.FormGroup>
+            <FrameworkComponents.FormGroup>
                 <FrameworkComponents.Button
                     type={ButtonTypeConstant.DANGER}
                     dialogModel={{
@@ -480,6 +490,7 @@ class CartDetail extends React.Component<CartDetailProps, CartDetailState> {
                         header={[
                             this.props.languageContext.current.getMessageString(MessageId.OLD_STATUS),
                             this.props.languageContext.current.getMessageString(MessageId.NEW_STATUS),
+                            this.props.languageContext.current.getMessageString(MessageId.NOTE),
                             this.props.languageContext.current.getMessageString(MessageId.CHANGE_DATE),
                             this.props.languageContext.current.getMessageString(MessageId.EMPLOYEE)
                         ]}
