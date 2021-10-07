@@ -7,6 +7,7 @@ import ISystemStandardModel from "app/documents/ISystemStandardModel";
 import IThicknessModel from "app/documents/IThicknessModel";
 import IWarehouseModel from "app/documents/IWarehouseModel";
 import FrameworkComponents from "framework/components/FrameworkComponents";
+import { TableRowColor } from "framework/constants/AppEnumConstant";
 import ButtonTypeConstant from "framework/constants/ButtonTypeConstant";
 import HttpRequestStatusCode from "framework/constants/HttpRequestStatusCode";
 import MessageId from "framework/constants/MessageId";
@@ -55,11 +56,7 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
 
     all() {
         this.warehouseApiService
-            .all({
-                amount: {
-                    $ne: 0,
-                },
-            })
+            .all()
             .then((response) => {
                 if (response.status === HttpRequestStatusCode.OK) {
                     this.setState({
@@ -97,9 +94,16 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
         const tableCells: ITableCellModel[] = [];
 
         this.state.items.forEach((element) => {
+            let color = TableRowColor.NONE;
+
+            if ((element.product_type as IProductTypeModel).min_amount <= element.amount) {
+                color = TableRowColor.WARNING;
+            }
+
             const size = element.size as ISizeModel;
             tableCells.push({
                 id: element._id,
+                color: color,
                 content: [
                     (element.product_type as IProductTypeModel)?.name,
                     (element.product_name as IProductNameModel)?.name,
