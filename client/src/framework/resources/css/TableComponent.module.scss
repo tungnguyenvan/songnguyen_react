@@ -8,13 +8,10 @@
     justify-content: center;
     border-radius: $border-radius;
     border: 1px solid rgba(0, 0, 0, 0.12);
-    padding-bottom: 16px;
-    margin-bottom: 32px;
 
     & .table__common__button {
         width: 24px;
         height: 24px;
-        padding: 8px;
         border-radius: 50%;
         background-color: $base-bg-color-hover;
         cursor: pointer;
@@ -48,8 +45,6 @@
                 overflow: hidden;
                 height: 56px;
                 color: rgba(0, 0, 0, 0.87);
-                padding-right: 16px;
-                padding-left: 16px;
                 border: 1px solid #e3e6f0;
                 border-bottom: 2px solid #dee2e6;
             }
@@ -66,8 +61,6 @@
                     height: 56px;
                     width: auto;
                     max-width: 310px;
-                    padding-left: 16px;
-                    padding-right: 16px;
                     text-decoration: inherit;
                     text-transform: inherit;
                     box-sizing: border-box;

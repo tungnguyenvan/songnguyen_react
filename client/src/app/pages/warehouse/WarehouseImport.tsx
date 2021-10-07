@@ -497,7 +497,7 @@ class WarehouseImport extends React.Component<WarehouseImportProps, WarehouseSta
                 <FrameworkComponents.BaseForm>
                     <FrameworkComponents.FormGroup>
                         <FrameworkComponents.InputText
-                            placeHolder={this.props.languageContext.current.getMessageString(MessageId.PRICE)}
+                            placeHolder={this.props.languageContext.current.getMessageString(MessageId.UNIT_PRICE)}
                             ref={this.warehouseImportFormRef.price}
                             validate={[new Rule(RuleConstant.REGEXP, MessageId.VALIDATE_ONLY_NUMBER, AppConstant.ONLY_NUMBER_REGEXP)]} />
                     </FrameworkComponents.FormGroup>
