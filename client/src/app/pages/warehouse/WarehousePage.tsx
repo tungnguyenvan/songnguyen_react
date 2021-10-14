@@ -96,7 +96,7 @@ class WarehousePage extends React.Component<WarehouseProps, WarehouseState> {
         this.state.items.forEach((element) => {
             let color = TableRowColor.NONE;
 
-            if ((element.product_type as IProductTypeModel).min_amount >= element.amount) {
+            if ((element.product_type as IProductTypeModel) && (element.product_type as IProductTypeModel)?.min_amount >= element.amount) {
                 color = TableRowColor.WARNING;
             }
 

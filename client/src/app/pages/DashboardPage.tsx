@@ -48,7 +48,7 @@ class DashboardPage extends React.Component<ProductTypeDetailProps, ProductTypeD
 					let warehouseRunningOut: IWarehouseModel[] = []
 					const warehouseItems = response.data.data as IWarehouseModel[];
 					warehouseItems.forEach(element => {
-						if (element.amount <= (element.product_type as IProductTypeModel)?.min_amount) {
+						if ((element.product_type as IProductTypeModel) && element.amount <= (element.product_type as IProductTypeModel)?.min_amount) {
 							warehouseRunningOut.push(element);
 						}
 					})
