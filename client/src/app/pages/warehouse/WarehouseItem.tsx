@@ -277,17 +277,19 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
         //     ((Math.pow(sizeModel.outer_diameter + 5, 2) - coreDiscount) / 1000000 * m2Price).toFixed(0), 10
         // ))
 
+        // calculator discount
+        if (discountType === DiscountType.DISCOUNT) {
+            unitPrice = unitPrice - (unitPrice * discountPercent) / 100;
+        } else if (discountType === DiscountType.INCREASE) {
+            unitPrice = unitPrice + (unitPrice * discountPercent) / 100;
+        }
+        unitPrice = parseInt(unitPrice.toString(), 10);
+
         this.setState({
             unitPrice: unitPrice
         })
 
         let totalAmount = unitPrice * amount;
-        // calculator discount
-        if (discountType === DiscountType.DISCOUNT) {
-            totalAmount = totalAmount - (totalAmount * discountPercent) / 100;
-        } else if (discountType === DiscountType.INCREASE) {
-            totalAmount = totalAmount + (totalAmount * discountPercent) / 100;
-        }
         this.setState(
             {
                 totalAmount: totalAmount,
@@ -380,18 +382,20 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
             }
         }
 
+        // calculator discount
+        if (discountType === DiscountType.DISCOUNT) {
+            unitPrice = unitPrice - (unitPrice * discountPercent) / 100;
+        } else if (discountType === DiscountType.INCREASE) {
+            unitPrice = unitPrice + (unitPrice * discountPercent) / 100;
+        }
+        unitPrice = parseInt(unitPrice.toString(), 10);
+
         this.setState({
             unitPrice: unitPrice
         })
 
         let totalAmount = unitPrice * amount;
 
-        // calculator discount
-        if (discountType === DiscountType.DISCOUNT) {
-            totalAmount = totalAmount - (totalAmount * discountPercent) / 100;
-        } else if (discountType === DiscountType.INCREASE) {
-            totalAmount = totalAmount + (totalAmount * discountPercent) / 100;
-        }
         this.setState(
             {
                 totalAmount: totalAmount,
@@ -423,18 +427,21 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
         const dt = sizeModel.wt * sizeModel.lt
         let dtPrice = dt * (this.state.warehouse.thickness as IThicknessModel).price / 1000000;
         dtPrice = parseInt(dtPrice.toFixed(0));
-        let totalAmount = dtPrice * parseFloat(this.warehouseItemFormRef.amount.current.getValue())
 
-        this.setState({
-            unitPrice: parseInt(dtPrice.toFixed(0), 10)
-        })
-
+        let unitPrice = parseInt(dtPrice.toFixed(0), 10)
         // calculator discount
         if (discountType === DiscountType.DISCOUNT) {
-            totalAmount = totalAmount - (totalAmount * discountPercent) / 100;
+            unitPrice = unitPrice - (unitPrice * discountPercent) / 100;
         } else if (discountType === DiscountType.INCREASE) {
-            totalAmount = totalAmount + (totalAmount * discountPercent) / 100;
+            unitPrice = unitPrice + (unitPrice * discountPercent) / 100;
         }
+        unitPrice = parseInt(unitPrice.toString(), 10);
+        this.setState({
+            unitPrice: unitPrice
+        })
+
+        let totalAmount = unitPrice * parseFloat(this.warehouseItemFormRef.amount.current.getValue())
+
         this.setState(
             {
                 totalAmount: totalAmount,
@@ -477,12 +484,13 @@ class WarehouseItem extends React.Component<WarehouseItemProps, WarehouseItemSta
 
     addToCart() {
         if (FrameworkUtils.validateFrom(this.warehouseItemFormRef) && this.validateDiscount()) {
-            if (this.state.warehouse.amount < this.cartItemCalculated.amount) {
-                this.props.appDialogContext.addDialog({
-                    title: this.props.languageContext.current.getMessageString(MessageId.NOT_ENOUGH),
-                    content: this.props.languageContext.current.getMessageString(MessageId.NOT_ENOUGH_CONTENT),
-                });
-            } else if (FrameworkUtils.isBlank(this.props.cartContext.current.getIdCartSelected())) {
+            // if (this.state.warehouse.amount < this.cartItemCalculated.amount) {
+            //     this.props.appDialogContext.addDialog({
+            //         title: this.props.languageContext.current.getMessageString(MessageId.NOT_ENOUGH),
+            //         content: this.props.languageContext.current.getMessageString(MessageId.NOT_ENOUGH_CONTENT),
+            //     });
+            // } else
+            if (FrameworkUtils.isBlank(this.props.cartContext.current.getIdCartSelected())) {
                 this.props.appDialogContext.addDialog({
                     title: this.props.languageContext.current.getMessageString(MessageId.CHOOSE_CART),
                     content: this.props.languageContext.current.getMessageString(MessageId.NEED_CHOOSE_CART)

@@ -355,17 +355,19 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
             ((Math.pow(sizeModel.outer_diameter + 5, 2) - coreDiscount) / 1000000 * m2Price).toFixed(0), 10
         ))
 
+        // calculator discount
+        if (discountType === DiscountType.DISCOUNT) {
+            unitPrice = unitPrice - (unitPrice * discountPercent / 100)
+        } else if (discountType === DiscountType.INCREASE) {
+            unitPrice = unitPrice + (unitPrice * discountPercent/100)
+        }
+        unitPrice = parseInt(unitPrice.toString(), 10);
+
         this.setState({
             unitPrice: unitPrice
         })
 
         let totalAmount = unitPrice * amount;
-        // calculator discount
-        if (discountType === DiscountType.DISCOUNT) {
-            totalAmount = totalAmount - (totalAmount * discountPercent / 100)
-        } else if (discountType === DiscountType.INCREASE) {
-            totalAmount = totalAmount + (totalAmount * discountPercent/100)
-        }
         this.setState({
             totalAmount: totalAmount
         }, () => {
@@ -395,19 +397,21 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
         const dt = sizeModel.wt * sizeModel.lt
         let dtPrice = dt * parseFloat(this.makeOrderForm.priceSquareMeter.current.getValue()) / 1000000;
         dtPrice = parseInt(dtPrice.toFixed(0));
-        let totalAmount = dtPrice * parseFloat(this.makeOrderForm.amount.current.getValue())
 
-        this.setState({
-            unitPrice: parseInt(dtPrice.toFixed(0), 10)
-        })
-
+        let unitPrice = parseInt(dtPrice.toFixed(0), 10)
         // calculator discount
         if (discountType === DiscountType.DISCOUNT) {
-            totalAmount = totalAmount - (totalAmount * discountPercent / 100)
+            unitPrice = unitPrice - (unitPrice * discountPercent / 100)
         } else if (discountType === DiscountType.INCREASE) {
-            totalAmount = totalAmount + (totalAmount * discountPercent/100)
+            unitPrice = unitPrice + (unitPrice * discountPercent/100)
         }
+        unitPrice = parseInt(unitPrice.toString(), 10);
 
+        this.setState({
+            unitPrice: unitPrice
+        })
+
+        let totalAmount = unitPrice * parseFloat(this.makeOrderForm.amount.current.getValue())
         this.setState({
             totalAmount: totalAmount
         }, () => {
@@ -495,17 +499,19 @@ class MakeOrderPage extends React.Component<MakeOrderPageProps, MakeOrderPageSta
         const newSize = this.makeOrderForm.form.current.getValue()
         this.sizeModelCalculated = newSize
 
+        // calculator discount
+        if (discountType === DiscountType.DISCOUNT) {
+            unitPrice = unitPrice - (unitPrice * discountPercent / 100)
+        } else if (discountType === DiscountType.INCREASE) {
+            unitPrice = unitPrice + (unitPrice * discountPercent/100)
+        }
+        unitPrice = parseInt(unitPrice.toString(), 10);
+
         this.setState({
             unitPrice: unitPrice
         })
 
         let totalAmount = unitPrice * amount;
-        // calculator discount
-        if (discountType === DiscountType.DISCOUNT) {
-            totalAmount = totalAmount - (totalAmount * discountPercent / 100)
-        } else if (discountType === DiscountType.INCREASE) {
-            totalAmount = totalAmount + (totalAmount * discountPercent/100)
-        }
         this.setState({
             totalAmount: totalAmount
         }, () => {
