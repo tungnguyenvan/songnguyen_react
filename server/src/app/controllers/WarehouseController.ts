@@ -20,7 +20,8 @@ import SizeRepository from "../repositories/SizeRepository";
 import Https from "https";
 
 const NAME_SPACE = "WarehouseController";
-const WAREHOUSE_FILE_INTERNET_DIR = "https://firebasestorage.googleapis.com/v0/b/songnguyen.appspot.com/o/warehouse.xlsx?alt=media&token=e0d4c97a-688e-4f05-8467-37727e981b7a";
+const WAREHOUSE_FILE_INTERNET_DIR =
+    "https://firebasestorage.googleapis.com/v0/b/songnguyen.appspot.com/o/warehouse.xlsx?alt=media&token=1af3c694-33d6-497c-98cd-b86147bad4b6";
 const WAREHOUSE_FILE_RESOURCE_DIR = __dirname + "/../../resource/warehouse.xlsx";
 
 /**
@@ -50,11 +51,16 @@ class WarehouseController extends BaseController {
             this.repository.all(request).then((w) => {
                 if ((w as unknown as any[]).length > 0) {
                     const updateObject = {
-                        amount: ((w as unknown as any[])[0] as IWarehouseDocument).amount + parseInt(request.body.amount, 10),
+                        amount:
+                            ((w as unknown as any[])[0] as IWarehouseDocument).amount +
+                            parseInt(request.body.amount, 10),
+                        price: request.body.price,
                     };
                     const req = request;
                     req.body = updateObject;
-                    req.params.id = ((w as unknown as any[])[0] as IWarehouseDocument)._id.toString();
+                    req.params.id = (
+                        (w as unknown as any[])[0] as IWarehouseDocument
+                    )._id.toString();
                     this.repository
                         .updateOne(req)
                         .then((d) => {
@@ -90,37 +96,91 @@ class WarehouseController extends BaseController {
         const productTypeRepository: ProductTypeRepository = new ProductTypeRepository();
         productTypeRepository.all(request).then((productTypeResponse) => {
             productTypes = productTypeResponse as unknown as IProductTypeDocument[];
-            this.executeExcelFile(productTypes, productNames, thickness, systemStandards, standards, sizes, request, response);
+            this.executeExcelFile(
+                productTypes,
+                productNames,
+                thickness,
+                systemStandards,
+                standards,
+                sizes,
+                request,
+                response
+            );
         });
 
         const productNameRepository: ProductNameRepository = new ProductNameRepository();
         productNameRepository.all(request).then((productNamesResponse) => {
             productNames = productNamesResponse as unknown as IProductNameDocument[];
-            this.executeExcelFile(productTypes, productNames, thickness, systemStandards, standards, sizes, request, response);
+            this.executeExcelFile(
+                productTypes,
+                productNames,
+                thickness,
+                systemStandards,
+                standards,
+                sizes,
+                request,
+                response
+            );
         });
 
         const thicknessRepository: ThicknessRepository = new ThicknessRepository();
         thicknessRepository.all(request).then((thicknessResponse) => {
             thickness = thicknessResponse as unknown as IThicknessDocument[];
-            this.executeExcelFile(productTypes, productNames, thickness, systemStandards, standards, sizes, request, response);
+            this.executeExcelFile(
+                productTypes,
+                productNames,
+                thickness,
+                systemStandards,
+                standards,
+                sizes,
+                request,
+                response
+            );
         });
 
         const systemStandardRepository: SystemStandardRepository = new SystemStandardRepository();
         systemStandardRepository.all(request).then((systemStandardResponse) => {
             systemStandards = systemStandardResponse as unknown as ISystemStandardDocument[];
-            this.executeExcelFile(productTypes, productNames, thickness, systemStandards, standards, sizes, request, response);
+            this.executeExcelFile(
+                productTypes,
+                productNames,
+                thickness,
+                systemStandards,
+                standards,
+                sizes,
+                request,
+                response
+            );
         });
 
         const standardRepository: StandardRepository = new StandardRepository();
         standardRepository.all(request).then((standardResponse) => {
             standards = standardResponse as unknown as IStandardDocument[];
-            this.executeExcelFile(productTypes, productNames, thickness, systemStandards, standards, sizes, request, response);
+            this.executeExcelFile(
+                productTypes,
+                productNames,
+                thickness,
+                systemStandards,
+                standards,
+                sizes,
+                request,
+                response
+            );
         });
 
         const sizeRepository: SizeRepository = new SizeRepository();
         sizeRepository.all(request).then((sizeResponse) => {
             sizes = sizeResponse as unknown as ISizeDocument[];
-            this.executeExcelFile(productTypes, productNames, thickness, systemStandards, standards, sizes, request, response);
+            this.executeExcelFile(
+                productTypes,
+                productNames,
+                thickness,
+                systemStandards,
+                standards,
+                sizes,
+                request,
+                response
+            );
         });
         Logging.debug(NAME_SPACE, `${NAME_SPACE}#download END`);
     }
@@ -159,10 +219,22 @@ class WarehouseController extends BaseController {
 
                 file.on("finish", () => {
                     workbook.xlsx.readFile(WAREHOUSE_FILE_RESOURCE_DIR).then(() => {
-                        Logging.debug(NAME_SPACE, `${NAME_SPACE}#readFile warehouse START`, workbook.properties);
+                        Logging.debug(
+                            NAME_SPACE,
+                            `${NAME_SPACE}#readFile warehouse START`,
+                            workbook.properties
+                        );
                         const workSheet = workbook.getWorksheet(1);
                         try {
-                            this.writeSettingSheet(workSheet, productTypes, productNames, thickness, systemStandards, standards, sizes);
+                            this.writeSettingSheet(
+                                workSheet,
+                                productTypes,
+                                productNames,
+                                thickness,
+                                systemStandards,
+                                standards,
+                                sizes
+                            );
                         } catch (error) {
                             Logging.error(NAME_SPACE, `${NAME_SPACE}#download`, error);
                             this.appResponse.internalServerError(request, response);
@@ -175,7 +247,8 @@ class WarehouseController extends BaseController {
                                     // fs.unlinkSync(URL_PATH + fileName);
                                 }, 120000);
                                 this.appResponse.ok(request, response, {
-                                    url: "https://" + request.get("host") + "/resources/" + fileName,
+                                    url:
+                                        "https://" + request.get("host") + "/resources/" + fileName,
                                 });
                             })
                             .catch((error) => {
@@ -218,7 +291,13 @@ class WarehouseController extends BaseController {
         if (maxLength < standards.length) maxLength = standards.length;
         if (maxLength < sizes.length) maxLength = sizes.length;
         let index = 1;
-        const gasketPTCShape = ["RF_CIRCLE", "FF_CIRCLE", "RF_RECTANGLE", "FF_RECTANGLE", "FF_MANHOLE"];
+        const gasketPTCShape = [
+            "RF_CIRCLE",
+            "FF_CIRCLE",
+            "RF_RECTANGLE",
+            "FF_RECTANGLE",
+            "FF_MANHOLE",
+        ];
 
         for (let i = 0; i < maxLength; i++) {
             const value = [];

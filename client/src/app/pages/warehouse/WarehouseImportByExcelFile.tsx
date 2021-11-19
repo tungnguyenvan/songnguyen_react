@@ -52,7 +52,10 @@ interface IWarehouseImportByExcelState {
     sizes: ISizeModel[];
 }
 
-class WarehouseImportByExcelFile extends React.Component<WarehouseImportByExcelFileProps, IWarehouseImportByExcelState> {
+class WarehouseImportByExcelFile extends React.Component<
+    WarehouseImportByExcelFileProps,
+    IWarehouseImportByExcelState
+> {
     private warehouseImportByExcelFormRef: IWarehouseImportByExcelFormRef;
     private productTypeApiService: ProductTypeApiService;
     private productNameApiService: ProductNameApiService;
@@ -169,8 +172,12 @@ class WarehouseImportByExcelFile extends React.Component<WarehouseImportByExcelF
             this.dumpWarehouseList(startRow, worksheet);
         } else {
             this.props.appDialogContext.addDialog({
-                title: this.props.languageContext.current.getMessageString(MessageId.INPUT_FILE_NOT_SUITABLE),
-                content: this.props.languageContext.current.getMessageString(MessageId.INPUT_FILE_NOT_SUITABLE_CONTENT),
+                title: this.props.languageContext.current.getMessageString(
+                    MessageId.INPUT_FILE_NOT_SUITABLE
+                ),
+                content: this.props.languageContext.current.getMessageString(
+                    MessageId.INPUT_FILE_NOT_SUITABLE_CONTENT
+                ),
             });
         }
     }
@@ -193,19 +200,27 @@ class WarehouseImportByExcelFile extends React.Component<WarehouseImportByExcelF
             const productName = worksheet.getCell("B" + startRow).value;
             this.state.productNames.forEach((element) => {
                 if (element.name === productName) {
-                    const warehouseProductTypeId = (warehouseModel.product_type as IProductTypeModel)._id;
-                    (element.product_type as IProductTypeModel[]).forEach((e: IProductTypeModel) => {
-                        if (e._id === warehouseProductTypeId) {
-                            warehouseModel.product_name = element;
+                    const warehouseProductTypeId = (
+                        warehouseModel.product_type as IProductTypeModel
+                    )._id;
+                    (element.product_type as IProductTypeModel[]).forEach(
+                        (e: IProductTypeModel) => {
+                            if (e._id === warehouseProductTypeId) {
+                                warehouseModel.product_name = element;
+                            }
                         }
-                    });
+                    );
                 }
             });
 
             // find thickness
             const thickness = worksheet.getCell("C" + startRow).value;
             this.state.thicknesses.forEach((element) => {
-                if (thickness === element.name && (element.product_name as IProductNameModel)._id === (warehouseModel.product_name as IProductNameModel)._id) {
+                if (
+                    thickness === element.name &&
+                    (element.product_name as IProductNameModel)._id ===
+                        (warehouseModel.product_name as IProductNameModel)._id
+                ) {
                     warehouseModel.thickness = element;
                 }
             });
@@ -221,7 +236,11 @@ class WarehouseImportByExcelFile extends React.Component<WarehouseImportByExcelF
             // find standard
             const standard = worksheet.getCell("F" + startRow).value;
             this.state.standards.forEach((element) => {
-                if (standard === element.name && (element.system_standard as ISystemStandardModel)._id === (warehouseModel.system_standard as ISystemStandardModel)._id) {
+                if (
+                    standard === element.name &&
+                    (element.system_standard as ISystemStandardModel)._id ===
+                        (warehouseModel.system_standard as ISystemStandardModel)._id
+                ) {
                     warehouseModel.standard = element;
                 }
             });
@@ -235,13 +254,16 @@ class WarehouseImportByExcelFile extends React.Component<WarehouseImportByExcelF
                         warehouseModel.size = element;
                     }
                 });
-            } else if ((warehouseModel.product_type as IProductTypeModel).form_type === FormType.FORM_2) {
+            } else if (
+                (warehouseModel.product_type as IProductTypeModel).form_type === FormType.FORM_2
+            ) {
                 // save size non standard
                 const size: ISizeModel = {
                     form_type: FormType.FORM_2,
                 } as ISizeModel;
 
-                const shape: GasketPTCShape = worksheet.getCell("H" + startRow).value as GasketPTCShape;
+                const shape: GasketPTCShape = worksheet.getCell("H" + startRow)
+                    .value as GasketPTCShape;
                 size.shape_type = shape;
                 switch (shape) {
                     case GasketPTCShape.RF_CIRCLE: {
@@ -297,8 +319,18 @@ class WarehouseImportByExcelFile extends React.Component<WarehouseImportByExcelF
             const amount = worksheet.getCell("S" + startRow).value;
             if (amount) {
                 warehouseModel.amount = parseInt(amount.toString(), 10);
-                warehouseModels.push(warehouseModel);
+            } else {
+                warehouseModel.amount = 0;
             }
+
+            const price = worksheet.getCell("T" + startRow).value;
+            if (price) {
+                warehouseModel.price = parseInt(price.toString(), 10);
+            } else {
+                warehouseModel.price = 0;
+            }
+
+            warehouseModels.push(warehouseModel);
 
             startRow += 1;
         }
@@ -308,10 +340,15 @@ class WarehouseImportByExcelFile extends React.Component<WarehouseImportByExcelF
                 warehouses: warehouseModels,
             },
             () => {
+                console.log(warehouseModels);
                 if (!this.state.warehouses.length) {
                     this.props.appDialogContext.addDialog({
-                        title: this.props.languageContext.current.getMessageString(MessageId.INPUT_FILE_NOT_SUITABLE),
-                        content: this.props.languageContext.current.getMessageString(MessageId.INPUT_FILE_NOT_SUITABLE_CONTENT),
+                        title: this.props.languageContext.current.getMessageString(
+                            MessageId.INPUT_FILE_NOT_SUITABLE
+                        ),
+                        content: this.props.languageContext.current.getMessageString(
+                            MessageId.INPUT_FILE_NOT_SUITABLE_CONTENT
+                        ),
                     });
                 }
             }
@@ -350,6 +387,7 @@ class WarehouseImportByExcelFile extends React.Component<WarehouseImportByExcelF
             this.props.languageContext.current.getMessageString(MessageId.SYSTEM_STANDARD),
             this.props.languageContext.current.getMessageString(MessageId.STANDARD),
             this.props.languageContext.current.getMessageString(MessageId.AMOUNT),
+            this.props.languageContext.current.getMessageString(MessageId.PRICE),
         ];
     }
 
@@ -363,19 +401,20 @@ class WarehouseImportByExcelFile extends React.Component<WarehouseImportByExcelF
                 content: [
                     (element.product_type as IProductTypeModel)?.name,
                     (element.product_name as IProductNameModel)?.name,
-                    size.inner_diameter?.toString(),
-                    size.outer_diameter?.toString(),
-                    size.wn?.toString(),
-                    size.wt?.toString(),
-                    size.ln?.toString(),
-                    size.lt?.toString(),
-                    size.ir?.toString(),
-                    size.or?.toString(),
-                    size.hole_count?.toString(),
-                    size.hole_diameter?.toString(),
+                    size?.inner_diameter?.toString(),
+                    size?.outer_diameter?.toString(),
+                    size?.wn?.toString(),
+                    size?.wt?.toString(),
+                    size?.ln?.toString(),
+                    size?.lt?.toString(),
+                    size?.ir?.toString(),
+                    size?.or?.toString(),
+                    size?.hole_count?.toString(),
+                    size?.hole_diameter?.toString(),
                     (element.system_standard as ISystemStandardModel)?.name,
                     (element.standard as IStandardModel)?.name,
                     element.amount?.toString(),
+                    element.price?.toString(),
                 ],
             });
         });
@@ -409,6 +448,7 @@ class WarehouseImportByExcelFile extends React.Component<WarehouseImportByExcelF
                         standard: (element.standard as IStandardModel)._id,
                         size: (element.size as ISizeModel)._id,
                         amount: element.amount,
+                        price: element.price,
                     } as IWarehouseModel)
                     .then((response) => {
                         this.saveWarehouse(index + 1);
@@ -418,69 +458,76 @@ class WarehouseImportByExcelFile extends React.Component<WarehouseImportByExcelF
                     product_name: (element.product_name as IProductNameModel)._id,
                     product_type: (element.product_type as IProductTypeModel)._id,
                     thickness: (element.thickness as IThicknessModel)._id,
-                    amount: element.amount
-                } as IWarehouseModel
+                    amount: element.amount,
+                    price: element.price,
+                } as IWarehouseModel;
 
                 const size = element.size as ISizeModel;
-                this.warehouseApiService.all({
-                    product_type: warehouseItem.product_type,
-                    product_name: warehouseItem.product_name,
-                    thickness: warehouseItem.thickness
-                } as IWarehouseModel)
-                    .then(response => {
+                this.warehouseApiService
+                    .all({
+                        product_type: warehouseItem.product_type,
+                        product_name: warehouseItem.product_name,
+                        thickness: warehouseItem.thickness,
+                    } as IWarehouseModel)
+                    .then((response) => {
                         if (response.status === HttpRequestStatusCode.OK) {
                             const dataResponse = response.data.data as IWarehouseModel[];
                             if (dataResponse.length > 0) {
-                                console.log("> 0");
-                                
-                                dataResponse.forEach(element => {
+                                dataResponse.forEach((element) => {
                                     const sizeElement = element.size as ISizeModel;
-    
+
                                     if (AppUtils.compare2Size(size, sizeElement)) {
-                                            warehouseItem.size = sizeElement._id
+                                        warehouseItem.size = sizeElement._id;
                                     }
-                                })
+                                });
 
                                 if (warehouseItem.size) {
-                                    console.log("No save size")
-                                    this.warehouseApiService.save(warehouseItem)
+                                    console.log("No save size");
+                                    this.warehouseApiService
+                                        .save(warehouseItem)
                                         .then((response) => {
                                             this.saveWarehouse(index + 1);
                                         });
                                 } else {
-                                    console.log("Save size")
-                                    this.sizeApiService.save(size)
-                                        .then(response => {
-                                            if (response.status === HttpRequestStatusCode.CREATED) {
-                                                warehouseItem.size = (response.data.data as ISizeModel)._id
-                                                this.warehouseApiService.save(warehouseItem)
-                                                    .then((response) => {
-                                                        this.saveWarehouse(index + 1);
-                                                    });
-                                            }
-                                        })
-                                }
-                            } else {
-                                console.log("== 0");
-                                console.log("size size")
-                                this.sizeApiService.save(size)
-                                    .then(response => {
+                                    console.log("Save size");
+                                    this.sizeApiService.save(size).then((response) => {
                                         if (response.status === HttpRequestStatusCode.CREATED) {
-                                            warehouseItem.size = (response.data.data as ISizeModel)._id
-                                            this.warehouseApiService.save(warehouseItem)
+                                            warehouseItem.size = (
+                                                response.data.data as ISizeModel
+                                            )._id;
+                                            this.warehouseApiService
+                                                .save(warehouseItem)
                                                 .then((response) => {
                                                     this.saveWarehouse(index + 1);
                                                 });
                                         }
-                                    })
+                                    });
+                                }
+                            } else {
+                                console.log("== 0");
+                                console.log("size size");
+                                this.sizeApiService.save(size).then((response) => {
+                                    if (response.status === HttpRequestStatusCode.CREATED) {
+                                        warehouseItem.size = (response.data.data as ISizeModel)._id;
+                                        this.warehouseApiService
+                                            .save(warehouseItem)
+                                            .then((response) => {
+                                                this.saveWarehouse(index + 1);
+                                            });
+                                    }
+                                });
                             }
                         }
-                    })
+                    });
             }
         } else if (index > 0 && index >= this.state.warehouses.length) {
             this.props.appDialogContext.addDialog({
-                title: this.props.languageContext.current.getMessageString(MessageId.IMPORT_WAREHOUSE_SUCCESS),
-                content: this.props.languageContext.current.getMessageString(MessageId.IMPORT_WAREHOUSE_SUCCESS_DETAIL),
+                title: this.props.languageContext.current.getMessageString(
+                    MessageId.IMPORT_WAREHOUSE_SUCCESS
+                ),
+                content: this.props.languageContext.current.getMessageString(
+                    MessageId.IMPORT_WAREHOUSE_SUCCESS_DETAIL
+                ),
             });
             this.props.appUrlContext.redirectTo(RouteConstant.WAREHOUSE);
         }
@@ -490,50 +537,75 @@ class WarehouseImportByExcelFile extends React.Component<WarehouseImportByExcelF
         let isValid = true;
         this.state.warehouses.forEach((element) => {
             if ((element.product_type as IProductTypeModel).form_type === FormType.FORM_1) {
-                if (!element.product_name || !element.thickness || !element.system_standard || !element.standard || !element.size) {
+                if (
+                    !element.product_name ||
+                    !element.thickness ||
+                    !element.system_standard ||
+                    !element.standard ||
+                    !element.size
+                ) {
                     this.alertInputFileNotSuitable();
-                    isValid = false
+                    isValid = false;
                 }
             } else if ((element.product_type as IProductTypeModel).form_type === FormType.FORM_2) {
                 if (!element.product_name || !element.thickness || !element.size) {
                     this.alertInputFileNotSuitable();
-                    isValid = false
+                    isValid = false;
                 } else {
-                    const size: ISizeModel = element.size as ISizeModel
+                    const size: ISizeModel = element.size as ISizeModel;
 
                     switch (size.shape_type) {
                         case GasketPTCShape.RF_CIRCLE: {
                             if (!size.inner_diameter || !size.outer_diameter) {
                                 this.alertInputFileNotSuitable();
-                                isValid = false
+                                isValid = false;
                             }
                             break;
                         }
                         case GasketPTCShape.FF_CIRCLE: {
-                            if (!size.inner_diameter || !size.outer_diameter || !size.hole_count || !size.hole_diameter) {
+                            if (
+                                !size.inner_diameter ||
+                                !size.outer_diameter ||
+                                !size.hole_count ||
+                                !size.hole_diameter
+                            ) {
                                 this.alertInputFileNotSuitable();
-                                isValid = false
+                                isValid = false;
                             }
                             break;
                         }
                         case GasketPTCShape.RF_RECTANGLE: {
                             if (!size.wn || !size.wt || !size.ln || !size.lt) {
                                 this.alertInputFileNotSuitable();
-                                isValid = false
+                                isValid = false;
                             }
-                            break
+                            break;
                         }
                         case GasketPTCShape.FF_RECTANGLE: {
-                            if (!size.wn || !size.wt || !size.ln || !size.lt || !size.hole_count || !size.hole_diameter) {
+                            if (
+                                !size.wn ||
+                                !size.wt ||
+                                !size.ln ||
+                                !size.lt ||
+                                !size.hole_count ||
+                                !size.hole_diameter
+                            ) {
                                 this.alertInputFileNotSuitable();
-                                isValid = false
+                                isValid = false;
                             }
-                            break
+                            break;
                         }
                         case GasketPTCShape.FF_MANHOLE: {
-                            if (!size.wn || !size.ln || !size.hole_count || !size.hole_diameter || !size.ir || !size.or) {
+                            if (
+                                !size.wn ||
+                                !size.ln ||
+                                !size.hole_count ||
+                                !size.hole_diameter ||
+                                !size.ir ||
+                                !size.or
+                            ) {
                                 this.alertInputFileNotSuitable();
-                                isValid = false
+                                isValid = false;
                             }
                         }
                     }
@@ -541,17 +613,17 @@ class WarehouseImportByExcelFile extends React.Component<WarehouseImportByExcelF
             } else if ((element.product_type as IProductTypeModel).form_type === FormType.FORM_3) {
                 if (!element.product_name || !element.thickness || !element.size) {
                     this.alertInputFileNotSuitable();
-                    isValid = false
+                    isValid = false;
                 } else {
-                    const size: ISizeModel = element.size as ISizeModel
+                    const size: ISizeModel = element.size as ISizeModel;
                     if (!size.wn || !size.ln) {
                         this.alertInputFileNotSuitable();
-                        isValid = false
+                        isValid = false;
                     }
                 }
             } else {
                 this.alertInputFileNotSuitable();
-                isValid = false
+                isValid = false;
             }
         });
 
@@ -560,8 +632,12 @@ class WarehouseImportByExcelFile extends React.Component<WarehouseImportByExcelF
 
     alertInputFileNotSuitable() {
         this.props.appDialogContext.addDialog({
-            title: this.props.languageContext.current.getMessageString(MessageId.INPUT_FILE_NOT_SUITABLE),
-            content: this.props.languageContext.current.getMessageString(MessageId.INPUT_FILE_NOT_SUITABLE_CONTENT),
+            title: this.props.languageContext.current.getMessageString(
+                MessageId.INPUT_FILE_NOT_SUITABLE
+            ),
+            content: this.props.languageContext.current.getMessageString(
+                MessageId.INPUT_FILE_NOT_SUITABLE_CONTENT
+            ),
         });
     }
 
@@ -569,23 +645,43 @@ class WarehouseImportByExcelFile extends React.Component<WarehouseImportByExcelF
         return (
             <FrameworkComponents.BasePage>
                 <FrameworkComponents.FormGroup>
-                    {!this.state.warehouses.length && <input type='file' onChange={this.onFileInputChange} ref={this.warehouseImportByExcelFormRef.inputFile} />}
+                    {!this.state.warehouses.length && (
+                        <input
+                            type="file"
+                            onChange={this.onFileInputChange}
+                            ref={this.warehouseImportByExcelFormRef.inputFile}
+                        />
+                    )}
                 </FrameworkComponents.FormGroup>
-                {this.state.warehouses.length > 0 && <FrameworkComponents.Table header={this.tableHeader()} content={this.tableContent()} />}
+                {this.state.warehouses.length > 0 && (
+                    <FrameworkComponents.Table
+                        header={this.tableHeader()}
+                        content={this.tableContent()}
+                    />
+                )}
                 {this.state.warehouses.length > 0 && (
                     <FrameworkComponents.FormGroup>
-                        <FrameworkComponents.Button type={ButtonTypeConstant.FLAT} onClick={this.onCancel}>
+                        <FrameworkComponents.Button
+                            type={ButtonTypeConstant.FLAT}
+                            onClick={this.onCancel}
+                        >
                             {this.props.languageContext.current.getMessageString(MessageId.CANCEL)}
                         </FrameworkComponents.Button>
                         <FrameworkComponents.Button
                             type={ButtonTypeConstant.PRIMARY}
                             onClick={this.onImportToWarehouse}
                             dialogModel={{
-                                title: this.props.languageContext.current.getMessageString(MessageId.CONFIRM_DATA),
-                                content: this.props.languageContext.current.getMessageString(MessageId.CONFIRM_DATA),
+                                title: this.props.languageContext.current.getMessageString(
+                                    MessageId.CONFIRM_DATA
+                                ),
+                                content: this.props.languageContext.current.getMessageString(
+                                    MessageId.CONFIRM_DATA
+                                ),
                             }}
                         >
-                            {this.props.languageContext.current.getMessageString(MessageId.IMPORT_WAREHOUSE)}
+                            {this.props.languageContext.current.getMessageString(
+                                MessageId.IMPORT_WAREHOUSE
+                            )}
                         </FrameworkComponents.Button>
                     </FrameworkComponents.FormGroup>
                 )}
@@ -594,4 +690,6 @@ class WarehouseImportByExcelFile extends React.Component<WarehouseImportByExcelF
     }
 }
 
-export default WithFramework.withLanguage(WithFramework.withAppDialog(WithFramework.withAppUrl(WarehouseImportByExcelFile)));
+export default WithFramework.withLanguage(
+    WithFramework.withAppDialog(WithFramework.withAppUrl(WarehouseImportByExcelFile))
+);
