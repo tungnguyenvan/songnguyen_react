@@ -50,6 +50,7 @@ interface IWarehouseImportByExcelState {
     systemStandards: ISystemStandardModel[];
     standards: IStandardModel[];
     sizes: ISizeModel[];
+    taskCount: number;
 }
 
 class WarehouseImportByExcelFile extends React.Component<
@@ -87,6 +88,7 @@ class WarehouseImportByExcelFile extends React.Component<
             systemStandards: [],
             standards: [],
             sizes: [],
+            taskCount: 0,
         };
 
         this.onFileInputChange = this.onFileInputChange.bind(this);
@@ -103,6 +105,7 @@ class WarehouseImportByExcelFile extends React.Component<
             if (response.status === HttpRequestStatusCode.OK) {
                 this.setState({
                     productTypes: response.data.data as IProductTypeModel[],
+                    taskCount: this.state.taskCount + 1,
                 });
             }
         });
@@ -111,6 +114,7 @@ class WarehouseImportByExcelFile extends React.Component<
             if (response.status === HttpRequestStatusCode.OK) {
                 this.setState({
                     productNames: response.data.data as IProductNameModel[],
+                    taskCount: this.state.taskCount + 1,
                 });
             }
         });
@@ -119,6 +123,7 @@ class WarehouseImportByExcelFile extends React.Component<
             if (response.status === HttpRequestStatusCode.OK) {
                 this.setState({
                     thicknesses: response.data.data as IThicknessModel[],
+                    taskCount: this.state.taskCount + 1,
                 });
             }
         });
@@ -127,6 +132,7 @@ class WarehouseImportByExcelFile extends React.Component<
             if (response.status === HttpRequestStatusCode.OK) {
                 this.setState({
                     systemStandards: response.data.data as ISystemStandardModel[],
+                    taskCount: this.state.taskCount + 1,
                 });
             }
         });
@@ -135,6 +141,7 @@ class WarehouseImportByExcelFile extends React.Component<
             if (response.status === HttpRequestStatusCode.OK) {
                 this.setState({
                     standards: response.data.data as IStandardModel[],
+                    taskCount: this.state.taskCount + 1,
                 });
             }
         });
@@ -143,6 +150,7 @@ class WarehouseImportByExcelFile extends React.Component<
             if (response.status === HttpRequestStatusCode.OK) {
                 this.setState({
                     sizes: response.data.data as ISizeModel[],
+                    taskCount: this.state.taskCount + 1,
                 });
             }
         });
@@ -221,6 +229,7 @@ class WarehouseImportByExcelFile extends React.Component<
                     (element.product_name as IProductNameModel)._id ===
                         (warehouseModel.product_name as IProductNameModel)._id
                 ) {
+                    console.log("thickness");
                     warehouseModel.thickness = element;
                 }
             });
@@ -327,7 +336,7 @@ class WarehouseImportByExcelFile extends React.Component<
             if (price) {
                 warehouseModel.price = parseInt(price.toString(), 10);
             } else {
-                warehouseModel.price = 0;
+                // warehouseModel.price = 0;
             }
 
             warehouseModels.push(warehouseModel);
@@ -650,6 +659,7 @@ class WarehouseImportByExcelFile extends React.Component<
                             type="file"
                             onChange={this.onFileInputChange}
                             ref={this.warehouseImportByExcelFormRef.inputFile}
+                            disabled={this.state.taskCount < 6}
                         />
                     )}
                 </FrameworkComponents.FormGroup>
