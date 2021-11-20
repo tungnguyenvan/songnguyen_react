@@ -50,12 +50,16 @@ class WarehouseController extends BaseController {
             request.query.search = JSON.stringify(searchObj);
             this.repository.all(request).then((w) => {
                 if ((w as unknown as any[]).length > 0) {
-                    const updateObject = {
+                    const updateObject: IWarehouseDocument = {
                         amount:
                             ((w as unknown as any[])[0] as IWarehouseDocument).amount +
                             parseInt(request.body.amount, 10),
-                        price: request.body.price,
-                    };
+                    } as IWarehouseDocument;
+
+                    if (request.body.price) {
+                        updateObject.price = parseFloat(request.body.price);
+                    }
+
                     const req = request;
                     req.body = updateObject;
                     req.params.id = (
