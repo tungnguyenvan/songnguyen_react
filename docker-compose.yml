@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+    #server
+    server:
+        build: ./server
+        ports:
+            - 3002:3002
+        volumes:
+            - ./server:/server/
+            - /server/node_modules/bcrypt/
+        command: nodemon .
+        restart: always
+        networks:
+            - app-network
+
+    #client
+    client:
+        build: ./client
+        ports:
+            - 3000:3000
+        volumes:
+            - ./client:/client/
+        command: npm start
+        restart: always
+        networks:
+            - app-network
+networks:
+    app-network:
+        driver: bridge

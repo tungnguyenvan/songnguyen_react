@@ -9,5 +9,5 @@ const NAME_SPACE = "INDEX";
 
 const server = http.createServer(Application);
 server.listen(AppConfig.PORT, () => {
-	Logging.success(NAME_SPACE, `Server started with port: ${process.env.PORT}`);
+    Logging.success(NAME_SPACE, `Server started with port: ${AppConfig.PORT}`);
 });
