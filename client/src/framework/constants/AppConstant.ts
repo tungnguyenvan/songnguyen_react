@@ -1,5 +1,5 @@
 class AppConstant {
-    public static API_END_POINT = "https://api-songnguyen.herokuapp.com"; // TODO: get from .env file
+    public static API_END_POINT = "https://songnguyen.onrender.com"; // TODO: get from .env file
     public static ACCESS_TOKEN_KEY = "access_token";
     public static TOKEN_PREFIX: string = "Bearer";
     // eslint-disable-next-line no-useless-escape
